@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true, // ES 모듈과의 호환성 설정
+    "skipLibCheck": true, // 라이브러리 검사를 생략하여 컴파일 속도 향상
+    "forceConsistentCasingInFileNames": true, // 파일명 대소문자 일관성 강제
+    "outDir": "./dist", // 컴파일된 파일이 저장될 디렉토리
+    "rootDir": "./src", // 소스 파일 디렉토리 설정
+    "resolveJsonModule": true, // JSON 모듈 지원
+    "sourceMap": true // 디버깅을 위한 소스맵 생성
+  },
+  "include": ["src"], // 컴파일 포함 디렉토리
+  "exclude": ["node_modules"] // 컴파일 제외 디렉토리
+}
