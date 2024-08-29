@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/bundle.js",
+    "start": "babel-node dist/bundle.js",
     "build": "webpack",
     "dev": "nodemon --watch 'src/**/*' --exec 'webpack && babel-node dist/bundle.js'"
   },

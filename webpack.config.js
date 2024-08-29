@@ -27,6 +27,7 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: "src/views", to: "views" }, // views 폴더를 dist 폴더로 복사
+        { from: "src/public", to: "public" },
       ],
     }),
   ],
