@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel-node dist/bundle.js",
     "build": "webpack",
-    "dev": "nodemon --watch 'src/**/*' --exec 'webpack && babel-node dist/bundle.js'"
+    "dev": "webpack --watch & nodemon --exec babel-node dist/bundle.js"
   },
   "author": "",
   "license": "ISC",
