@@ -2,6 +2,8 @@ import express from "express";
 import path from "path";
 import compression from "compression";
 import helmet from "helmet";
+import http from "http";
+import { Server, Socket } from "socket.io";
 import mainRouter from "./routes/main";
 
 const app = express();
@@ -18,4 +20,11 @@ app.use(express.urlencoded({ extended: true }));
 /* Router */
 app.use("/", mainRouter);
 
-app.listen(3000, () => console.log("3000번 포트 연결 중..."));
+const httpServer = http.createServer(app);
+const wsServer = new Server(httpServer);
+
+wsServer.on("connection", (socket: Socket) => {
+  console.log("소켓 연결됨");
+});
+
+httpServer.listen(3000, () => console.log("3000번 포트 연결 중..."));

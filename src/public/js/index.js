@@ -1,1 +1,3 @@
-console.log("hihi");
+const socket = io();
+
+console.log(socket);
