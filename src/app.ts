@@ -5,6 +5,7 @@ import helmet from "helmet";
 import http from "http";
 import { Server, Socket } from "socket.io";
 import mainRouter from "./routes/main";
+import roomRouter from "./routes/room";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 /* Router */
 app.use("/", mainRouter);
+app.use("/room", roomRouter);
 
 const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer);

@@ -1,7 +1,22 @@
-body {
-  background-color: black;
+* {
+  padding: 0;
+  margin: 0;
 }
 
-h1 {
-  color: white;
+body {
+  display: flex;
+  height: 100dvh;
+  flex-direction: column;
+  align-items: center;
+  background-color: #e2e1e0;
+}
+
+main#main_container {
+  display: flex;
+  width: 32rem;
+  background-color: #fff;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
