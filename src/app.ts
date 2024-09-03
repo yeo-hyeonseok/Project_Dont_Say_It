@@ -8,13 +8,28 @@ import mainRouter from "./routes/main";
 import roomRouter from "./routes/room";
 
 const app = express();
+const defaultDirectives = helmet.contentSecurityPolicy.getDefaultDirectives();
+const upgradeInsecureRequests = "upgrade-insecure-requests";
+const {
+  [upgradeInsecureRequests]: removeDirective,
+  ...otherDefaultDirectives
+} = defaultDirectives;
 
 /* Configuration */
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(compression());
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: false,
+      directives: {
+        ...otherDefaultDirectives,
+      },
+    },
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
