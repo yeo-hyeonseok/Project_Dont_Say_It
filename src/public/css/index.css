@@ -11,12 +11,10 @@ body {
   background-color: #e2e1e0;
 }
 
-main#main_container {
+main#layout {
   display: flex;
   width: 32rem;
   background-color: #fff;
   flex-grow: 1;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
 }
