@@ -3,8 +3,12 @@ extends layout.pug
 block content
     div#room_container
         header.room_header 
-            span.exit_button 나가기
+            span.exit_button 
+                i.fa-solid.fa-chevron-left
             p.time_remaining 남은 시간 
                 span 1:54
         div 채팅창
-        div 입력 폼
+        form.message_form
+            input(type="text", placeholder="메시지를 입력해주세요.", maxLength=150)
+            button
+                i.fa-solid.fa-arrow-up
