@@ -6,19 +6,20 @@
 body {
   display: flex;
   height: 100dvh;
-  flex-direction: column;
-  align-items: center;
+  color: #4d4d4d;
+  justify-content: center;
   background-color: #e2e1e0;
-}
-
-input:focus {
-  outline: 2px solid #ffa600a5;
 }
 
 main#layout {
   display: flex;
-  width: 32rem;
+  padding: 0 1rem;
+  max-width: 32rem;
   background-color: #fff;
-  flex-grow: 1;
+  flex: 1 1 0%;
   flex-direction: column;
+}
+
+input:focus {
+  outline: 2px solid #ffa600a5;
 }
