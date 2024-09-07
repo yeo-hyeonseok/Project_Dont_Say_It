@@ -36,9 +36,33 @@ form.message_form {
   margin-bottom: 0.8rem;
 }
 
+form.message_form > div.time_control {
+  display: flex;
+  position: absolute;
+  top: -2rem;
+  width: 100%;
+  justify-content: space-between;
+  align-items: end;
+}
+
+form.message_form > div.time_control > span {
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+form.message_form > div.time_control > div > span {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #d2d2d270;
+  margin-right: 0.5rem;
+}
+
 form.message_form > input {
   padding: 1rem 3.1rem 1rem 1rem;
   border: none;
+  font-size: 16px;
   flex-grow: 1;
   border-radius: 25px;
   background-color: #d2d2d270;
