@@ -1,3 +1,6 @@
 const socket = io();
 
-console.log(socket);
+/* room */
+const exitButton = document.querySelector("span.exit_button");
+
+exitButton.addEventListener("click", () => history.back());
