@@ -3,6 +3,7 @@ div#room_container {
   flex: 1 1 0%;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 0;
 }
 
 header.room_header {
@@ -30,6 +31,60 @@ header.room_header > p.time_remaining > span {
   font-weight: 500;
 }
 
+div.chat_list {
+  padding: 0 0.5rem 3rem 0.5rem;
+  flex: 1 1 0%;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+div.chat_list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+div.chat_list > p.notice {
+  color: #7c7c7c;
+  font-weight: 400;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 0.8rem;
+}
+
+div.chat_list > p.notice > span {
+  color: #fd5252;
+}
+
+div.chat_list > div.other_msg {
+  margin-top: 0.8rem;
+}
+
+div.chat_list > div.other_msg > span {
+  display: block;
+  font-weight: 600;
+}
+
+div.chat_list > div.other_msg > p {
+  display: inline-block;
+  padding: 0.8rem 1rem;
+  background-color: #d2d2d243;
+  margin-top: 0.5rem;
+  border-radius: 1rem;
+}
+
+div.chat_list > div.my_msg {
+  text-align: end;
+  margin-top: 0.8rem;
+}
+
+div.chat_list > div.my_msg > p {
+  display: inline-block;
+  padding: 0.8rem 1rem;
+  color: #fff;
+  background-color: #ffa500;
+  border-radius: 1rem;
+}
+
 form.message_form {
   display: flex;
   position: relative;
@@ -47,12 +102,13 @@ form.message_form > div.time_control {
 
 form.message_form > div.time_control > span {
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-left: 0.5rem;
 }
 
 form.message_form > div.time_control > div > span {
   padding: 0.3rem 0.5rem;
+  color: #7c7c7c;
   font-size: 0.8rem;
   cursor: pointer;
   border-radius: 10px;
