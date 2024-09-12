@@ -14,7 +14,6 @@ body {
 
 main#layout {
   display: flex;
-  padding: 0 1rem;
   max-width: 32rem;
   background-color: #fff;
   flex: 1 1 0%;

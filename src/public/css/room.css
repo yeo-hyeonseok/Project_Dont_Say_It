@@ -10,6 +10,7 @@ header.room_header {
   display: flex;
   position: relative;
   height: 3rem;
+  padding: 0 1rem;
   align-items: center;
   border-bottom: 1px solid #d2d2d2;
 }
@@ -32,7 +33,7 @@ header.room_header > p.time_remaining > span {
 }
 
 div.chat_list {
-  padding: 0 0.5rem 3rem 0.5rem;
+  padding: 0 1.5rem 1rem 1.5rem;
   flex: 1 1 0%;
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE and Edge */
@@ -87,17 +88,15 @@ div.chat_list > div.my_msg > p {
 
 form.message_form {
   display: flex;
-  position: relative;
-  margin-bottom: 0.8rem;
+  padding: 0.8rem 1rem;
+  flex-direction: column;
+  border-top: 1px solid #d2d2d2;
 }
 
 form.message_form > div.time_control {
   display: flex;
-  position: absolute;
-  top: -2.2rem;
-  width: 100%;
   justify-content: space-between;
-  align-items: end;
+  align-items: center;
 }
 
 form.message_form > div.time_control > span {
@@ -116,16 +115,23 @@ form.message_form > div.time_control > div > span {
   margin-right: 0.5rem;
 }
 
-form.message_form > input {
+form.message_form > div.input_container {
+  display: flex;
+  position: relative;
+  flex: 1 1 0%;
+  margin-top: 0.8rem;
+}
+
+form.message_form > div.input_container > input {
   padding: 1rem 3.1rem 1rem 1rem;
   border: none;
   font-size: 16px;
-  flex-grow: 1;
+  flex: 1 1 0%;
   border-radius: 25px;
   background-color: #d2d2d270;
 }
 
-form.message_form > button {
+form.message_form > div.input_container > button {
   position: absolute;
   top: 50%;
   right: 0.4rem;

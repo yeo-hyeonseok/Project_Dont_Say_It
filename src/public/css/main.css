@@ -1,6 +1,6 @@
 div#main_container {
   display: flex;
-  padding: 1rem 0;
+  padding: 1rem;
   flex: 1 1 0%;
   flex-direction: column;
   justify-content: space-between;
@@ -24,6 +24,7 @@ div.main_body {
   flex-direction: column;
   align-items: center;
   gap: 2.5rem;
+  margin-top: 1rem;
 }
 
 div.main_body > div.title_container {
@@ -45,7 +46,7 @@ div.main_body > img {
 }
 
 div.main_body > a {
-  width: 75%;
+  width: 80%;
   padding: 1rem 0;
   color: #fff;
   font-weight: 600;

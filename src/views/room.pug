@@ -37,15 +37,16 @@ block content
                 p 안녕하세요 제 이름은...
             div.other_msg 
                 span 상대
-                p 뭔데요 ㅋ
-        form.message_form
+                p 뭔데요 ㅋ        
+        form.message_form            
             div.time_control
                 span 가능 횟수: 3  
                 div 
                     span 
                         i.fa-solid.fa-plus  시간 연장
                     span 
-                        i.fa-solid.fa-minus  시간 단축                               
-            input(type="text", placeholder="메시지를 입력해주세요.", maxLength=150)
-            button
-                i.fa-solid.fa-arrow-up
+                        i.fa-solid.fa-minus  시간 단축
+            div.input_container                                
+                input(type="text", placeholder="메시지를 입력해주세요.", maxLength=150)
+                button
+                    i.fa-solid.fa-arrow-up
