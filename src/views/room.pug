@@ -40,11 +40,12 @@ block content
                 p 뭔데요 ㅋ        
         form.message_form            
             div.time_control
-                span 가능 횟수: 3  
+                p 가능 횟수: 
+                    span.remain_chances 3  
                 div 
-                    span 
+                    span.extend_button 
                         i.fa-solid.fa-plus  시간 연장
-                    span 
+                    span.shorten_button 
                         i.fa-solid.fa-minus  시간 단축
             div.input_container                                
                 input(type="text", placeholder="메시지를 입력해주세요.", maxLength=150)

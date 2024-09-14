@@ -1,6 +1,6 @@
 const socket = io();
 
-/* ---- room ---- */
+/* ------ room ------ */
 /* 나가기 버튼 */
 const exitButton = document.querySelector("span.exit_button");
 
@@ -28,3 +28,28 @@ function startTimer() {
 }
 
 startTimer();
+
+/* 시간 조정 */
+const remainChances = document.querySelector("span.remain_chances");
+const extendButton = document.querySelector("span.extend_button");
+const shortenButton = document.querySelector("span.shorten_button");
+
+let chanceCount = 3;
+
+extendButton.addEventListener("click", () => {
+  if (time < 100 && chanceCount > 0) {
+    time += 20;
+
+    chanceCount--;
+    remainChances.innerText = chanceCount;
+  }
+});
+
+shortenButton.addEventListener("click", () => {
+  if (time > 20 && chanceCount > 0) {
+    time -= 20;
+
+    chanceCount--;
+    remainChances.innerText = chanceCount;
+  }
+});

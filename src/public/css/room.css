@@ -100,7 +100,7 @@ form.message_form > div.time_control {
   align-items: center;
 }
 
-form.message_form > div.time_control > span {
+form.message_form > div.time_control > p {
   font-weight: 500;
   font-size: 0.8rem;
   margin-left: 0.5rem;
