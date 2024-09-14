@@ -23,12 +23,12 @@ header.room_header > span.exit_button {
   transform: translateY(-50%);
 }
 
-header.room_header > p.time_remaining {
+header.room_header > p {
   text-align: center;
   flex-grow: 1;
 }
 
-header.room_header > p.time_remaining > span {
+header.room_header > p > span.timer {
   font-weight: 500;
 }
 
@@ -56,6 +56,13 @@ div.chat_list > p.notice > span {
   color: #fd5252;
 }
 
+div.chat_list > div.other_msg > p,
+div.my_msg > p {
+  display: inline-block;
+  padding: 0.7rem 1rem;
+  border-radius: 1rem;
+}
+
 div.chat_list > div.other_msg {
   margin-top: 0.8rem;
 }
@@ -66,11 +73,8 @@ div.chat_list > div.other_msg > span {
 }
 
 div.chat_list > div.other_msg > p {
-  display: inline-block;
-  padding: 0.8rem 1rem;
   background-color: #d2d2d243;
   margin-top: 0.5rem;
-  border-radius: 1rem;
 }
 
 div.chat_list > div.my_msg {
@@ -79,11 +83,8 @@ div.chat_list > div.my_msg {
 }
 
 div.chat_list > div.my_msg > p {
-  display: inline-block;
-  padding: 0.8rem 1rem;
   color: #fff;
   background-color: #ffa500;
-  border-radius: 1rem;
 }
 
 form.message_form {
