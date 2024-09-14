@@ -1,6 +1,18 @@
 const socket = io();
+/* ---------- 공통 ---------- */
+/* 토스트 메시지 */
+const toastMsg = document.querySelector("p#toast_msg");
 
-/* ------ room ------ */
+function printToastMsg(msg) {
+  toastMsg.innerText = msg;
+  toastMsg.className = "active";
+
+  setTimeout(() => {
+    toastMsg.classList.remove("active");
+  }, 2000);
+}
+
+/* ---------- room ---------- */
 /* 나가기 버튼 */
 const exitButton = document.querySelector("span.exit_button");
 
@@ -37,19 +49,25 @@ const shortenButton = document.querySelector("span.shorten_button");
 let chanceCount = 3;
 
 extendButton.addEventListener("click", () => {
-  if (time < 100 && chanceCount > 0) {
-    time += 20;
-
-    chanceCount--;
-    remainChances.innerText = chanceCount;
+  if (chanceCount > 0) {
+    if (time <= 100) {
+      time += 20;
+      chanceCount--;
+      remainChances.innerText = chanceCount;
+    }
+  } else {
+    printToastMsg("더 이상 시간 변경이 불가능합니다.");
   }
 });
 
 shortenButton.addEventListener("click", () => {
-  if (time > 20 && chanceCount > 0) {
-    time -= 20;
-
-    chanceCount--;
-    remainChances.innerText = chanceCount;
+  if (chanceCount > 0) {
+    if (time >= 20) {
+      time -= 20;
+      chanceCount--;
+      remainChances.innerText = chanceCount;
+    }
+  } else {
+    printToastMsg("더 이상 시간 변경이 불가능합니다.");
   }
 });

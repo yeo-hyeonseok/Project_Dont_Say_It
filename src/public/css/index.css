@@ -23,3 +23,30 @@ main#layout {
 input:focus {
   outline: 2px solid #ffa600a5;
 }
+
+.box-shadow {
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+p#toast_msg {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  font-size: 0.9rem;
+  z-index: 1;
+  transform: translateX(-50%);
+  border-radius: 0.5rem;
+  background-color: #2b2b2bdf;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+p#toast_msg.active {
+  opacity: 1;
+  visibility: visible;
+}
