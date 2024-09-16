@@ -4,11 +4,13 @@ div#main_container {
   flex: 1 1 0%;
   flex-direction: column;
   justify-content: space-between;
+  user-select: none;
 }
 
 header.main_header {
   display: flex;
   justify-content: space-between;
+  font-size: 0.9rem;
 }
 
 header.main_header > span {
@@ -46,7 +48,7 @@ div.main_body > img {
 }
 
 div.main_body > a {
-  width: 80%;
+  width: 85%;
   padding: 0.9rem 0;
   color: #fff;
   font-weight: 600;
@@ -55,7 +57,7 @@ div.main_body > a {
   text-align: center;
   background-color: #ffa500;
   border-radius: 2.5rem;
-  margin-top: 5rem;
+  margin-top: 4rem;
   transition: filter 0.1s ease;
 }
 

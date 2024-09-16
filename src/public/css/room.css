@@ -13,6 +13,7 @@ header.room_header {
   padding: 0 1rem;
   align-items: center;
   border-bottom: 1px solid #d2d2d2;
+  user-select: none;
 }
 
 header.room_header > span.exit_button {
@@ -70,6 +71,7 @@ div.chat_list > div.other_msg {
 div.chat_list > div.other_msg > span {
   display: block;
   font-weight: 600;
+  user-select: none;
 }
 
 div.chat_list > div.other_msg > p {
@@ -98,6 +100,7 @@ form.message_form > div.time_control {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
 }
 
 form.message_form > div.time_control > p {
