@@ -6,6 +6,8 @@ import http from "http";
 import { Server, Socket } from "socket.io";
 import mainRouter from "./routes/main";
 import roomRouter from "./routes/room";
+import topics from "./data/topics";
+import forbiddenWords from "./data/forbiddenWords";
 
 const app = express();
 const defaultDirectives = helmet.contentSecurityPolicy.getDefaultDirectives();
@@ -41,6 +43,7 @@ const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer);
 
 wsServer.on("connection", (socket: Socket) => {
+  console.log(topics[0], forbiddenWords[0]);
   console.log("소켓 연결됨");
 });
 
