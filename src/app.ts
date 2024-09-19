@@ -43,8 +43,11 @@ const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer);
 
 wsServer.on("connection", (socket: Socket) => {
-  console.log(topics[0], forbiddenWords[0]);
-  console.log("소켓 연결됨");
+  console.log("소켓 연결됨:", socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("소켓 연결 해제됨");
+  });
 });
 
 httpServer.listen(3000, () => console.log("3000번 포트 연결 중..."));
