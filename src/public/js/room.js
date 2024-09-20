@@ -2,14 +2,36 @@
 const socket = io();
 
 socket.on("connect", () => {
-  console.log("소켓 연결됨:", socket.id);
+  const socketId = socket.id;
+
+  console.log("소켓 연결됨:", socketId);
+
+  fetch("/room/save_socketId", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ socketId }),
+  })
+    .then((res) => res.json())
+    .then((data) => console.log(data))
+    .catch((e) => console.error(e));
 });
 
 /* ---------- room ---------- */
 /* 나가기 버튼 */
 const exitButton = document.querySelector("span.exit_button");
 
-exitButton.addEventListener("click", () => history.back());
+exitButton.addEventListener("click", () => {
+  fetch("/room/delete_socketId", {
+    method: "POST",
+  })
+    .then((res) => res.json())
+    .then((data) => console.log(data))
+    .catch((e) => console.error(e));
+
+  history.back();
+});
 
 /* 타이머 */
 const timer = document.querySelector("span.timer");
