@@ -4,6 +4,7 @@ import compression from "compression";
 import helmet from "helmet";
 import http from "http";
 import { Server, Socket } from "socket.io";
+import cookieParser from "cookie-parser";
 import mainRouter from "./routes/main";
 import roomRouter from "./routes/room";
 import topics from "./data/topics";
@@ -34,11 +35,13 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 /* Router */
 app.use("/", mainRouter);
 app.use("/room", roomRouter);
 
+/* Socket */
 const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer);
 

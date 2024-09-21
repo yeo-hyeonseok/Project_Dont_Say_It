@@ -1,22 +1,48 @@
 /* ---------- socket ---------- */
-const socket = io();
+let socket;
 
-socket.on("connect", () => {
-  const socketId = socket.id;
-
-  console.log("소켓 연결됨:", socketId);
-
-  fetch("/room/save_socketId", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ socketId }),
+function connectSocket() {
+  fetch("/room/check_socketId", {
+    method: "GET",
   })
     .then((res) => res.json())
-    .then((data) => console.log(data))
+    .then((data) => {
+      console.log(data.message);
+
+      if (data.isExist) {
+        console.log("<<<<중복 접속 하심>>>>");
+      } else {
+        console.log("<<<<중복 접속 아니심>>>>");
+
+        socket = io();
+        setSocketListeners();
+      }
+    })
     .catch((e) => console.error(e));
-});
+}
+
+function setSocketListeners() {
+  if (!socket) return;
+
+  socket.on("connect", () => {
+    const socketId = socket.id;
+
+    console.log("[connect] 연결된 소켓:", socketId);
+
+    fetch("/room/save_socketId", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ socketId }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data.message))
+      .catch((e) => console.error(e));
+  });
+}
+
+connectSocket();
 
 /* ---------- room ---------- */
 /* 나가기 버튼 */
@@ -27,7 +53,7 @@ exitButton.addEventListener("click", () => {
     method: "POST",
   })
     .then((res) => res.json())
-    .then((data) => console.log(data))
+    .then((data) => console.log(data.message))
     .catch((e) => console.error(e));
 
   history.back();
