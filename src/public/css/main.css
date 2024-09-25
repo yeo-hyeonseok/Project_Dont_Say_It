@@ -8,13 +8,12 @@ div#main_container {
 }
 
 header.main_header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
+  text-align: start;
 }
 
 header.main_header > span {
   font-weight: 500;
+  font-size: 0.9rem;
 }
 
 header.main_header > p > span {
@@ -68,4 +67,5 @@ div.main_body > a:hover {
 footer.main_footer {
   font-weight: 500;
   font-size: 0.8rem;
+  text-align: center;
 }
