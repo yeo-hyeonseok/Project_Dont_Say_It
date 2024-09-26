@@ -1,6 +1,31 @@
 /* ---------- socket ---------- */
 let socket;
 
+function setSocketListeners() {
+  if (!socket) return;
+
+  socket.emit("user_match", () => {
+    // 알림 메시지 관련 출력
+  });
+
+  socket.on("connect", () => {
+    const socketId = socket.id;
+
+    console.log("[connect] 연결된 소켓:", socketId);
+
+    fetch("/room/save_socketId", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ socketId }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data.message))
+      .catch((e) => console.error(e));
+  });
+}
+
 function connectSocket() {
   fetch("/room/check_socketId", {
     method: "GET",
@@ -19,27 +44,6 @@ function connectSocket() {
       }
     })
     .catch((e) => console.error(e));
-}
-
-function setSocketListeners() {
-  if (!socket) return;
-
-  socket.on("connect", () => {
-    const socketId = socket.id;
-
-    console.log("[connect] 연결된 소켓:", socketId);
-
-    fetch("/room/save_socketId", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ socketId }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data.message))
-      .catch((e) => console.error(e));
-  });
 }
 
 connectSocket();

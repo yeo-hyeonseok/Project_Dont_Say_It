@@ -5,10 +5,9 @@ import helmet from "helmet";
 import http from "http";
 import { Server, Socket } from "socket.io";
 import cookieParser from "cookie-parser";
+import shortid from "shortid";
 import mainRouter from "./routes/main";
 import roomRouter from "./routes/room";
-import topics from "./data/topics";
-import forbiddenWords from "./data/forbiddenWords";
 
 const app = express();
 const defaultDirectives = helmet.contentSecurityPolicy.getDefaultDirectives();
@@ -45,8 +44,39 @@ app.use("/room", roomRouter);
 const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer);
 
+function getRandomIndex(length: number) {
+  return Math.floor(Math.random() * length);
+}
+
+function getPublicRooms() {
+  const {
+    sockets: {
+      adapter: { sids, rooms },
+    },
+  } = wsServer;
+
+  return Array.from(rooms).filter((room) => !sids.get(room[0]));
+}
+
 wsServer.on("connection", (socket: Socket) => {
   console.log("소켓 연결됨:", socket.id);
+  console.log("publicRooms: ", getPublicRooms());
+
+  socket.on("user_match", (done: () => void) => {
+    const filtered = Array.from(getPublicRooms()).filter(
+      (room) => room[1].size < 2
+    );
+
+    if (filtered.length > 0) {
+      // 빈 방 있으면 참여
+      socket.join(filtered[getRandomIndex(filtered.length)][0]);
+    } else {
+      // 빈 방 없으면 방 생성
+      const roomName = shortid.generate();
+
+      socket.join(roomName);
+    }
+  });
 
   socket.on("disconnect", () => {
     console.log("소켓 연결 해제됨");
