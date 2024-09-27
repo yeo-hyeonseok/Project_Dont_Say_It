@@ -45,7 +45,8 @@ div.chat_list::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-div.chat_list > p.notice {
+div.chat_list > p.notice,
+p.loading_msg {
   color: #7c7c7c;
   font-weight: 400;
   font-size: 0.9rem;

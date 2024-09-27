@@ -4,9 +4,7 @@ let socket;
 function setSocketListeners() {
   if (!socket) return;
 
-  socket.emit("user_match", () => {
-    // 알림 메시지 관련 출력
-  });
+  socket.emit("user_match", () => {});
 
   socket.on("connect", () => {
     const socketId = socket.id;
@@ -23,6 +21,22 @@ function setSocketListeners() {
       .then((res) => res.json())
       .then((data) => console.log(data.message))
       .catch((e) => console.error(e));
+  });
+
+  socket.on("send_notice", (roomName) => {
+    sendNotice(`[${roomName}] 상대방이 입장했습니다.`);
+
+    setTimeout(() => {
+      sendNotice("⚠️ 불쾌감을 줄 수 있는 비속어나 욕설은 삼가주세요.");
+    }, 1500);
+
+    setTimeout(() => {
+      sendNotice("상대방의 금칙어는 '나도'입니다.");
+    }, 3000);
+
+    setTimeout(() => {
+      sendNotice("대화 주제: 취미");
+    }, 4500);
   });
 }
 
@@ -46,6 +60,7 @@ function connectSocket() {
     .catch((e) => console.error(e));
 }
 
+// >> 시작 지점 <<
 connectSocket();
 
 /* ---------- room ---------- */
@@ -77,14 +92,23 @@ function startTimer() {
       const minutes = Math.floor(time / 60);
       const seconds = time % 60;
 
-      timer.innerText = `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
+      timer.textContent = `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
     } else {
       clearInterval(timeInterval);
     }
   }, 1000);
 }
 
-startTimer();
+/* 채팅창 */
+function sendNotice(msg) {
+  const chatList = document.querySelector("div.chat_list");
+  const notice = document.createElement("p");
+
+  notice.classList.add("notice");
+  notice.textContent = msg;
+
+  chatList.append(notice);
+}
 
 /* 시간 조정 */
 const remainChances = document.querySelector("span.remain_chances");
@@ -98,7 +122,7 @@ extendButton.addEventListener("click", () => {
     if (time <= 100) {
       time += 20;
       chanceCount--;
-      remainChances.innerText = chanceCount;
+      remainChances.textContent = chanceCount;
     }
   } else {
     printToastMsg("더 이상 시간 변경이 불가능합니다.");
@@ -110,7 +134,7 @@ shortenButton.addEventListener("click", () => {
     if (time >= 20) {
       time -= 20;
       chanceCount--;
-      remainChances.innerText = chanceCount;
+      remainChances.textContent = chanceCount;
     }
   } else {
     printToastMsg("더 이상 시간 변경이 불가능합니다.");

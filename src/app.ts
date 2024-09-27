@@ -60,7 +60,6 @@ function getPublicRooms() {
 
 wsServer.on("connection", (socket: Socket) => {
   console.log("소켓 연결됨:", socket.id);
-  console.log("publicRooms: ", getPublicRooms());
 
   socket.on("user_match", (done: () => void) => {
     const filtered = Array.from(getPublicRooms()).filter(
@@ -69,18 +68,27 @@ wsServer.on("connection", (socket: Socket) => {
 
     if (filtered.length > 0) {
       // 빈 방 있으면 참여
-      socket.join(filtered[getRandomIndex(filtered.length)][0]);
+      const randomRoom = filtered[getRandomIndex(filtered.length)][0];
+
+      socket.join(randomRoom);
+      wsServer.to(randomRoom).emit("send_notice", randomRoom);
+
+      console.log("[user_match] 방에 참여함");
     } else {
       // 빈 방 없으면 방 생성
       const roomName = shortid.generate();
 
       socket.join(roomName);
+
+      console.log("[user_match] 새로운 방 생성함");
     }
   });
 
   socket.on("disconnect", () => {
     console.log("소켓 연결 해제됨");
   });
+
+  console.log("publicRooms: ", getPublicRooms());
 });
 
 httpServer.listen(3000, () => console.log("3000번 포트 연결 중..."));
