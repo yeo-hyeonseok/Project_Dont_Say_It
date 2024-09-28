@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 import shortid from "shortid";
 import mainRouter from "./routes/main";
 import roomRouter from "./routes/room";
+import { getRandomForbiddenWord } from "./data/forbiddenWords";
+import { getRandomTopic } from "./data/topics";
 
 const app = express();
 const defaultDirectives = helmet.contentSecurityPolicy.getDefaultDirectives();
@@ -71,7 +73,14 @@ wsServer.on("connection", (socket: Socket) => {
       const randomRoom = filtered[getRandomIndex(filtered.length)][0];
 
       socket.join(randomRoom);
-      wsServer.to(randomRoom).emit("send_notice", randomRoom);
+      wsServer
+        .to(randomRoom)
+        .emit(
+          "send_notice",
+          randomRoom,
+          getRandomForbiddenWord(),
+          getRandomTopic()
+        );
 
       console.log("[user_match] 방에 참여함");
     } else {

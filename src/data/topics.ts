@@ -1,4 +1,4 @@
-const topics: string[] = [
+export const topics: string[] = [
   "현재 하고 있는 취미",
   "가장 좋아하는 음식",
   "즐겨하는 운동",
@@ -35,4 +35,8 @@ const topics: string[] = [
   "가장 아끼는 물건",
 ];
 
-export default topics;
+export function getRandomTopic() {
+  const randomIndex = Math.floor(Math.random() * topics.length);
+
+  return topics[randomIndex];
+}

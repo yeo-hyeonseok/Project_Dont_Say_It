@@ -23,20 +23,29 @@ function setSocketListeners() {
       .catch((e) => console.error(e));
   });
 
-  socket.on("send_notice", (roomName) => {
+  socket.on("send_notice", (roomName, forbiddenWord, topic) => {
+    const loadingMsg = document.querySelector("p.loading_msg");
+    loadingMsg.style.display = "none";
+
     sendNotice(`[${roomName}] 상대방이 입장했습니다.`);
 
     setTimeout(() => {
-      sendNotice("⚠️ 불쾌감을 줄 수 있는 비속어나 욕설은 삼가주세요.");
+      sendNotice(
+        "⚠️ 상대방에게 불쾌감을 줄 수 있는 비속어나 욕설은 삼가주세요."
+      );
     }, 1500);
 
     setTimeout(() => {
-      sendNotice("상대방의 금칙어는 '나도'입니다.");
+      sendForbiddenWord(forbiddenWord);
     }, 3000);
 
     setTimeout(() => {
-      sendNotice("대화 주제: 취미");
+      sendNotice(`대화 주제: ${topic}`);
     }, 4500);
+
+    setTimeout(() => {
+      sendNotice("상대방과 대화를 시작해보세요.");
+    }, 6000);
   });
 }
 
@@ -106,6 +115,20 @@ function sendNotice(msg) {
 
   notice.classList.add("notice");
   notice.textContent = msg;
+
+  chatList.append(notice);
+}
+
+function sendForbiddenWord(word) {
+  const chatList = document.querySelector("div.chat_list");
+  const notice = document.createElement("p");
+  const forbiddenWord = document.createElement("span");
+
+  notice.classList.add("notice");
+  notice.textContent = "상대방의 금칙어는 ";
+  forbiddenWord.textContent = word;
+  notice.append(forbiddenWord);
+  notice.append(document.createTextNode("입니다."));
 
   chatList.append(notice);
 }
