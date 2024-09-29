@@ -32,6 +32,8 @@ export const forbiddenWords: string[] = [
   "오늘",
   "오히려",
   "참고로",
+  "왜",
+  "?",
 ];
 
 export function getRandomForbiddenWord() {

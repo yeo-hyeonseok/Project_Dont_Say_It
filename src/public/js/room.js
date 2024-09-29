@@ -121,14 +121,17 @@ function sendNotice(msg) {
 
 function sendForbiddenWord(word) {
   const chatList = document.querySelector("div.chat_list");
+  const forbiddenWord = document.querySelector("span.forbidden_word");
   const notice = document.createElement("p");
-  const forbiddenWord = document.createElement("span");
+  const span = document.createElement("span");
 
   notice.classList.add("notice");
   notice.textContent = "상대방의 금칙어는 ";
-  forbiddenWord.textContent = word;
-  notice.append(forbiddenWord);
+  span.textContent = word;
+  notice.append(span);
   notice.append(document.createTextNode("입니다."));
+  forbiddenWord.textContent = word;
+  forbiddenWord.style.visibility = "visible";
 
   chatList.append(notice);
 }

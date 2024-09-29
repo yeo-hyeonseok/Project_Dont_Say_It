@@ -10,7 +10,7 @@ header.room_header {
   display: flex;
   position: relative;
   height: 3rem;
-  padding: 0 1rem;
+  padding: 0.2rem 1rem;
   align-items: center;
   border-bottom: 1px solid #d2d2d2;
   user-select: none;
@@ -24,13 +24,27 @@ header.room_header > span.exit_button {
   transform: translateY(-50%);
 }
 
-header.room_header > p {
+header.room_header > div {
   text-align: center;
-  flex-grow: 1;
+  flex: 1 1 0%;
 }
 
-header.room_header > p > span.timer {
+header.room_header > div > p {
+  font-size: 0.8rem;
+}
+
+header.room_header > div > span.forbidden_word {
+  color: #fd5252;
   font-weight: 500;
+  visibility: hidden;
+}
+
+header.room_header > span.timer {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  font-weight: 500;
+  transform: translateY(-50%);
 }
 
 div.chat_list {
