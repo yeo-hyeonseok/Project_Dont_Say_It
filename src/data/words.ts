@@ -1,4 +1,4 @@
-export const forbiddenWords: string[] = [
+export const words: string[] = [
   "나도",
   "아니",
   "제발",
@@ -36,8 +36,8 @@ export const forbiddenWords: string[] = [
   "?",
 ];
 
-export function getRandomForbiddenWord() {
-  const randomIndex = Math.floor(Math.random() * forbiddenWords.length);
+export function getRandomWord() {
+  const randomIndex = Math.floor(Math.random() * words.length);
 
-  return forbiddenWords[randomIndex];
+  return words[randomIndex];
 }

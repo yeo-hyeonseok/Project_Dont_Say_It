@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 import shortid from "shortid";
 import mainRouter from "./routes/main";
 import roomRouter from "./routes/room";
-import { getRandomForbiddenWord } from "./data/forbiddenWords";
+import { getRandomWord } from "./data/words";
 import { getRandomTopic } from "./data/topics";
 
 const app = express();
@@ -63,6 +63,9 @@ function getPublicRooms() {
 wsServer.on("connection", (socket: Socket) => {
   console.log("소켓 연결됨:", socket.id);
 
+  const myWord = getRandomWord();
+  const otherWord = getRandomWord();
+
   socket.on("user_match", (done: () => void) => {
     const filtered = Array.from(getPublicRooms()).filter(
       (room) => room[1].size < 2
@@ -73,14 +76,9 @@ wsServer.on("connection", (socket: Socket) => {
       const randomRoom = filtered[getRandomIndex(filtered.length)][0];
 
       socket.join(randomRoom);
-      wsServer
-        .to(randomRoom)
-        .emit(
-          "send_notice",
-          randomRoom,
-          getRandomForbiddenWord(),
-          getRandomTopic()
-        );
+      wsServer.to(randomRoom).emit("send_notice", randomRoom, getRandomTopic());
+      socket.emit("send_myword", myWord);
+      socket.to(randomRoom).emit("send_otherword", otherWord);
 
       console.log("[user_match] 방에 참여함");
     } else {

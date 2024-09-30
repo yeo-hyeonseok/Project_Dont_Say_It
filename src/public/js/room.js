@@ -23,7 +23,7 @@ function setSocketListeners() {
       .catch((e) => console.error(e));
   });
 
-  socket.on("send_notice", (roomName, forbiddenWord, topic) => {
+  socket.on("send_notice", (roomName, topic) => {
     const loadingMsg = document.querySelector("p.loading_msg");
     loadingMsg.style.display = "none";
 
@@ -36,16 +36,24 @@ function setSocketListeners() {
     }, 1500);
 
     setTimeout(() => {
-      sendForbiddenWord(forbiddenWord);
-    }, 3000);
-
-    setTimeout(() => {
       sendNotice(`대화 주제: ${topic}`);
     }, 4500);
 
     setTimeout(() => {
       sendNotice("상대방과 대화를 시작해보세요.");
     }, 6000);
+  });
+
+  socket.on("send_myword", (forbiddenWord) => {
+    setTimeout(() => {
+      sendForbiddenWord(forbiddenWord);
+    }, 3000);
+  });
+
+  socket.on("send_otherword", (forbiddenWord) => {
+    setTimeout(() => {
+      sendForbiddenWord(forbiddenWord);
+    }, 3000);
   });
 }
 
