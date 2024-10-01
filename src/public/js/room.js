@@ -41,6 +41,7 @@ function setSocketListeners() {
 
     setTimeout(() => {
       sendNotice("상대방과 대화를 시작해보세요.");
+      startTimer();
     }, 6000);
   });
 
@@ -128,8 +129,9 @@ function sendNotice(msg) {
 }
 
 function sendForbiddenWord(word) {
-  const chatList = document.querySelector("div.chat_list");
+  const wordContainer = document.querySelector("div.word_container");
   const forbiddenWord = document.querySelector("span.forbidden_word");
+  const chatList = document.querySelector("div.chat_list");
   const notice = document.createElement("p");
   const span = document.createElement("span");
 
@@ -139,7 +141,7 @@ function sendForbiddenWord(word) {
   notice.append(span);
   notice.append(document.createTextNode("입니다."));
   forbiddenWord.textContent = word;
-  forbiddenWord.style.visibility = "visible";
+  wordContainer.style.visibility = "visible";
 
   chatList.append(notice);
 }

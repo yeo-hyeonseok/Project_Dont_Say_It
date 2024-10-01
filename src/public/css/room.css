@@ -27,6 +27,7 @@ header.room_header > span.exit_button {
 header.room_header > div {
   text-align: center;
   flex: 1 1 0%;
+  visibility: hidden;
 }
 
 header.room_header > div > p {
@@ -36,7 +37,6 @@ header.room_header > div > p {
 header.room_header > div > span.forbidden_word {
   color: #fd5252;
   font-weight: 500;
-  visibility: hidden;
 }
 
 header.room_header > span.timer {
