@@ -4,7 +4,7 @@ let socket;
 function setSocketListeners() {
   if (!socket) return;
 
-  socket.emit("user_match", () => {});
+  socket.emit("user_match");
 
   socket.on("connect", () => {
     const socketId = socket.id;
@@ -21,6 +21,15 @@ function setSocketListeners() {
       .then((res) => res.json())
       .then((data) => console.log(data.message))
       .catch((e) => console.error(e));
+  });
+
+  socket.on("change_timer", (time) => {
+    const timer = document.querySelector("span.timer");
+
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+
+    timer.textContent = `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
   });
 
   socket.on("send_notice", (roomName, topic) => {
@@ -41,7 +50,8 @@ function setSocketListeners() {
 
     setTimeout(() => {
       sendNotice("상대방과 대화를 시작해보세요.");
-      startTimer();
+
+      socket.emit("start_timer");
     }, 6000);
   });
 
@@ -97,12 +107,12 @@ exitButton.addEventListener("click", () => {
 });
 
 /* 타이머 */
-const timer = document.querySelector("span.timer");
+/*function startTimer() {
+  const timer = document.querySelector("span.timer");
 
-let time = 120;
-let timeInterval;
+  let time = 120;
+  let timeInterval;
 
-function startTimer() {
   timeInterval = setInterval(() => {
     if (time > 0) {
       time--;
@@ -115,7 +125,7 @@ function startTimer() {
       clearInterval(timeInterval);
     }
   }, 1000);
-}
+}*/
 
 /* 채팅창 */
 function sendNotice(msg) {

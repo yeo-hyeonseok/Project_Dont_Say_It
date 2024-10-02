@@ -63,10 +63,12 @@ function getPublicRooms() {
 wsServer.on("connection", (socket: Socket) => {
   console.log("소켓 연결됨:", socket.id);
 
+  let time = 120;
+  let timeInterval: NodeJS.Timeout | undefined;
   const myWord = getRandomWord();
   const otherWord = getRandomWord();
 
-  socket.on("user_match", (done: () => void) => {
+  socket.on("user_match", () => {
     const filtered = Array.from(getPublicRooms()).filter(
       (room) => room[1].size < 2
     );
@@ -76,26 +78,34 @@ wsServer.on("connection", (socket: Socket) => {
       const randomRoom = filtered[getRandomIndex(filtered.length)][0];
 
       socket.join(randomRoom);
+      socket.emit("change_timer", time);
       wsServer.to(randomRoom).emit("send_notice", randomRoom, getRandomTopic());
       socket.emit("send_myword", myWord);
       socket.to(randomRoom).emit("send_otherword", otherWord);
-
-      console.log("[user_match] 방에 참여함");
     } else {
       // 빈 방 없으면 방 생성
       const roomName = shortid.generate();
 
       socket.join(roomName);
-
-      console.log("[user_match] 새로운 방 생성함");
+      socket.emit("change_timer", time);
     }
+  });
+
+  socket.on("start_timer", () => {
+    timeInterval = setInterval(() => {
+      if (time > 0) {
+        time--;
+
+        socket.emit("change_timer", time);
+      } else {
+        clearInterval(timeInterval);
+      }
+    }, 1000);
   });
 
   socket.on("disconnect", () => {
     console.log("소켓 연결 해제됨");
   });
-
-  console.log("publicRooms: ", getPublicRooms());
 });
 
 httpServer.listen(3000, () => console.log("3000번 포트 연결 중..."));
