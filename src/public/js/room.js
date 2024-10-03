@@ -23,7 +23,7 @@ function setSocketListeners() {
       .catch((e) => console.error(e));
   });
 
-  socket.on("change_timer", (time) => {
+  socket.on("time_change", (time) => {
     const timer = document.querySelector("span.timer");
 
     const minutes = Math.floor(time / 60);
@@ -32,7 +32,7 @@ function setSocketListeners() {
     timer.textContent = `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
   });
 
-  socket.on("send_notice", (roomName, topic) => {
+  socket.on("send_welcome", (roomName, topic) => {
     const loadingMsg = document.querySelector("p.loading_msg");
     loadingMsg.style.display = "none";
 
@@ -55,15 +55,21 @@ function setSocketListeners() {
     }, 6000);
   });
 
-  socket.on("send_myword", (forbiddenWord) => {
+  socket.on("send_notice", (socketId, notice) => {
+    const subject = socket.id === socketId ? "" : "상대방이 ";
+
+    sendNotice(`${subject + notice}`);
+  });
+
+  socket.on("send_myword", (myWord) => {
     setTimeout(() => {
-      sendForbiddenWord(forbiddenWord);
+      sendForbiddenWord(myWord);
     }, 3000);
   });
 
-  socket.on("send_otherword", (forbiddenWord) => {
+  socket.on("send_otherword", (otherWord) => {
     setTimeout(() => {
-      sendForbiddenWord(forbiddenWord);
+      sendForbiddenWord(otherWord);
     }, 3000);
   });
 }
@@ -157,32 +163,28 @@ function sendForbiddenWord(word) {
 }
 
 /* 시간 조정 */
-const remainChances = document.querySelector("span.remain_chances");
 const extendButton = document.querySelector("span.extend_button");
 const shortenButton = document.querySelector("span.shorten_button");
 
 let chanceCount = 3;
 
-extendButton.addEventListener("click", () => {
+function adjustTime(amount) {
   if (chanceCount > 0) {
-    if (time <= 100) {
-      time += 20;
+    socket.emit("adjust_time", amount, () => {
+      const remainChances = document.querySelector("span.remain_chances");
+
       chanceCount--;
       remainChances.textContent = chanceCount;
-    }
+    });
   } else {
     printToastMsg("더 이상 시간 변경이 불가능합니다.");
   }
+}
+
+extendButton.addEventListener("click", () => {
+  adjustTime(20);
 });
 
 shortenButton.addEventListener("click", () => {
-  if (chanceCount > 0) {
-    if (time >= 20) {
-      time -= 20;
-      chanceCount--;
-      remainChances.textContent = chanceCount;
-    }
-  } else {
-    printToastMsg("더 이상 시간 변경이 불가능합니다.");
-  }
+  adjustTime(-20);
 });

@@ -63,10 +63,11 @@ function getPublicRooms() {
 wsServer.on("connection", (socket: Socket) => {
   console.log("소켓 연결됨:", socket.id);
 
+  let roomName: string;
   let time = 120;
   let timeInterval: NodeJS.Timeout | undefined;
-  const myWord = getRandomWord();
-  const otherWord = getRandomWord();
+  const myWord: string = getRandomWord();
+  const otherWord: string = getRandomWord();
 
   socket.on("user_match", () => {
     const filtered = Array.from(getPublicRooms()).filter(
@@ -75,19 +76,19 @@ wsServer.on("connection", (socket: Socket) => {
 
     if (filtered.length > 0) {
       // 빈 방 있으면 참여
-      const randomRoom = filtered[getRandomIndex(filtered.length)][0];
-
-      socket.join(randomRoom);
-      socket.emit("change_timer", time);
-      wsServer.to(randomRoom).emit("send_notice", randomRoom, getRandomTopic());
-      socket.emit("send_myword", myWord);
-      socket.to(randomRoom).emit("send_otherword", otherWord);
-    } else {
-      // 빈 방 없으면 방 생성
-      const roomName = shortid.generate();
+      roomName = filtered[getRandomIndex(filtered.length)][0];
 
       socket.join(roomName);
-      socket.emit("change_timer", time);
+      socket.emit("time_change", time);
+      wsServer.to(roomName).emit("send_welcome", roomName, getRandomTopic());
+      socket.emit("send_myword", myWord);
+      socket.to(roomName).emit("send_otherword", otherWord);
+    } else {
+      // 빈 방 없으면 방 생성
+      roomName = shortid.generate();
+
+      socket.join(roomName);
+      socket.emit("time_change", time);
     }
   });
 
@@ -96,11 +97,30 @@ wsServer.on("connection", (socket: Socket) => {
       if (time > 0) {
         time--;
 
-        socket.emit("change_timer", time);
+        socket.emit("time_change", time);
       } else {
         clearInterval(timeInterval);
       }
     }, 1000);
+  });
+
+  socket.on("adjust_time", (amount: number, done: () => void) => {
+    const condition = amount > 0 ? time <= 100 : time >= 20;
+
+    if (condition) {
+      time += amount;
+
+      wsServer.to(roomName).emit("time_change", time);
+      wsServer
+        .to(roomName)
+        .emit(
+          "send_notice",
+          socket.id,
+          amount > 0 ? "시간을 연장했습니다." : "시간을 단축했습니다."
+        );
+
+      done();
+    }
   });
 
   socket.on("disconnect", () => {
