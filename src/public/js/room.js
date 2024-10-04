@@ -1,6 +1,15 @@
 /* ---------- socket ---------- */
 let socket;
 
+function setFormattedTimer(time) {
+  const timer = document.querySelector("span.timer");
+
+  const minutes = Math.floor(time / 60);
+  const seconds = time % 60;
+
+  timer.textContent = `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
+}
+
 function setSocketListeners() {
   if (!socket) return;
 
@@ -24,12 +33,7 @@ function setSocketListeners() {
   });
 
   socket.on("time_change", (time) => {
-    const timer = document.querySelector("span.timer");
-
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-
-    timer.textContent = `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
+    setFormattedTimer(time);
   });
 
   socket.on("send_welcome", (roomName, topic) => {
@@ -72,6 +76,12 @@ function setSocketListeners() {
       sendForbiddenWord(otherWord);
     }, 3000);
   });
+
+  socket.on("adjust_time", (time) => {
+    setFormattedTimer(time);
+
+    socket.emit("sync_time", time);
+  });
 }
 
 function connectSocket() {
@@ -111,27 +121,6 @@ exitButton.addEventListener("click", () => {
 
   history.back();
 });
-
-/* 타이머 */
-/*function startTimer() {
-  const timer = document.querySelector("span.timer");
-
-  let time = 120;
-  let timeInterval;
-
-  timeInterval = setInterval(() => {
-    if (time > 0) {
-      time--;
-
-      const minutes = Math.floor(time / 60);
-      const seconds = time % 60;
-
-      timer.textContent = `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
-    } else {
-      clearInterval(timeInterval);
-    }
-  }, 1000);
-}*/
 
 /* 채팅창 */
 function sendNotice(msg) {

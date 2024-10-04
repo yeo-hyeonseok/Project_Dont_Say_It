@@ -110,7 +110,7 @@ wsServer.on("connection", (socket: Socket) => {
     if (condition) {
       time += amount;
 
-      wsServer.to(roomName).emit("time_change", time);
+      wsServer.to(roomName).emit("adjust_time", time);
       wsServer
         .to(roomName)
         .emit(
@@ -121,6 +121,10 @@ wsServer.on("connection", (socket: Socket) => {
 
       done();
     }
+  });
+
+  socket.on("sync_time", (currentTime) => {
+    time = currentTime;
   });
 
   socket.on("disconnect", () => {
