@@ -105,6 +105,8 @@ wsServer.on("connection", (socket: Socket) => {
   });
 
   socket.on("adjust_time", (amount: number, done: () => void) => {
+    if (time === 120) return;
+
     const condition = amount > 0 ? time <= 100 : time >= 20;
 
     if (condition) {
