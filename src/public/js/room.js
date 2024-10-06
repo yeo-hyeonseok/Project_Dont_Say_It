@@ -82,6 +82,21 @@ function setSocketListeners() {
 
     socket.emit("sync_time", time);
   });
+
+  socket.on("send_message", (msg) => {
+    const chatList = document.querySelector("div.chat_list");
+    const message = document.createElement("div");
+    const span = document.createElement("span");
+    const p = document.createElement("p");
+
+    message.classList.add("other_msg");
+    span.textContent = "상대";
+    p.textContent = msg;
+
+    message.append(span);
+    message.append(p);
+    chatList.append(message);
+  });
 }
 
 function connectSocket() {
@@ -176,4 +191,28 @@ extendButton.addEventListener("click", () => {
 
 shortenButton.addEventListener("click", () => {
   adjustTime(-20);
+});
+
+/* 메시지 입력창 */
+const messageForm = document.querySelector("form.message_form");
+
+messageForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const input = messageForm.querySelector("input");
+
+  socket.emit("send_message", input.value, () => {
+    const chatList = document.querySelector("div.chat_list");
+    const message = document.createElement("div");
+    const p = document.createElement("p");
+
+    message.classList.add("my_msg");
+    p.textContent = input.value;
+
+    message.append(p);
+    chatList.append(message);
+
+    input.value = "";
+    input.focus();
+  });
 });

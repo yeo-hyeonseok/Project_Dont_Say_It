@@ -129,6 +129,12 @@ wsServer.on("connection", (socket: Socket) => {
     time = currentTime;
   });
 
+  socket.on("send_message", (msg: string, done: () => void) => {
+    socket.to(roomName).emit("send_message", msg);
+
+    done();
+  });
+
   socket.on("disconnect", () => {
     console.log("소켓 연결 해제됨");
   });
