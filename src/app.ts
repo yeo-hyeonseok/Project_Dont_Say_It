@@ -120,7 +120,6 @@ wsServer.on("connection", (socket: Socket) => {
           socket.id,
           amount > 0 ? "시간을 연장했습니다." : "시간을 단축했습니다."
         );
-
       done();
     }
   });
@@ -130,8 +129,9 @@ wsServer.on("connection", (socket: Socket) => {
   });
 
   socket.on("send_message", (msg: string, done: () => void) => {
-    socket.to(roomName).emit("send_message", msg);
+    if (time === 120) return;
 
+    socket.to(roomName).emit("send_message", msg);
     done();
   });
 

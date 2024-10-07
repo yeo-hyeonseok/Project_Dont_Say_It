@@ -63,6 +63,7 @@ function setSocketListeners() {
     const subject = socket.id === socketId ? "" : "상대방이 ";
 
     sendNotice(`${subject + notice}`);
+    chatScrollToBottom();
   });
 
   socket.on("send_myword", (myWord) => {
@@ -96,6 +97,8 @@ function setSocketListeners() {
     message.append(span);
     message.append(p);
     chatList.append(message);
+
+    chatScrollToBottom();
   });
 }
 
@@ -166,6 +169,13 @@ function sendForbiddenWord(word) {
   chatList.append(notice);
 }
 
+function chatScrollToBottom() {
+  const chatList = document.querySelector("div.chat_list");
+  const scrollHeight = chatList.scrollHeight;
+
+  chatList.scrollTo(0, scrollHeight);
+}
+
 /* 시간 조정 */
 const extendButton = document.querySelector("span.extend_button");
 const shortenButton = document.querySelector("span.shorten_button");
@@ -214,5 +224,7 @@ messageForm.addEventListener("submit", (e) => {
 
     input.value = "";
     input.focus();
+
+    chatScrollToBottom();
   });
 });
