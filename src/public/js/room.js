@@ -176,7 +176,7 @@ function chatScrollToBottom() {
   chatList.scrollTo(0, scrollHeight);
 }
 
-/* 시간 조정 */
+/* 시간 변경 버튼 */
 const extendButton = document.querySelector("span.extend_button");
 const shortenButton = document.querySelector("span.shorten_button");
 

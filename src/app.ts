@@ -79,7 +79,6 @@ wsServer.on("connection", (socket: Socket) => {
       roomName = filtered[getRandomIndex(filtered.length)][0];
 
       socket.join(roomName);
-      socket.emit("time_change", time);
       wsServer.to(roomName).emit("send_welcome", roomName, getRandomTopic());
       socket.emit("send_myword", myWord);
       socket.to(roomName).emit("send_otherword", otherWord);
@@ -88,7 +87,6 @@ wsServer.on("connection", (socket: Socket) => {
       roomName = shortid.generate();
 
       socket.join(roomName);
-      socket.emit("time_change", time);
     }
   });
 
@@ -107,9 +105,7 @@ wsServer.on("connection", (socket: Socket) => {
   socket.on("adjust_time", (amount: number, done: () => void) => {
     if (time === 120) return;
 
-    const condition = amount > 0 ? time <= 100 : time >= 20;
-
-    if (condition) {
+    if (amount > 0 ? time <= 100 : time >= 20) {
       time += amount;
 
       wsServer.to(roomName).emit("adjust_time", time);
