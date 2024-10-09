@@ -111,10 +111,15 @@ function connectSocket() {
       console.log(data.message);
 
       if (data.isExist) {
-        console.log("<<<<중복 접속 하심>>>>");
-      } else {
-        console.log("<<<<중복 접속 아니심>>>>");
+        const loadingMsg = document.querySelector("p.loading_msg");
+        const br = document.createElement("br");
 
+        loadingMsg.textContent = "현재 참여 중인 방이 있습니다.";
+        loadingMsg.append(br);
+        loadingMsg.append(
+          document.createTextNode("게임을 진행하시려면 현재 방을 나가주세요.")
+        );
+      } else {
         socket = io();
         setSocketListeners();
       }
