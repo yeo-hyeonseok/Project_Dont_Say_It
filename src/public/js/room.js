@@ -135,14 +135,9 @@ connectSocket();
 const exitButton = document.querySelector("span.exit_button");
 
 exitButton.addEventListener("click", () => {
-  fetch("/room/delete_socketId", {
-    method: "POST",
-  })
-    .then((res) => res.json())
-    .then((data) => console.log(data.message))
-    .catch((e) => console.error(e));
+  const exitModal = document.querySelector("dialog.exit_modal");
 
-  history.back();
+  exitModal.showModal();
 });
 
 /* 채팅창 */
@@ -232,4 +227,37 @@ messageForm.addEventListener("submit", (e) => {
 
     chatScrollToBottom();
   });
+});
+
+/* 모달창 */
+const exitModal = document.querySelector("dialog.exit_modal");
+const modalExitButton = exitModal.querySelector("button.modal_exitBtn");
+const modalCloseButton = exitModal.querySelector("button.modal_closeBtn");
+
+exitModal.addEventListener("click", function (e) {
+  const rect = exitModal.getBoundingClientRect();
+
+  if (
+    e.clientX < rect.left ||
+    e.clientX > rect.right ||
+    e.clientY < rect.top ||
+    e.clientY > rect.bottom
+  ) {
+    exitModal.close();
+  }
+});
+
+modalExitButton.addEventListener("click", () => {
+  fetch("/room/delete_socketId", {
+    method: "POST",
+  })
+    .then((res) => res.json())
+    .then((data) => console.log(data.message))
+    .catch((e) => console.error(e));
+
+  history.back();
+});
+
+modalCloseButton.addEventListener("click", () => {
+  exitModal.close();
 });
