@@ -168,9 +168,10 @@ form.message_form > div.input_container > button {
 dialog {
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 1rem;
+  width: 14.5rem;
+  padding: 1.5rem;
   border: none;
+  transform: translate(-50%, -50%);
   border-radius: 0.5rem;
 }
 
@@ -179,4 +180,36 @@ div.modal_container {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.5rem;
+}
+
+dialog.exit_modal > div.modal_container > div {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+dialog.exit_modal > div.modal_container > div > button {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 0.3rem;
+}
+
+dialog.exit_modal > div.modal_container > div > button:focus {
+  outline: none;
+}
+
+dialog.exit_modal > div.modal_container > div > button.modal_closeBtn {
+  border: 1px solid #d2d2d2;
+  color: #2b2b2b;
+}
+
+dialog.exit_modal > div.modal_container > div > button.modal_exitBtn {
+  color: #fff;
+  background-color: #ffa500;
 }
