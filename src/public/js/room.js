@@ -1,5 +1,6 @@
 /* ---------- socket ---------- */
 let socket;
+let isMatched = false;
 
 function setFormattedTimer(time) {
   const timer = document.querySelector("span.timer");
@@ -39,6 +40,7 @@ function setSocketListeners() {
   socket.on("send_welcome", (roomName, topic) => {
     const loadingMsg = document.querySelector("p.loading_msg");
     loadingMsg.style.display = "none";
+    isMatched = true;
 
     sendNotice(`[${roomName}] 상대방이 입장했습니다.`);
 
@@ -135,9 +137,20 @@ connectSocket();
 const exitButton = document.querySelector("span.exit_button");
 
 exitButton.addEventListener("click", () => {
-  const exitModal = document.querySelector("dialog.exit_modal");
+  if (isMatched) {
+    const exitModal = document.querySelector("dialog.exit_modal");
 
-  exitModal.showModal();
+    exitModal.showModal();
+  } else {
+    fetch("/room/delete_socketId", {
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data.message))
+      .catch((e) => console.error(e));
+
+    history.back();
+  }
 });
 
 /* 채팅창 */
@@ -196,11 +209,11 @@ function adjustTime(amount) {
 }
 
 extendButton.addEventListener("click", () => {
-  adjustTime(20);
+  if (isMatched) adjustTime(20);
 });
 
 shortenButton.addEventListener("click", () => {
-  adjustTime(-20);
+  if (isMatched) adjustTime(-20);
 });
 
 /* 메시지 입력창 */
@@ -211,22 +224,24 @@ messageForm.addEventListener("submit", (e) => {
 
   const input = messageForm.querySelector("input");
 
-  socket.emit("send_message", input.value, () => {
-    const chatList = document.querySelector("div.chat_list");
-    const message = document.createElement("div");
-    const p = document.createElement("p");
+  if (isMatched && input.value.trim() !== "") {
+    socket.emit("send_message", input.value, () => {
+      const chatList = document.querySelector("div.chat_list");
+      const message = document.createElement("div");
+      const p = document.createElement("p");
 
-    message.classList.add("my_msg");
-    p.textContent = input.value;
+      message.classList.add("my_msg");
+      p.textContent = input.value;
 
-    message.append(p);
-    chatList.append(message);
+      message.append(p);
+      chatList.append(message);
 
-    input.value = "";
-    input.focus();
+      input.value = "";
+      input.focus();
 
-    chatScrollToBottom();
-  });
+      chatScrollToBottom();
+    });
+  }
 });
 
 /* 모달창 */

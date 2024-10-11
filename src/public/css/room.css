@@ -197,7 +197,7 @@ dialog.exit_modal > div.modal_container > div > button {
   font-weight: 500;
   font-size: 0.9rem;
   cursor: pointer;
-  border-radius: 0.3rem;
+  border-radius: 0.5rem;
 }
 
 dialog.exit_modal > div.modal_container > div > button:focus {
