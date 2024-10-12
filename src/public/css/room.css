@@ -12,7 +12,7 @@ header.room_header {
   height: 3rem;
   padding: 0.2rem 1rem;
   align-items: center;
-  border-bottom: 1px solid #d2d2d2;
+  border-bottom: 1px solid var(--border-color);
   user-select: none;
 }
 
@@ -35,7 +35,7 @@ header.room_header > div > p {
 }
 
 header.room_header > div > span.forbidden_word {
-  color: #fd5252;
+  color: var(--accent-color);
   font-weight: 500;
 }
 
@@ -61,7 +61,7 @@ div.chat_list::-webkit-scrollbar {
 
 div.chat_list > p.notice,
 p.loading_msg {
-  color: #7c7c7c;
+  color: var(--info-color);
   font-weight: 400;
   font-size: 0.9rem;
   text-align: center;
@@ -69,7 +69,7 @@ p.loading_msg {
 }
 
 div.chat_list > p.notice > span {
-  color: #fd5252;
+  color: var(--accent-color);
 }
 
 div.chat_list > div.other_msg > p,
@@ -90,7 +90,7 @@ div.chat_list > div.other_msg > span {
 }
 
 div.chat_list > div.other_msg > p {
-  background-color: #d2d2d243;
+  background-color: var(--tertiary-text-color);
   margin-top: 0.5rem;
 }
 
@@ -100,15 +100,15 @@ div.chat_list > div.my_msg {
 }
 
 div.chat_list > div.my_msg > p {
-  color: #fff;
-  background-color: #ffa500;
+  color: var(--secondary-text-color);
+  background-color: var(--primary-color);
 }
 
 form.message_form {
   display: flex;
   padding: 0.8rem 1rem;
   flex-direction: column;
-  border-top: 1px solid #d2d2d2;
+  border-top: 1px solid var(--border-color);
 }
 
 form.message_form > div.time_control {
@@ -126,11 +126,11 @@ form.message_form > div.time_control > p {
 
 form.message_form > div.time_control > div > span {
   padding: 0.3rem 0.5rem;
-  color: #7c7c7c;
+  color: var(--info-color);
   font-size: 0.8rem;
   cursor: pointer;
   border-radius: 10px;
-  background-color: #d2d2d270;
+  background-color: var(--secondary-bg-color);
   margin-right: 0.5rem;
 }
 
@@ -147,7 +147,7 @@ form.message_form > div.input_container > input {
   font-size: 16px;
   flex: 1 1 0%;
   border-radius: 25px;
-  background-color: #d2d2d270;
+  background-color: var(--secondary-bg-color);
 }
 
 form.message_form > div.input_container > button {
@@ -157,11 +157,11 @@ form.message_form > div.input_container > button {
   width: 37px;
   height: 37px;
   border: none;
-  color: #fff;
+  color: var(--secondary-text-color);
   font-size: 1.2rem;
   cursor: pointer;
   transform: translateY(-50%);
-  background-color: #ffa500;
+  background-color: var(--primary-color);
   border-radius: 50%;
 }
 
@@ -205,11 +205,11 @@ dialog.exit_modal > div.modal_container > div > button:focus {
 }
 
 dialog.exit_modal > div.modal_container > div > button.modal_closeBtn {
-  border: 1px solid #d2d2d2;
-  color: #2b2b2b;
+  border: 1px solid var(--border-color);
+  color: var(--primary-text-color);
 }
 
 dialog.exit_modal > div.modal_container > div > button.modal_exitBtn {
-  color: #fff;
-  background-color: #ffa500;
+  color: var(--secondary-text-color);
+  background-color: var(--primary-color);
 }
