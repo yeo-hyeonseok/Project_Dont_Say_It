@@ -175,22 +175,26 @@ dialog {
   border-radius: 0.5rem;
 }
 
-div.modal_container {
+dialog > div.modal_container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
-dialog.exit_modal > div.modal_container > div {
+dialog.result_modal > div.modal_container > p {
+  text-align: center;
+}
+
+dialog > div.modal_container > div {
   display: flex;
   width: 100%;
   gap: 1rem;
   justify-content: space-between;
 }
 
-dialog.exit_modal > div.modal_container > div > button {
+dialog > div.modal_container > div > button {
   width: 100%;
   padding: 0.5rem;
   border: none;
@@ -200,16 +204,18 @@ dialog.exit_modal > div.modal_container > div > button {
   border-radius: 0.5rem;
 }
 
-dialog.exit_modal > div.modal_container > div > button:focus {
+dialog > div.modal_container > div > button:focus {
   outline: none;
 }
 
-dialog.exit_modal > div.modal_container > div > button.modal_closeBtn {
+dialog.exit_modal > div.modal_container > div > button.modal_closeBtn,
+dialog.result_modal > div.modal_container > div > button.modal_exitBtn {
   border: 1px solid var(--border-color);
   color: var(--primary-text-color);
 }
 
-dialog.exit_modal > div.modal_container > div > button.modal_exitBtn {
+dialog.exit_modal > div.modal_container > div > button.modal_exitBtn,
+dialog.result_modal > div.modal_container > div > button.modal_matchBtn {
   color: var(--secondary-text-color);
   background-color: var(--primary-color);
 }
