@@ -30,7 +30,7 @@ function setWebSocket(server: http.Server) {
     const myWord: string = getRandomWord();
     const otherWord: string = getRandomWord();
 
-    socket.on("user_match", () => {
+    socket.on("enter_room", () => {
       const filtered = Array.from(getPublicRooms()).filter(
         (room) => room[1].size < 2
       );
@@ -88,6 +88,10 @@ function setWebSocket(server: http.Server) {
 
       socket.to(roomName).emit("send_message", msg);
       done();
+    });
+
+    socket.on("exit_room", () => {
+      socket.to(roomName).emit("send_notice", socket.id, "나갔습니다.");
     });
 
     socket.on("disconnect", () => {

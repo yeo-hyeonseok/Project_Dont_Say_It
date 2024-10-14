@@ -14,7 +14,7 @@ function setFormattedTimer(time) {
 function setSocketListeners() {
   if (!socket) return;
 
-  socket.emit("user_match");
+  socket.emit("enter_room");
 
   socket.on("connect", () => {
     const socketId = socket.id;
@@ -263,6 +263,8 @@ exitModal.addEventListener("click", function (e) {
 });
 
 modalExitButton.addEventListener("click", () => {
+  socket.emit("exit_room");
+
   fetch("/room/delete_socketId", {
     method: "POST",
   })
