@@ -59,6 +59,8 @@ function setWebSocket(server: http.Server) {
           socket.emit("time_change", time);
         } else {
           clearInterval(timeInterval);
+
+          io.to(roomName).emit("time_over");
         }
       }, 1000);
     });

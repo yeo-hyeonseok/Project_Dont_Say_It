@@ -172,7 +172,7 @@ dialog {
   padding: 1.5rem;
   border: none;
   transform: translate(-50%, -50%);
-  border-radius: 0.5rem;
+  border-radius: 1rem;
 }
 
 dialog > div.modal_container {
@@ -212,6 +212,7 @@ dialog.exit_modal > div.modal_container > div > button.modal_closeBtn,
 dialog.result_modal > div.modal_container > div > button.modal_exitBtn {
   border: 1px solid var(--border-color);
   color: var(--primary-text-color);
+  background-color: var(--secondary-bg-color);
 }
 
 dialog.exit_modal > div.modal_container > div > button.modal_exitBtn,

@@ -102,6 +102,17 @@ function setSocketListeners() {
 
     chatScrollToBottom();
   });
+
+  socket.on("time_over", () => {
+    const resultModal = document.querySelector("dialog.result_modal");
+    const exitButton = resultModal.querySelector("button.modal_exitBtn");
+    const matchButton = resultModal.querySelector("button.modal_matchBtn");
+
+    exitButton.addEventListener("click", () => {});
+    matchButton.addEventListener("click", () => {});
+
+    resultModal.showModal();
+  });
 }
 
 function connectSocket() {
