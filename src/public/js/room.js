@@ -104,14 +104,7 @@ function setSocketListeners() {
   });
 
   socket.on("time_over", () => {
-    const resultModal = document.querySelector("dialog.result_modal");
-    const exitButton = resultModal.querySelector("button.modal_exitBtn");
-    const matchButton = resultModal.querySelector("button.modal_matchBtn");
-
-    exitButton.addEventListener("click", () => {});
-    matchButton.addEventListener("click", () => {});
-
-    resultModal.showModal();
+    showResultModal();
   });
 }
 
@@ -149,9 +142,7 @@ const exitButton = document.querySelector("span.exit_button");
 
 exitButton.addEventListener("click", () => {
   if (isMatched) {
-    const exitModal = document.querySelector("dialog.exit_modal");
-
-    exitModal.showModal();
+    showExitModal();
   } else {
     fetch("/room/delete_socketId", {
       method: "POST",
@@ -256,36 +247,52 @@ messageForm.addEventListener("submit", (e) => {
 });
 
 /* 모달창 */
-const exitModal = document.querySelector("dialog.exit_modal");
-const modalExitButton = exitModal.querySelector("button.modal_exitBtn");
-const modalCloseButton = exitModal.querySelector("button.modal_closeBtn");
+function showExitModal() {
+  const exitModal = document.querySelector("dialog.exit_modal");
+  const modalExitButton = exitModal.querySelector("button.modal_exitBtn");
+  const modalCloseButton = exitModal.querySelector("button.modal_closeBtn");
 
-exitModal.addEventListener("click", function (e) {
-  const rect = exitModal.getBoundingClientRect();
+  exitModal.addEventListener("click", function (e) {
+    const rect = exitModal.getBoundingClientRect();
 
-  if (
-    e.clientX < rect.left ||
-    e.clientX > rect.right ||
-    e.clientY < rect.top ||
-    e.clientY > rect.bottom
-  ) {
+    if (
+      e.clientX < rect.left ||
+      e.clientX > rect.right ||
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom
+    ) {
+      exitModal.close();
+    }
+  });
+
+  modalExitButton.addEventListener("click", () => {
+    socket.emit("exit_room");
+
+    fetch("/room/delete_socketId", {
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data.message))
+      .catch((e) => console.error(e));
+
+    history.back();
+  });
+
+  modalCloseButton.addEventListener("click", () => {
     exitModal.close();
-  }
-});
+  });
 
-modalExitButton.addEventListener("click", () => {
-  socket.emit("exit_room");
+  exitModal.showModal();
+}
 
-  fetch("/room/delete_socketId", {
-    method: "POST",
-  })
-    .then((res) => res.json())
-    .then((data) => console.log(data.message))
-    .catch((e) => console.error(e));
+function showResultModal() {
+  const resultModal = document.querySelector("dialog.result_modal");
+  const exitButton = resultModal.querySelector("button.modal_exitBtn");
+  const matchButton = resultModal.querySelector("button.modal_matchBtn");
 
-  history.back();
-});
+  exitButton.addEventListener("click", () => {});
 
-modalCloseButton.addEventListener("click", () => {
-  exitModal.close();
-});
+  matchButton.addEventListener("click", () => {});
+
+  resultModal.showModal();
+}
