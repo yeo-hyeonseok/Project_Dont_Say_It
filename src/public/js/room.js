@@ -104,7 +104,11 @@ function setSocketListeners() {
   });
 
   socket.on("time_over", () => {
-    showResultModal();
+    showResultModal("무승부", "제한 시간이 모두 지나 게임이 종료되었습니다.");
+  });
+
+  socket.on("opponent_left", () => {
+    showResultModal("승리", "상대방이 퇴장했습니다.");
   });
 }
 
@@ -285,10 +289,15 @@ function showExitModal() {
   exitModal.showModal();
 }
 
-function showResultModal() {
+function showResultModal(title, desc) {
   const resultModal = document.querySelector("dialog.result_modal");
+  const h2 = resultModal.querySelector("h2");
+  const p = resultModal.querySelector("p");
   const exitButton = resultModal.querySelector("button.modal_exitBtn");
   const matchButton = resultModal.querySelector("button.modal_matchBtn");
+
+  h2.textContent = title;
+  p.textContent = desc;
 
   exitButton.addEventListener("click", () => {});
 

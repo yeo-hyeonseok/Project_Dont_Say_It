@@ -94,6 +94,7 @@ function setWebSocket(server: http.Server) {
 
     socket.on("exit_room", () => {
       socket.to(roomName).emit("send_notice", socket.id, "나갔습니다.");
+      socket.to(roomName).emit("opponent_left");
     });
 
     socket.on("disconnect", () => {
