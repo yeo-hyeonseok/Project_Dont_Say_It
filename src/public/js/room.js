@@ -109,6 +109,8 @@ function setSocketListeners() {
 
   socket.on("opponent_left", () => {
     showResultModal("승리", "상대방이 퇴장했습니다.");
+
+    socket.emit("exit_room");
   });
 }
 
@@ -253,8 +255,8 @@ messageForm.addEventListener("submit", (e) => {
 /* 모달창 */
 function showExitModal() {
   const exitModal = document.querySelector("dialog.exit_modal");
-  const modalExitButton = exitModal.querySelector("button.modal_exitBtn");
   const modalCloseButton = exitModal.querySelector("button.modal_closeBtn");
+  const modalExitButton = exitModal.querySelector("button.modal_exitBtn");
 
   exitModal.addEventListener("click", function (e) {
     const rect = exitModal.getBoundingClientRect();
@@ -269,6 +271,10 @@ function showExitModal() {
     }
   });
 
+  modalCloseButton.addEventListener("click", () => {
+    exitModal.close();
+  });
+
   modalExitButton.addEventListener("click", () => {
     socket.emit("exit_room");
 
@@ -280,10 +286,6 @@ function showExitModal() {
       .catch((e) => console.error(e));
 
     history.back();
-  });
-
-  modalCloseButton.addEventListener("click", () => {
-    exitModal.close();
   });
 
   exitModal.showModal();

@@ -93,8 +93,15 @@ function setWebSocket(server: http.Server) {
     });
 
     socket.on("exit_room", () => {
-      socket.to(roomName).emit("send_notice", socket.id, "나갔습니다.");
-      socket.to(roomName).emit("opponent_left");
+      const room = io.sockets.adapter.rooms.get(roomName);
+
+      if (room?.size === 2) {
+        socket.to(roomName).emit("send_notice", socket.id, "나갔습니다.");
+        socket.to(roomName).emit("opponent_left");
+      }
+
+      clearInterval(timeInterval);
+      socket.leave(roomName);
     });
 
     socket.on("disconnect", () => {
