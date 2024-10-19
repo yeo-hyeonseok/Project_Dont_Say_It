@@ -92,6 +92,10 @@ function setWebSocket(server: http.Server) {
       done();
     });
 
+    socket.on("time_over", () => {
+      socket.leave(roomName);
+    });
+
     socket.on("exit_room", () => {
       const room = io.sockets.adapter.rooms.get(roomName);
 

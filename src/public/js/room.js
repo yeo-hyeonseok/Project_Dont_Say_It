@@ -105,6 +105,8 @@ function setSocketListeners() {
 
   socket.on("time_over", () => {
     showResultModal("무승부", "제한 시간이 모두 지나 게임이 종료되었습니다.");
+
+    socket.emit("time_over");
   });
 
   socket.on("opponent_left", () => {
