@@ -303,6 +303,14 @@ function showResultModal(title, desc) {
   h2.textContent = title;
   p.textContent = desc;
 
+  resultModal.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+    }
+  });
+
+  resultModal.addEventListener("cancel", (e) => e.preventDefault());
+
   exitButton.addEventListener("click", () => {});
 
   matchButton.addEventListener("click", () => {});
