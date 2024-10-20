@@ -1,3 +1,15 @@
+/* ---------- common ---------- */
+function exitRoom() {
+  fetch("/room/delete_socketId", {
+    method: "POST",
+  })
+    .then((res) => res.json())
+    .then((data) => console.log(data.message))
+    .catch((e) => console.error(e));
+
+  history.back();
+}
+
 /* ---------- socket ---------- */
 let socket;
 let isMatched = false;
@@ -104,12 +116,14 @@ function setSocketListeners() {
   });
 
   socket.on("time_over", () => {
+    isMatched = false;
     showResultModal("무승부", "제한 시간이 모두 지나 게임이 종료되었습니다.");
 
     socket.emit("time_over");
   });
 
   socket.on("opponent_left", () => {
+    isMatched = false;
     showResultModal("승리", "상대방이 퇴장했습니다.");
 
     socket.emit("exit_room");
@@ -149,18 +163,7 @@ connectSocket();
 const exitButton = document.querySelector("span.exit_button");
 
 exitButton.addEventListener("click", () => {
-  if (isMatched) {
-    showExitModal();
-  } else {
-    fetch("/room/delete_socketId", {
-      method: "POST",
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data.message))
-      .catch((e) => console.error(e));
-
-    history.back();
-  }
+  isMatched ? showExitModal() : exitRoom();
 });
 
 /* 채팅창 */
@@ -280,14 +283,7 @@ function showExitModal() {
   modalExitButton.addEventListener("click", () => {
     socket.emit("exit_room");
 
-    fetch("/room/delete_socketId", {
-      method: "POST",
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data.message))
-      .catch((e) => console.error(e));
-
-    history.back();
+    exitRoom();
   });
 
   exitModal.showModal();
@@ -311,7 +307,9 @@ function showResultModal(title, desc) {
 
   resultModal.addEventListener("cancel", (e) => e.preventDefault());
 
-  exitButton.addEventListener("click", () => {});
+  exitButton.addEventListener("click", () => {
+    exitRoom();
+  });
 
   matchButton.addEventListener("click", () => {});
 
