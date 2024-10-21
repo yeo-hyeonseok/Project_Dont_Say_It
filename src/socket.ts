@@ -65,6 +65,10 @@ function setWebSocket(server: http.Server) {
       }, 1000);
     });
 
+    socket.on("init_timer", () => {
+      time = 120;
+    });
+
     socket.on("adjust_time", (amount: number, done: () => void) => {
       if (time === 120) return;
 
