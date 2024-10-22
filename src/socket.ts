@@ -1,22 +1,29 @@
 import http from "http";
 import shortid from "shortid";
 import { Server, Socket } from "socket.io";
+import { instrument } from "@socket.io/admin-ui";
 import { getRandomWord } from "./data/words";
 import { getRandomTopic } from "./data/topics";
 
 function setWebSocket(server: http.Server) {
-  const io = new Server(server);
+  const io = new Server(server, {
+    cors: {
+      origin: ["https://admin.socket.io"],
+      credentials: true,
+    },
+  });
+
+  instrument(io, {
+    auth: false,
+  });
 
   function getRandomIndex(length: number) {
     return Math.floor(Math.random() * length);
   }
 
   function getPublicRooms() {
-    const {
-      sockets: {
-        adapter: { sids, rooms },
-      },
-    } = io;
+    const sids = io.sockets.adapter.sids;
+    const rooms = io.sockets.adapter.rooms;
 
     return Array.from(rooms).filter((room) => !sids.get(room[0]));
   }
