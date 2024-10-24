@@ -56,6 +56,8 @@ function setSocketListeners() {
 
     sendNotice(`[${roomName}] 상대방이 입장했습니다.`);
 
+    socket.emit("send_forbiddenWord");
+
     setTimeout(() => {
       sendNotice(
         "⚠️ 상대방에게 불쾌감을 줄 수 있는 비속어나 욕설은 삼가주세요."
@@ -80,15 +82,9 @@ function setSocketListeners() {
     chatScrollToBottom();
   });
 
-  socket.on("send_myword", (myWord) => {
+  socket.on("send_forbiddenWord", (forbiddenWord) => {
     setTimeout(() => {
-      sendForbiddenWord(myWord);
-    }, 3000);
-  });
-
-  socket.on("send_otherword", (otherWord) => {
-    setTimeout(() => {
-      sendForbiddenWord(otherWord);
+      sendForbiddenWord(forbiddenWord);
     }, 3000);
   });
 
@@ -113,6 +109,14 @@ function setSocketListeners() {
     chatList.append(message);
 
     chatScrollToBottom();
+  });
+
+  socket.on("user_won", () => {
+    showResultModal("승리", "상대방이 금칙어를 말했습니다.");
+  });
+
+  socket.on("user_lost", () => {
+    showResultModal("패배", "금칙어를 말했습니다.");
   });
 
   socket.on("time_over", () => {

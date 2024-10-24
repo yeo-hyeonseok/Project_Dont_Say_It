@@ -35,7 +35,6 @@ function setWebSocket(server: http.Server) {
     let time = 120;
     let timeInterval: NodeJS.Timeout | undefined;
     const myWord: string = getRandomWord();
-    const otherWord: string = getRandomWord();
 
     socket.on("enter_room", () => {
       const filtered = Array.from(getPublicRooms()).filter(
@@ -48,14 +47,16 @@ function setWebSocket(server: http.Server) {
 
         socket.join(roomName);
         io.to(roomName).emit("send_welcome", roomName, getRandomTopic());
-        socket.emit("send_myword", myWord);
-        socket.to(roomName).emit("send_otherword", otherWord);
       } else {
         // 빈 방 없으면 방 생성
         roomName = shortid.generate();
 
         socket.join(roomName);
       }
+    });
+
+    socket.on("send_forbiddenWord", () => {
+      socket.to(roomName).emit("send_forbiddenWord", myWord);
     });
 
     socket.on("start_timer", () => {
@@ -100,6 +101,12 @@ function setWebSocket(server: http.Server) {
       if (time === 120) return;
 
       socket.to(roomName).emit("send_message", msg);
+
+      if (msg.includes(myWord)) {
+        socket.emit("user_lost");
+        socket.to(roomName).emit("user_won");
+      }
+
       done();
     });
 
