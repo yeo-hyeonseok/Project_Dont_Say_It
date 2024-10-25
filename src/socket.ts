@@ -103,11 +103,15 @@ function setWebSocket(server: http.Server) {
       socket.to(roomName).emit("send_message", msg);
 
       if (msg.includes(myWord)) {
-        socket.emit("user_lost");
-        socket.to(roomName).emit("user_won");
+        socket.emit("user_lost", myWord);
+        socket.to(roomName).emit("user_won_process");
       }
 
       done();
+    });
+
+    socket.on("user_won_process", () => {
+      socket.emit("user_won", myWord);
     });
 
     socket.on("time_over", () => {

@@ -111,17 +111,24 @@ function setSocketListeners() {
     chatScrollToBottom();
   });
 
-  socket.on("user_won", () => {
-    showResultModal("승리", "상대방이 금칙어를 말했습니다.");
+  socket.on("user_lost", (forbiddenWord) => {
+    showResultModal("🥲 패배", `당신의 금칙어는 '${forbiddenWord}'이었습니다.`);
   });
 
-  socket.on("user_lost", () => {
-    showResultModal("패배", "금칙어를 말했습니다.");
+  socket.on("user_won_process", () => {
+    socket.emit("user_won_process");
+  });
+
+  socket.on("user_won", (forbiddenWord) => {
+    showResultModal("🥳 승리", `당신의 금칙어는 '${forbiddenWord}'이었습니다.`);
   });
 
   socket.on("time_over", () => {
     isMatched = false;
-    showResultModal("무승부", "제한 시간이 모두 지나 게임이 종료되었습니다.");
+    showResultModal(
+      "😐 무승부",
+      "제한 시간이 모두 지나 게임이 종료되었습니다."
+    );
 
     socket.emit("time_over");
     socket.emit("init_timer");
