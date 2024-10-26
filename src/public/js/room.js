@@ -7,7 +7,7 @@ function exitRoom() {
     .then((data) => console.log(data.message))
     .catch((e) => console.error(e));
 
-  history.back();
+  location.replace("/");
 }
 
 function setFormattedTimer(time) {
