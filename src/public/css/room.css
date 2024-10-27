@@ -169,7 +169,7 @@ dialog {
   top: 50%;
   left: 50%;
   width: 14.5rem;
-  padding: 1.5rem;
+  padding: 1.2rem;
   border: none;
   transform: translate(-50%, -50%);
   border-radius: 1rem;
@@ -184,21 +184,22 @@ dialog > div.modal_container {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.6rem;
 }
 
 dialog.result_modal > div.modal_container > p {
   text-align: center;
 }
 
-dialog > div.modal_container > div {
+dialog > div.modal_container > div.button_container {
   display: flex;
   width: 100%;
   gap: 1rem;
   justify-content: space-between;
+  margin-top: 0.4rem;
 }
 
-dialog > div.modal_container > div > button {
+dialog > div.modal_container > div.button_container > button {
   width: 100%;
   padding: 0.5rem;
   border: none;
@@ -208,19 +209,31 @@ dialog > div.modal_container > div > button {
   border-radius: 0.5rem;
 }
 
-dialog > div.modal_container > div > button:focus {
+dialog > div.modal_container > div.button_container > button:focus {
   outline: none;
 }
 
-dialog.exit_modal > div.modal_container > div > button.modal_closeBtn,
-dialog.result_modal > div.modal_container > div > button.modal_exitBtn {
+dialog.exit_modal
+  > div.modal_container
+  > div.button_container
+  > button.modal_closeBtn,
+dialog.result_modal
+  > div.modal_container
+  > div.button_container
+  > button.modal_exitBtn {
   border: 1px solid var(--border-color);
   color: var(--primary-text-color);
   background-color: var(--secondary-bg-color);
 }
 
-dialog.exit_modal > div.modal_container > div > button.modal_exitBtn,
-dialog.result_modal > div.modal_container > div > button.modal_matchBtn {
+dialog.exit_modal
+  > div.modal_container
+  > div.button_container
+  > button.modal_exitBtn,
+dialog.result_modal
+  > div.modal_container
+  > div.button_container
+  > button.modal_matchBtn {
   color: var(--secondary-text-color);
   background-color: var(--primary-color);
 }

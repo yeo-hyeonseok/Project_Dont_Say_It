@@ -126,7 +126,7 @@ function setSocketListeners() {
   socket.on("time_over", () => {
     isMatched = false;
     showResultModal(
-      "😐 무승부",
+      "😅 무승부",
       "제한 시간이 모두 지나 게임이 종료되었습니다."
     );
 
@@ -136,7 +136,7 @@ function setSocketListeners() {
 
   socket.on("opponent_left", () => {
     isMatched = false;
-    showResultModal("승리", "상대방이 퇴장했습니다.");
+    showResultModal("😗 승리", "상대방이 퇴장했습니다.");
 
     socket.emit("exit_room");
   });
