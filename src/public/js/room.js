@@ -112,7 +112,16 @@ function setSocketListeners() {
   });
 
   socket.on("user_lost", (forbiddenWord) => {
-    showResultModal("🥲 패배", `당신의 금칙어는 '${forbiddenWord}'이었습니다.`);
+    setTimeout(() => {
+      isMatched = false;
+      showResultModal(
+        "🥲 패배",
+        `당신의 금칙어는 '${forbiddenWord}'이었습니다.`
+      );
+
+      socket.emit("init_timer");
+      socket.emit("exit_room");
+    }, 1500);
   });
 
   socket.on("user_won_process", () => {
@@ -120,7 +129,16 @@ function setSocketListeners() {
   });
 
   socket.on("user_won", (forbiddenWord) => {
-    showResultModal("🥳 승리", `당신의 금칙어는 '${forbiddenWord}'이었습니다.`);
+    setTimeout(() => {
+      isMatched = false;
+      showResultModal(
+        "🥳 승리",
+        `당신의 금칙어는 '${forbiddenWord}'이었습니다.`
+      );
+
+      socket.emit("init_timer");
+      socket.emit("exit_room");
+    }, 1500);
   });
 
   socket.on("time_over", () => {
