@@ -34,7 +34,7 @@ function setWebSocket(server: http.Server) {
     let roomName: string;
     let time = 120;
     let timeInterval: NodeJS.Timeout | undefined;
-    const myWord: string = getRandomWord();
+    const forbiddenWord: string = getRandomWord();
 
     socket.on("enter_room", () => {
       const filtered = Array.from(getPublicRooms()).filter(
@@ -56,7 +56,7 @@ function setWebSocket(server: http.Server) {
     });
 
     socket.on("send_forbiddenWord", () => {
-      socket.to(roomName).emit("send_forbiddenWord", myWord);
+      socket.to(roomName).emit("send_forbiddenWord", forbiddenWord);
     });
 
     socket.on("start_timer", () => {
@@ -102,8 +102,8 @@ function setWebSocket(server: http.Server) {
 
       socket.to(roomName).emit("send_message", msg);
 
-      if (msg.includes(myWord)) {
-        socket.emit("user_lost", myWord);
+      if (msg.includes(forbiddenWord)) {
+        socket.emit("user_lost", forbiddenWord);
         socket.to(roomName).emit("user_won_process");
       }
 
@@ -111,7 +111,7 @@ function setWebSocket(server: http.Server) {
     });
 
     socket.on("user_won_process", () => {
-      socket.emit("user_won", myWord);
+      socket.emit("user_won", forbiddenWord);
     });
 
     socket.on("time_over", () => {
@@ -123,7 +123,7 @@ function setWebSocket(server: http.Server) {
 
       if (room?.size === 2) {
         socket.to(roomName).emit("send_notice", socket.id, "나갔습니다.");
-        socket.to(roomName).emit("opponent_left");
+        socket.to(roomName).emit("user_won_process");
       }
 
       clearInterval(timeInterval);

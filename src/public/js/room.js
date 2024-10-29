@@ -147,10 +147,7 @@ function setSocketListeners() {
   socket.on("user_lost", (forbiddenWord) => {
     setTimeout(() => {
       isMatched = false;
-      showResultModal(
-        "🥲 패배",
-        `당신의 금칙어는 '${forbiddenWord}'이었습니다.`
-      );
+      showResultModal("🥲 패배", forbiddenWord);
 
       socket.emit("init_timer");
       socket.emit("exit_room");
@@ -164,10 +161,7 @@ function setSocketListeners() {
   socket.on("user_won", (forbiddenWord) => {
     setTimeout(() => {
       isMatched = false;
-      showResultModal(
-        "🥳 승리",
-        `당신의 금칙어는 '${forbiddenWord}'이었습니다.`
-      );
+      showResultModal("🥳 승리", forbiddenWord);
 
       socket.emit("init_timer");
       socket.emit("exit_room");
@@ -176,20 +170,10 @@ function setSocketListeners() {
 
   socket.on("time_over", () => {
     isMatched = false;
-    showResultModal(
-      "😅 무승부",
-      "제한 시간이 모두 지나 게임이 종료되었습니다."
-    );
+    showTimeOverModal();
 
     socket.emit("time_over");
     socket.emit("init_timer");
-  });
-
-  socket.on("opponent_left", () => {
-    isMatched = false;
-    showResultModal("😗 승리", "상대방이 퇴장했습니다.");
-
-    socket.emit("exit_room");
   });
 }
 
@@ -352,7 +336,30 @@ function showExitModal() {
   exitModal.showModal();
 }
 
-function showResultModal(title, desc) {
+function showTimeOverModal() {
+  const timeOverModal = document.querySelector("dialog.timeover_modal");
+  const exitButton = timeOverModal.querySelector("button.modal_exitBtn");
+  const matchButton = timeOverModal.querySelector("button.modal_matchBtn");
+
+  timeOverModal.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") event.preventDefault();
+  });
+
+  timeOverModal.addEventListener("cancel", (e) => e.preventDefault());
+
+  exitButton.addEventListener("click", () => exitRoom());
+
+  matchButton.addEventListener("click", () => {
+    initRoomInfo();
+    timeOverModal.close();
+
+    socket.emit("enter_room");
+  });
+
+  timeOverModal.showModal();
+}
+
+function showResultModal(title, forbiddenWord) {
   const resultModal = document.querySelector("dialog.result_modal");
   const h2 = resultModal.querySelector("h2");
   const p = resultModal.querySelector("p");
@@ -360,23 +367,19 @@ function showResultModal(title, desc) {
   const matchButton = resultModal.querySelector("button.modal_matchBtn");
 
   h2.textContent = title;
-  p.textContent = desc;
+  p.textContent = forbiddenWord;
 
   resultModal.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      event.preventDefault();
-    }
+    if (event.key === "Escape") event.preventDefault();
   });
 
   resultModal.addEventListener("cancel", (e) => e.preventDefault());
 
-  exitButton.addEventListener("click", () => {
-    exitRoom();
-  });
+  exitButton.addEventListener("click", () => exitRoom());
 
   matchButton.addEventListener("click", () => {
-    resultModal.close();
     initRoomInfo();
+    resultModal.close();
 
     socket.emit("enter_room");
   });

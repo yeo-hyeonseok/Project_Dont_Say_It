@@ -187,10 +187,6 @@ dialog > div.modal_container {
   gap: 0.6rem;
 }
 
-dialog.result_modal > div.modal_container > p {
-  text-align: center;
-}
-
 dialog > div.modal_container > div.button_container {
   display: flex;
   width: 100%;
@@ -213,10 +209,37 @@ dialog > div.modal_container > div.button_container > button:focus {
   outline: none;
 }
 
+dialog.exit_modal > div.modal_container > p {
+  margin-bottom: 0.5rem;
+}
+
+dialog.timeover_modal > div.modal_container > p {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+dialog.result_modal > div.modal_container > div.desc_container {
+  text-align: center;
+}
+
+dialog.result_modal > div.modal_container > div.desc_container > span {
+  font-size: 0.9rem;
+}
+
+dialog.result_modal > div.modal_container > div.desc_container > p {
+  color: var(--accent-color);
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
 dialog.exit_modal
   > div.modal_container
   > div.button_container
   > button.modal_closeBtn,
+dialog.timeover_modal
+  > div.modal_container
+  > div.button_container
+  > button.modal_exitBtn,
 dialog.result_modal
   > div.modal_container
   > div.button_container
@@ -230,6 +253,10 @@ dialog.exit_modal
   > div.modal_container
   > div.button_container
   > button.modal_exitBtn,
+dialog.timeover_modal
+  > div.modal_container
+  > div.button_container
+  > button.modal_matchBtn,
 dialog.result_modal
   > div.modal_container
   > div.button_container
