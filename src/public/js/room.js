@@ -19,6 +19,39 @@ function setFormattedTimer(time) {
   timer.textContent = `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
 }
 
+function initRoomInfo() {
+  // 상대방 금칙어 숨기기
+  const wordContainer = document.querySelector("div.word_container");
+
+  wordContainer.style.visibility = "hidden";
+
+  // 타이머 초기화
+  setFormattedTimer(120);
+
+  socket.emit("init_timer");
+
+  // 채팅 기록 삭제 후, 로딩 메시지 띄우기
+  const chatList = document.querySelector("div.chat_list");
+  const p = document.createElement("p");
+
+  chatList.innerHTML = "";
+  p.textContent = "상대방을 기다리는 중입니다...";
+  p.classList.add("loading_msg");
+  chatList.append(p);
+
+  // 변경 기회 초기화
+  const remainChances = document.querySelector("span.remain_chances");
+
+  chanceCount = 3;
+  remainChances.textContent = chanceCount;
+
+  // 입력창 초기화
+  const messageForm = document.querySelector("form.message_form");
+  const input = messageForm.querySelector("input");
+
+  input.value = "";
+}
+
 /* ---------- socket ---------- */
 let socket;
 let isMatched = false;
@@ -342,32 +375,9 @@ function showResultModal(title, desc) {
   });
 
   matchButton.addEventListener("click", () => {
-    // 채팅 기록 삭제 후, 로딩 메시지 띄우기
-    const chatList = document.querySelector("div.chat_list");
-    const p = document.createElement("p");
-
-    chatList.innerHTML = "";
-    p.textContent = "상대방을 기다리는 중입니다...";
-    p.classList.add("loading_msg");
-    chatList.append(p);
-
-    // 변경 기회 초기화
-    const remainChances = document.querySelector("span.remain_chances");
-
-    chanceCount = 3;
-    remainChances.textContent = chanceCount;
-
-    // 타이머 초기화
-    setFormattedTimer(120);
-
-    socket.emit("init_timer");
-
-    // 상대방 금칙어 숨기기
-    const wordContainer = document.querySelector("div.word_container");
-
-    wordContainer.style.visibility = "hidden";
-
     resultModal.close();
+    initRoomInfo();
+
     socket.emit("enter_room");
   });
 
