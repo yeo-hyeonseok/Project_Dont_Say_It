@@ -1,11 +1,8 @@
 /* ---------- common ---------- */
 function exitRoom() {
-  fetch("/room/delete_socketId", {
-    method: "POST",
-  })
-    .then((res) => res.json())
-    .then((data) => console.log(data.message))
-    .catch((e) => console.error(e));
+  deleteSocketId()
+    .then((result) => console.log(result.message))
+    .catch((error) => console.error(error));
 
   location.replace("/");
 }
@@ -66,16 +63,9 @@ function setSocketListeners() {
 
     console.log("[connect] 연결된 소켓:", socketId);
 
-    fetch("/room/save_socketId", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ socketId }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data.message))
-      .catch((e) => console.error(e));
+    saveSocketId(socketId)
+      .then((result) => console.log(result.message))
+      .catch((error) => console.error(error));
   });
 
   socket.on("time_change", (time) => {
@@ -178,28 +168,18 @@ function setSocketListeners() {
 }
 
 function connectSocket() {
-  fetch("/room/check_socketId", {
-    method: "GET",
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data.message);
+  checkSocketId()
+    .then((result) => {
+      console.log(result.message);
 
-      if (data.isExist) {
-        const loadingMsg = document.querySelector("p.loading_msg");
-        const br = document.createElement("br");
-
-        loadingMsg.textContent = "현재 참여 중인 방이 있습니다.";
-        loadingMsg.append(br);
-        loadingMsg.append(
-          document.createTextNode("게임을 진행하시려면 현재 방을 나가주세요.")
-        );
+      if (result.isExist) {
+        notifyDuplicate();
       } else {
         socket = io();
         setSocketListeners();
       }
     })
-    .catch((e) => console.error(e));
+    .catch((error) => console.error(error));
 }
 
 // >> 시작 지점 <<
@@ -222,6 +202,17 @@ function sendNotice(msg) {
   notice.textContent = msg;
 
   chatList.append(notice);
+}
+
+function notifyDuplicate() {
+  const loadingMsg = document.querySelector("p.loading_msg");
+  const br = document.createElement("br");
+
+  loadingMsg.textContent = "현재 참여 중인 방이 있습니다.";
+  loadingMsg.append(br);
+  loadingMsg.append(
+    document.createTextNode("게임을 진행하시려면 현재 방을 나가주세요.")
+  );
 }
 
 function sendForbiddenWord(word) {
@@ -385,4 +376,45 @@ function showResultModal(title, forbiddenWord) {
   });
 
   resultModal.showModal();
+}
+
+/* ---------- api 요청 ---------- */
+async function deleteSocketId() {
+  try {
+    const response = await fetch("/room/delete_socketId", {
+      method: "POST",
+    });
+
+    return response.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function saveSocketId(socketId) {
+  try {
+    const response = await fetch("/room/save_socketId", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ socketId }),
+    });
+
+    return response.json();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function checkSocketId() {
+  try {
+    const response = await fetch("/room/check_socketId", {
+      method: "GET",
+    });
+
+    return response.json();
+  } catch (error) {
+    console.log(error);
+  }
 }
