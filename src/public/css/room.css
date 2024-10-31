@@ -92,6 +92,8 @@ div.chat_list > div.other_msg > span {
 div.chat_list > div.other_msg > p {
   background-color: var(--tertiary-text-color);
   margin-top: 0.5rem;
+  max-width: 15rem;
+  word-break: break-all;
 }
 
 div.chat_list > div.my_msg {
@@ -101,7 +103,10 @@ div.chat_list > div.my_msg {
 
 div.chat_list > div.my_msg > p {
   color: var(--secondary-text-color);
+  text-align: start;
   background-color: var(--primary-color);
+  max-width: 15rem;
+  word-break: break-all;
 }
 
 form.message_form {
