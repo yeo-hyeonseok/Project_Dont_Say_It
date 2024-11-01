@@ -118,19 +118,7 @@ function setSocketListeners() {
   });
 
   socket.on("send_message", (msg) => {
-    const chatList = document.querySelector("div.chat_list");
-    const message = document.createElement("div");
-    const span = document.createElement("span");
-    const p = document.createElement("p");
-
-    message.classList.add("other_msg");
-    span.textContent = "상대";
-    p.textContent = msg;
-
-    message.append(span);
-    message.append(p);
-    chatList.append(message);
-
+    sendOtherMessage(msg);
     chatScrollToBottom();
   });
 
@@ -182,28 +170,17 @@ function connectSocket() {
     .catch((error) => console.error(error));
 }
 
-// >> 시작 지점 <<
+// >>>> 시작 지점 <<<<
 connectSocket();
 
-/* ---------- room ---------- */
-/* 나가기 버튼 */
+/* ---------- 헤더 ---------- */
 const exitButton = document.querySelector("span.exit_button");
 
 exitButton.addEventListener("click", () => {
   isMatched ? showExitModal() : exitRoom();
 });
 
-/* 채팅창 */
-function sendNotice(msg) {
-  const chatList = document.querySelector("div.chat_list");
-  const notice = document.createElement("p");
-
-  notice.classList.add("notice");
-  notice.textContent = msg;
-
-  chatList.append(notice);
-}
-
+/* ---------- 채팅창 ---------- */
 function notifyDuplicate() {
   const loadingMsg = document.querySelector("p.loading_msg");
   const br = document.createElement("br");
@@ -213,6 +190,16 @@ function notifyDuplicate() {
   loadingMsg.append(
     document.createTextNode("게임을 진행하시려면 현재 방을 나가주세요.")
   );
+}
+
+function sendNotice(msg) {
+  const chatList = document.querySelector("div.chat_list");
+  const notice = document.createElement("p");
+
+  notice.classList.add("notice");
+  notice.textContent = msg;
+
+  chatList.append(notice);
 }
 
 function sendForbiddenWord(word) {
@@ -233,6 +220,33 @@ function sendForbiddenWord(word) {
   chatList.append(notice);
 }
 
+function sendOtherMessage(msg) {
+  const chatList = document.querySelector("div.chat_list");
+  const message = document.createElement("div");
+  const span = document.createElement("span");
+  const p = document.createElement("p");
+
+  message.classList.add("other_msg");
+  span.textContent = "상대";
+  p.textContent = msg;
+
+  message.append(span);
+  message.append(p);
+  chatList.append(message);
+}
+
+function sendMyMessage(msg) {
+  const chatList = document.querySelector("div.chat_list");
+  const message = document.createElement("div");
+  const p = document.createElement("p");
+
+  message.classList.add("my_msg");
+  p.textContent = msg;
+
+  message.append(p);
+  chatList.append(message);
+}
+
 function chatScrollToBottom() {
   const chatList = document.querySelector("div.chat_list");
   const scrollHeight = chatList.scrollHeight;
@@ -240,7 +254,7 @@ function chatScrollToBottom() {
   chatList.scrollTo(0, scrollHeight);
 }
 
-/* 시간 변경 버튼 */
+/* ---------- 시간 변경 버튼 ---------- */
 const extendButton = document.querySelector("span.extend_button");
 const shortenButton = document.querySelector("span.shorten_button");
 
@@ -267,7 +281,7 @@ shortenButton.addEventListener("click", () => {
   if (isMatched) adjustTime(-20);
 });
 
-/* 메시지 입력창 */
+/* ---------- 메시지 입력창 ---------- */
 const messageForm = document.querySelector("form.message_form");
 
 messageForm.addEventListener("submit", (e) => {
@@ -277,25 +291,15 @@ messageForm.addEventListener("submit", (e) => {
 
   if (isMatched && input.value.trim() !== "") {
     socket.emit("send_message", input.value, () => {
-      const chatList = document.querySelector("div.chat_list");
-      const message = document.createElement("div");
-      const p = document.createElement("p");
-
-      message.classList.add("my_msg");
-      p.textContent = input.value;
-
-      message.append(p);
-      chatList.append(message);
-
+      sendMyMessage(input.value);
       input.value = "";
       input.focus();
-
       chatScrollToBottom();
     });
   }
 });
 
-/* 모달창 */
+/* ---------- 모달창 ---------- */
 function showExitModal() {
   const exitModal = document.querySelector("dialog.exit_modal");
   const modalCloseButton = exitModal.querySelector("button.modal_closeBtn");
@@ -314,9 +318,7 @@ function showExitModal() {
     }
   });
 
-  modalCloseButton.addEventListener("click", () => {
-    exitModal.close();
-  });
+  modalCloseButton.addEventListener("click", () => exitModal.close());
 
   modalExitButton.addEventListener("click", () => {
     socket.emit("exit_room");
