@@ -109,6 +109,20 @@ div.chat_list > div.my_msg > p {
   word-break: break-all;
 }
 
+@media (max-width: 400px) {
+  div.chat_list > div.other_msg > p,
+  div.chat_list > div.my_msg > p {
+    max-width: 10rem;
+  }
+}
+
+@media (min-width: 400px) and (max-width: 500px) {
+  div.chat_list > div.other_msg > p,
+  div.chat_list > div.my_msg > p {
+    max-width: 12rem;
+  }
+}
+
 form.message_form {
   display: flex;
   padding: 0.8rem 1rem;
