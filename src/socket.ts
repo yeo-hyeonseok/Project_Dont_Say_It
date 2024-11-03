@@ -1,3 +1,8 @@
+/*
+  [소켓 이벤트 흐름 플로우 차트]
+  https://miro.com/welcomeonboard/b0hBVHJWUjU5UXA4WGJSNzNwQkQ2cFg0aEVqQU9kZVVuNkRPQkFrN2lsUllXcHRYZDZVTUkyMHRBNHJJMjZmcnwzNDU4NzY0NjA1NTA1ODA4MDM4fDI=?share_link_id=839278419630
+*/
+
 import http from "http";
 import shortid from "shortid";
 import { Server, Socket } from "socket.io";
