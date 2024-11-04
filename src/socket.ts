@@ -39,7 +39,7 @@ function setWebSocket(server: http.Server) {
     let roomName: string;
     let time = 120;
     let timeInterval: NodeJS.Timeout | undefined;
-    const forbiddenWord: string = getRandomWord();
+    let forbiddenWord: string;
 
     socket.on("enter_room", () => {
       const filtered = Array.from(getPublicRooms()).filter(
@@ -61,6 +61,8 @@ function setWebSocket(server: http.Server) {
     });
 
     socket.on("send_forbiddenWord", () => {
+      forbiddenWord = getRandomWord();
+
       socket.to(roomName).emit("send_forbiddenWord", forbiddenWord);
     });
 
