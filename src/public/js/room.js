@@ -125,7 +125,7 @@ function setSocketListeners() {
   socket.on("user_lost", (forbiddenWord) => {
     setTimeout(() => {
       isMatched = false;
-      showResultModal("🥲 패배", forbiddenWord);
+      showWinLossModal("🥲 패배", forbiddenWord);
 
       socket.emit("init_timer");
       socket.emit("exit_room");
@@ -139,7 +139,7 @@ function setSocketListeners() {
   socket.on("user_won", (forbiddenWord) => {
     setTimeout(() => {
       isMatched = false;
-      showResultModal("🥳 승리", forbiddenWord);
+      showWinLossModal("🥳 승리", forbiddenWord);
 
       socket.emit("init_timer");
       socket.emit("exit_room");
@@ -148,9 +148,18 @@ function setSocketListeners() {
 
   socket.on("time_over", () => {
     isMatched = false;
-    showTimeOverModal();
+    showResultModal(
+      "😅 무승부",
+      "제한 시간이 모두 지나 게임이 종료되었습니다."
+    );
 
     socket.emit("time_over");
+  });
+
+  socket.on("opponent_left", () => {
+    socket.emit("opponent_left");
+
+    showResultModal("😗 승리", "상대방이 퇴장하였습니다.");
   });
 }
 
@@ -328,30 +337,7 @@ function showExitModal() {
   exitModal.showModal();
 }
 
-function showTimeOverModal() {
-  const timeOverModal = document.querySelector("dialog.timeover_modal");
-  const exitButton = timeOverModal.querySelector("button.modal_exitBtn");
-  const matchButton = timeOverModal.querySelector("button.modal_matchBtn");
-
-  timeOverModal.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") event.preventDefault();
-  });
-
-  timeOverModal.addEventListener("cancel", (e) => e.preventDefault());
-
-  exitButton.addEventListener("click", () => exitRoom());
-
-  matchButton.addEventListener("click", () => {
-    initRoomInfo();
-    timeOverModal.close();
-
-    socket.emit("enter_room");
-  });
-
-  timeOverModal.showModal();
-}
-
-function showResultModal(title, forbiddenWord) {
+function showResultModal(title, desc) {
   const resultModal = document.querySelector("dialog.result_modal");
   const h2 = resultModal.querySelector("h2");
   const p = resultModal.querySelector("p");
@@ -359,7 +345,7 @@ function showResultModal(title, forbiddenWord) {
   const matchButton = resultModal.querySelector("button.modal_matchBtn");
 
   h2.textContent = title;
-  p.textContent = forbiddenWord;
+  p.textContent = desc;
 
   resultModal.addEventListener("keydown", (event) => {
     if (event.key === "Escape") event.preventDefault();
@@ -377,6 +363,34 @@ function showResultModal(title, forbiddenWord) {
   });
 
   resultModal.showModal();
+}
+
+function showWinLossModal(title, forbiddenWord) {
+  const winLossModal = document.querySelector("dialog.winLoss_modal");
+  const h2 = winLossModal.querySelector("h2");
+  const p = winLossModal.querySelector("p");
+  const exitButton = winLossModal.querySelector("button.modal_exitBtn");
+  const matchButton = winLossModal.querySelector("button.modal_matchBtn");
+
+  h2.textContent = title;
+  p.textContent = forbiddenWord;
+
+  winLossModal.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") event.preventDefault();
+  });
+
+  winLossModal.addEventListener("cancel", (e) => e.preventDefault());
+
+  exitButton.addEventListener("click", () => exitRoom());
+
+  matchButton.addEventListener("click", () => {
+    initRoomInfo();
+    winLossModal.close();
+
+    socket.emit("enter_room");
+  });
+
+  winLossModal.showModal();
 }
 
 /* ---------- api 요청 ---------- */

@@ -232,20 +232,20 @@ dialog.exit_modal > div.modal_container > p {
   margin-bottom: 0.5rem;
 }
 
-dialog.timeover_modal > div.modal_container > p {
+dialog.result_modal > div.modal_container > p {
   font-size: 0.9rem;
   text-align: center;
 }
 
-dialog.result_modal > div.modal_container > div.desc_container {
+dialog.winLoss_modal > div.modal_container > div.desc_container {
   text-align: center;
 }
 
-dialog.result_modal > div.modal_container > div.desc_container > span {
+dialog.winLoss_modal > div.modal_container > div.desc_container > span {
   font-size: 0.9rem;
 }
 
-dialog.result_modal > div.modal_container > div.desc_container > p {
+dialog.winLoss_modal > div.modal_container > div.desc_container > p {
   color: var(--accent-color);
   font-weight: 500;
   font-size: 1.2rem;
@@ -255,11 +255,11 @@ dialog.exit_modal
   > div.modal_container
   > div.button_container
   > button.modal_closeBtn,
-dialog.timeover_modal
+dialog.result_modal
   > div.modal_container
   > div.button_container
   > button.modal_exitBtn,
-dialog.result_modal
+dialog.winLoss_modal
   > div.modal_container
   > div.button_container
   > button.modal_exitBtn {
@@ -272,11 +272,11 @@ dialog.exit_modal
   > div.modal_container
   > div.button_container
   > button.modal_exitBtn,
-dialog.timeover_modal
+dialog.result_modal
   > div.modal_container
   > div.button_container
   > button.modal_matchBtn,
-dialog.result_modal
+dialog.winLoss_modal
   > div.modal_container
   > div.button_container
   > button.modal_matchBtn {

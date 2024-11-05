@@ -122,22 +122,25 @@ function setWebSocket(server: http.Server) {
     });
 
     socket.on("time_over", () => {
+      socket.leave(roomName);
+
       time = 120;
       roomName = "";
+    });
+
+    socket.on("exit_room", () => {
+      socket.to(roomName).emit("send_notice", socket.id, "나갔습니다.");
+      socket.to(roomName).emit("opponent_left");
 
       socket.leave(roomName);
     });
 
-    socket.on("exit_room", () => {
-      const room = io.sockets.adapter.rooms.get(roomName);
-
-      if (room?.size === 2) {
-        socket.to(roomName).emit("send_notice", socket.id, "나갔습니다.");
-        socket.to(roomName).emit("user_won_process");
-      }
+    socket.on("opponent_left", () => {
+      socket.leave(roomName);
 
       clearInterval(timeInterval);
-      socket.leave(roomName);
+      time = 120;
+      roomName = "";
     });
 
     socket.on("disconnect", () => {
