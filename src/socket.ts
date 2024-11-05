@@ -122,6 +122,9 @@ function setWebSocket(server: http.Server) {
     });
 
     socket.on("time_over", () => {
+      time = 120;
+      roomName = "";
+
       socket.leave(roomName);
     });
 

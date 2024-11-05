@@ -151,7 +151,6 @@ function setSocketListeners() {
     showTimeOverModal();
 
     socket.emit("time_over");
-    socket.emit("init_timer");
   });
 }
 
