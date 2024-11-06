@@ -117,6 +117,14 @@ function setWebSocket(server: http.Server) {
       done();
     });
 
+    socket.on("user_lost", () => {
+      socket.leave(roomName);
+
+      clearInterval(timeInterval);
+      time = 120;
+      roomName = "";
+    });
+
     socket.on("user_won_process", () => {
       socket.emit("user_won", forbiddenWord);
     });

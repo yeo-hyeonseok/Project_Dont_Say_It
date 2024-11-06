@@ -127,8 +127,7 @@ function setSocketListeners() {
       isMatched = false;
       showWinLossModal("🥲 패배", forbiddenWord);
 
-      socket.emit("init_timer");
-      socket.emit("exit_room");
+      socket.emit("user_lost");
     }, 1500);
   });
 
