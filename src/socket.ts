@@ -66,6 +66,10 @@ function setWebSocket(server: http.Server) {
       socket.to(roomName).emit("send_forbiddenWord", forbiddenWord);
     });
 
+    socket.on("init_timer", () => {
+      time = 120;
+    });
+
     socket.on("start_timer", () => {
       timeInterval = setInterval(() => {
         if (time > 0) {
@@ -78,10 +82,6 @@ function setWebSocket(server: http.Server) {
           io.to(roomName).emit("time_over");
         }
       }, 1000);
-    });
-
-    socket.on("init_timer", () => {
-      time = 120;
     });
 
     socket.on("adjust_time", (amount: number, done: () => void) => {
@@ -129,9 +129,25 @@ function setWebSocket(server: http.Server) {
       socket.emit("user_won", forbiddenWord);
     });
 
+    socket.on("user_won", () => {
+      socket.leave(roomName);
+
+      clearInterval(timeInterval);
+      time = 120;
+      roomName = "";
+    });
+
     socket.on("time_over", () => {
       socket.leave(roomName);
 
+      time = 120;
+      roomName = "";
+    });
+
+    socket.on("opponent_left", () => {
+      socket.leave(roomName);
+
+      clearInterval(timeInterval);
       time = 120;
       roomName = "";
     });
@@ -141,14 +157,6 @@ function setWebSocket(server: http.Server) {
       socket.to(roomName).emit("opponent_left");
 
       socket.leave(roomName);
-    });
-
-    socket.on("opponent_left", () => {
-      socket.leave(roomName);
-
-      clearInterval(timeInterval);
-      time = 120;
-      roomName = "";
     });
 
     socket.on("disconnect", () => {

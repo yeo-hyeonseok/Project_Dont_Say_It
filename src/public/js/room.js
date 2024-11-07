@@ -140,8 +140,7 @@ function setSocketListeners() {
       isMatched = false;
       showWinLossModal("🥳 승리", forbiddenWord);
 
-      socket.emit("init_timer");
-      socket.emit("exit_room");
+      socket.emit("user_won");
     }, 1500);
   });
 
