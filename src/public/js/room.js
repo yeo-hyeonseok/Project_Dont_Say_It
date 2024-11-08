@@ -122,6 +122,11 @@ function setSocketListeners() {
     chatScrollToBottom();
   });
 
+  socket.on("send_forbiddenMessage", (msg, forbiddenWord) => {
+    sendForbiddenMessage(msg, forbiddenWord);
+    chatScrollToBottom();
+  });
+
   socket.on("user_lost", (forbiddenWord) => {
     setTimeout(() => {
       isMatched = false;
@@ -237,6 +242,27 @@ function sendOtherMessage(msg) {
   p.textContent = msg;
 
   message.append(span);
+  message.append(p);
+  chatList.append(message);
+}
+
+function sendForbiddenMessage(msg, forbiddenWord) {
+  const chatList = document.querySelector("div.chat_list");
+  const message = document.createElement("div");
+  const label = document.createElement("span");
+  const p = document.createElement("p");
+  const accent = document.createElement("span");
+
+  const splitted = msg.split(forbiddenWord);
+
+  message.classList.add("other_msg");
+  label.textContent = "상대";
+  p.textContent = splitted[0];
+  accent.textContent = forbiddenWord;
+
+  p.append(accent);
+  p.append(document.createTextNode(splitted[1]));
+  message.append(label);
   message.append(p);
   chatList.append(message);
 }
