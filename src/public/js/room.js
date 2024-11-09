@@ -23,7 +23,7 @@ function initRoomInfo() {
   wordContainer.style.visibility = "hidden";
 
   // 타이머 초기화
-  setFormattedTimer(120);
+  setFormattedTimer(180);
 
   socket.emit("init_timer");
 

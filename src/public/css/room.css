@@ -4,6 +4,7 @@ div#room_container {
   flex-direction: column;
   justify-content: space-between;
   min-height: 0;
+  overflow: hidden;
 }
 
 header.room_header {
@@ -12,7 +13,7 @@ header.room_header {
   height: 3rem;
   padding: 0.2rem 1rem;
   align-items: center;
-  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 4px 4px -2px var(--secondary-bg-color);
   user-select: none;
 }
 
@@ -132,7 +133,7 @@ form.message_form {
   display: flex;
   padding: 0.8rem 1rem;
   flex-direction: column;
-  border-top: 1px solid var(--border-color);
+  box-shadow: 0 4px 4px 6px var(--secondary-bg-color);
 }
 
 form.message_form > div.time_control {
