@@ -379,12 +379,16 @@ function showResultModal(title, desc) {
 
   exitButton.addEventListener("click", () => exitRoom());
 
-  matchButton.addEventListener("click", () => {
-    initRoomInfo();
-    resultModal.close();
+  matchButton.addEventListener(
+    "click",
+    () => {
+      initRoomInfo();
+      resultModal.close();
 
-    socket.emit("enter_room");
-  });
+      socket.emit("enter_room");
+    },
+    { once: true }
+  );
 
   resultModal.showModal();
 }
