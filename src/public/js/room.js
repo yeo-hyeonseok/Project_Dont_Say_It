@@ -411,12 +411,16 @@ function showWinLossModal(title, forbiddenWord) {
 
   exitButton.addEventListener("click", () => exitRoom());
 
-  matchButton.addEventListener("click", () => {
-    initRoomInfo();
-    winLossModal.close();
+  matchButton.addEventListener(
+    "click",
+    () => {
+      initRoomInfo();
+      winLossModal.close();
 
-    socket.emit("enter_room");
-  });
+      socket.emit("enter_room");
+    },
+    { once: true }
+  );
 
   winLossModal.showModal();
 }

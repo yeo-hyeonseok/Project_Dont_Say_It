@@ -161,7 +161,8 @@ function setWebSocket(server: http.Server) {
     });
 
     socket.on("disconnect", () => {
-      console.log("소켓 연결 해제됨");
+      socket.to(roomName).emit("send_notice", socket.id, "나갔습니다.");
+      socket.to(roomName).emit("opponent_left");
     });
   });
 }
