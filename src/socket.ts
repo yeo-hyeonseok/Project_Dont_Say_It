@@ -153,15 +153,8 @@ function setWebSocket(server: http.Server) {
       roomName = "";
     });
 
-    socket.on("exit_room", () => {
-      socket.to(roomName).emit("send_notice", socket.id, "나갔습니다.");
-      socket.to(roomName).emit("opponent_left");
-
-      socket.leave(roomName);
-    });
-
     socket.on("disconnect", () => {
-      socket.to(roomName).emit("send_notice", socket.id, "나갔습니다.");
+      socket.to(roomName).emit("send_notice", socket.id, "퇴장했습니다.");
       socket.to(roomName).emit("opponent_left");
     });
   });

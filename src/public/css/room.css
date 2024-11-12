@@ -99,7 +99,6 @@ div.chat_list > div.other_msg > p {
 
 div.chat_list > div.other_msg > p > span {
   color: var(--accent-color);
-  font-weight: 600;
 }
 
 div.chat_list > div.my_msg {

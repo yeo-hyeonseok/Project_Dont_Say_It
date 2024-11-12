@@ -160,9 +160,12 @@ function setSocketListeners() {
   });
 
   socket.on("opponent_left", () => {
-    socket.emit("opponent_left");
+    setTimeout(() => {
+      isMatched = false;
+      showResultModal("😗 승리", "상대방이 퇴장했습니다.");
 
-    showResultModal("😗 승리", "상대방이 퇴장하였습니다.");
+      socket.emit("opponent_left");
+    }, 1500);
   });
 }
 
@@ -352,11 +355,7 @@ function showExitModal() {
 
   modalCloseButton.addEventListener("click", () => exitModal.close());
 
-  modalExitButton.addEventListener("click", () => {
-    socket.emit("exit_room");
-
-    exitRoom();
-  });
+  modalExitButton.addEventListener("click", () => exitRoom());
 
   exitModal.showModal();
 }
