@@ -74,6 +74,7 @@ function setSocketListeners() {
 
   socket.on("send_welcome", (roomName, topic) => {
     const loadingMsg = document.querySelector("p.loading_msg");
+
     loadingMsg.style.display = "none";
     isMatched = true;
 
@@ -82,16 +83,22 @@ function setSocketListeners() {
     socket.emit("send_forbiddenWord");
 
     setTimeout(() => {
+      if (!isMatched) return;
+
       sendNotice(
         "⚠️ 상대방에게 불쾌감을 줄 수 있는 비속어나 욕설은 삼가주세요."
       );
     }, 1500);
 
     setTimeout(() => {
+      if (!isMatched) return;
+
       sendNotice(`대화 주제: ${topic}`);
     }, 4500);
 
     setTimeout(() => {
+      if (!isMatched) return;
+
       sendNotice("상대방과 대화를 시작해보세요.");
 
       socket.emit("start_timer");
@@ -107,6 +114,8 @@ function setSocketListeners() {
 
   socket.on("send_forbiddenWord", (forbiddenWord) => {
     setTimeout(() => {
+      if (!isMatched) return;
+
       sendForbiddenWord(forbiddenWord);
     }, 3000);
   });
@@ -160,8 +169,9 @@ function setSocketListeners() {
   });
 
   socket.on("opponent_left", () => {
+    isMatched = false;
+
     setTimeout(() => {
-      isMatched = false;
       showResultModal("😗 승리", "상대방이 퇴장했습니다.");
 
       socket.emit("opponent_left");
