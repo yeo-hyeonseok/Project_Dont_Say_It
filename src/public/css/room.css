@@ -49,6 +49,7 @@ header.room_header > span.timer {
 }
 
 div.chat_list {
+  position: relative;
   padding: 0 1.5rem 1rem 1.5rem;
   flex: 1 1 0%;
   overflow-y: scroll;
@@ -114,6 +115,33 @@ div.chat_list > div.my_msg > p {
   word-break: break-all;
 }
 
+div.chat_list > span.scrolldown_button {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  padding: 0.1rem 0.5rem;
+  border: 1px solid var(--border-color);
+  color: var(--secondary-text-color);
+  font-size: 0.9rem;
+  transform: translateX(-50%);
+  background-color: var(--tertiary-bg-color);
+  z-index: 1;
+  /*opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;*/
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+div.chat_list > span.scrolldown_button:hover {
+  filter: brightness(2);
+}
+
+div.chat_list > span.scrolldown_button.active {
+  opacity: 1;
+  visibility: visible;
+}
+
 @media (max-width: 400px) {
   div.chat_list > div.other_msg > p,
   div.chat_list > div.my_msg > p {
@@ -130,7 +158,7 @@ div.chat_list > div.my_msg > p {
 
 form.message_form {
   display: flex;
-  padding: 0.8rem 1rem;
+  padding: 0.8rem 1rem 1.2rem;
   flex-direction: column;
   box-shadow: 0 4px 4px 6px var(--secondary-bg-color);
 }
