@@ -205,6 +205,27 @@ exitButton.addEventListener("click", () => {
 });
 
 /* ---------- 채팅창 ---------- */
+const chatList = document.querySelector("div.chat_list");
+const scrolldownButton = document.querySelector("span.scrolldown_button");
+
+chatList.addEventListener("scroll", () => {
+  if (
+    chatList.scrollTop + chatList.clientHeight >=
+    chatList.scrollHeight - 20
+  ) {
+    scrolldownButton.classList.remove("active");
+  } else {
+    scrolldownButton.classList.add("active");
+  }
+});
+
+scrolldownButton.addEventListener("click", () => {
+  chatList.scrollTo({
+    top: chatList.scrollHeight,
+    behavior: "smooth",
+  });
+});
+
 function notifyDuplicate() {
   const loadingMsg = document.querySelector("p.loading_msg");
   const br = document.createElement("br");
@@ -305,6 +326,14 @@ const shortenButton = document.querySelector("span.shorten_button");
 
 let chanceCount = 3;
 
+extendButton.addEventListener("click", () => {
+  if (isMatched) adjustTime(20);
+});
+
+shortenButton.addEventListener("click", () => {
+  if (isMatched) adjustTime(-20);
+});
+
 function adjustTime(amount) {
   if (chanceCount > 0) {
     socket.emit("adjust_time", amount, () => {
@@ -317,14 +346,6 @@ function adjustTime(amount) {
     printToastMsg("더 이상 시간 변경이 불가능합니다.");
   }
 }
-
-extendButton.addEventListener("click", () => {
-  if (isMatched) adjustTime(20);
-});
-
-shortenButton.addEventListener("click", () => {
-  if (isMatched) adjustTime(-20);
-});
 
 /* ---------- 메시지 입력창 ---------- */
 const messageForm = document.querySelector("form.message_form");
