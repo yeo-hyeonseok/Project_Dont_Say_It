@@ -177,6 +177,11 @@ function setSocketListeners() {
       socket.emit("opponent_left");
     }, 1500);
   });
+
+  socket.on("disconnect", () => {
+    isMatched = false;
+    showResultModal("😮 연결 끊김", "상대방과의 연결이 끊어졌습니다.");
+  });
 }
 
 function connectSocket() {
