@@ -171,10 +171,10 @@ function setSocketListeners() {
   socket.on("opponent_left", () => {
     isMatched = false;
 
+    socket.emit("opponent_left");
+
     setTimeout(() => {
       showResultModal("😗 승리", "상대방이 퇴장했습니다.");
-
-      socket.emit("opponent_left");
     }, 1500);
   });
 
