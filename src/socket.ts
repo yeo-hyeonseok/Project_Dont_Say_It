@@ -79,7 +79,7 @@ function setWebSocket(server: http.Server) {
         } else {
           clearInterval(timeInterval);
 
-          io.to(roomName).emit("time_over");
+          socket.emit("time_over");
         }
       }, 1000);
     });
