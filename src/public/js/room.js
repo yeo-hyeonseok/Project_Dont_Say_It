@@ -292,15 +292,23 @@ function sendForbiddenMessage(msg, forbiddenWord) {
   const p = document.createElement("p");
   const accent = document.createElement("span");
 
-  const splitted = msg.split(forbiddenWord);
+  const forbiddenIndex = msg.indexOf(forbiddenWord);
+
+  if (forbiddenIndex === -1) {
+    p.textContent = msg;
+  } else {
+    const beforeForbidden = msg.slice(0, forbiddenIndex);
+    const afterForbidden = msg.slice(forbiddenIndex + forbiddenWord.length);
+
+    p.textContent = beforeForbidden;
+    accent.textContent = forbiddenWord;
+    p.append(accent);
+    p.append(document.createTextNode(afterForbidden));
+  }
 
   message.classList.add("other_msg");
   label.textContent = "상대";
-  p.textContent = splitted[0];
-  accent.textContent = forbiddenWord;
 
-  p.append(accent);
-  p.append(document.createTextNode(splitted[1]));
   message.append(label);
   message.append(p);
   chatList.append(message);
