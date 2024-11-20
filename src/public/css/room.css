@@ -114,6 +114,10 @@ div.chat_list > div.my_msg > p {
   word-break: break-all;
 }
 
+div.chat_list > div.my_msg > p > span {
+  color: var(--accent-color);
+}
+
 @media (max-width: 400px) {
   div.chat_list > div.other_msg > p,
   div.chat_list > div.my_msg > p {

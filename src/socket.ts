@@ -108,14 +108,19 @@ function setWebSocket(server: http.Server) {
       if (time === 180) return;
 
       if (msg.includes(forbiddenWord)) {
-        socket.to(roomName).emit("send_forbiddenMessage", msg, forbiddenWord);
+        io.to(roomName).emit(
+          "send_forbiddenMessage",
+          socket.id,
+          msg,
+          forbiddenWord
+        );
         socket.emit("user_lost", forbiddenWord);
         socket.to(roomName).emit("user_won_process");
       } else {
         socket.to(roomName).emit("send_message", msg);
-      }
 
-      done();
+        done();
+      }
     });
 
     socket.on("user_lost", () => {

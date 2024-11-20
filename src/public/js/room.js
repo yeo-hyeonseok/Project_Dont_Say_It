@@ -131,8 +131,10 @@ function setSocketListeners() {
     chatScrollToBottom();
   });
 
-  socket.on("send_forbiddenMessage", (msg, forbiddenWord) => {
-    sendForbiddenMessage(msg, forbiddenWord);
+  socket.on("send_forbiddenMessage", (socketId, msg, forbiddenWord) => {
+    socketId === socket.id
+      ? sendMyForbiddenMessage(msg, forbiddenWord)
+      : sendForbiddenMessage(msg, forbiddenWord);
     chatScrollToBottom();
   });
 
@@ -321,6 +323,32 @@ function sendMyMessage(msg) {
 
   message.classList.add("my_msg");
   p.textContent = msg;
+
+  message.append(p);
+  chatList.append(message);
+}
+
+function sendMyForbiddenMessage(msg, forbiddenWord) {
+  const chatList = document.querySelector("div.chat_list");
+  const message = document.createElement("div");
+  const p = document.createElement("p");
+  const accent = document.createElement("span");
+
+  const forbiddenIndex = msg.indexOf(forbiddenWord);
+
+  if (forbiddenIndex === -1) {
+    p.textContent = msg;
+  } else {
+    const beforeForbidden = msg.slice(0, forbiddenIndex);
+    const afterForbidden = msg.slice(forbiddenIndex + forbiddenWord.length);
+
+    p.textContent = beforeForbidden;
+    accent.textContent = forbiddenWord;
+    p.append(accent);
+    p.append(document.createTextNode(afterForbidden));
+  }
+
+  message.classList.add("my_msg");
 
   message.append(p);
   chatList.append(message);
