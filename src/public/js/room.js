@@ -139,12 +139,10 @@ function setSocketListeners() {
   });
 
   socket.on("user_lost", (forbiddenWord) => {
-    setTimeout(() => {
-      isMatched = false;
-      showWinLossModal("🥲 패배", forbiddenWord);
+    isMatched = false;
+    socket.emit("user_lost");
 
-      socket.emit("user_lost");
-    }, 1500);
+    setTimeout(() => showWinLossModal("🥲 패배", forbiddenWord), 1500);
   });
 
   socket.on("user_won_process", () => {
@@ -152,36 +150,35 @@ function setSocketListeners() {
   });
 
   socket.on("user_won", (forbiddenWord) => {
-    setTimeout(() => {
-      isMatched = false;
-      showWinLossModal("🥳 승리", forbiddenWord);
+    isMatched = false;
+    socket.emit("user_won");
 
-      socket.emit("user_won");
-    }, 1500);
+    setTimeout(() => showWinLossModal("🥳 승리", forbiddenWord), 1500);
   });
 
   socket.on("time_over", () => {
     isMatched = false;
+    socket.emit("time_over");
+
     showResultModal(
       "😅 무승부",
       "제한 시간이 모두 지나 게임이 종료되었습니다."
     );
-
-    socket.emit("time_over");
   });
 
   socket.on("opponent_left", () => {
     isMatched = false;
-
     socket.emit("opponent_left");
 
-    setTimeout(() => {
-      showResultModal("😗 승리", "상대방이 퇴장했습니다.");
-    }, 1500);
+    setTimeout(
+      () => showResultModal("😗 승리", "상대방이 퇴장했습니다."),
+      1500
+    );
   });
 
   socket.on("disconnect", () => {
     isMatched = false;
+
     showResultModal("😮 연결 끊김", "상대방과의 연결이 끊어졌습니다.");
   });
 }
