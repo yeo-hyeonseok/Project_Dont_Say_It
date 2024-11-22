@@ -12,6 +12,8 @@ router.post("/save_socketId", (req, res) => {
   if (!socketId) {
     res.cookie("socketId", req.body.socketId, {
       secure: true,
+      sameSite: "strict",
+      httpOnly: true,
       maxAge: 86400000,
     });
 
