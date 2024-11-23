@@ -234,11 +234,9 @@ function notifyDuplicate() {
   const loadingMsg = document.querySelector("p.loading_msg");
   const br = document.createElement("br");
 
-  loadingMsg.textContent = "현재 참여 중인 방이 있습니다.";
+  loadingMsg.textContent = "접속 중 문제가 발생했습니다.";
   loadingMsg.append(br);
-  loadingMsg.append(
-    document.createTextNode("게임을 진행하시려면 현재 방을 나가주세요.")
-  );
+  loadingMsg.append(document.createTextNode("나가기 버튼을 클릭해주세요."));
 }
 
 function sendNotice(msg) {
