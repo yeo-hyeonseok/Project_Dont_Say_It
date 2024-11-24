@@ -3,7 +3,12 @@ extends layout.pug
 block content
   div#main_container
     header.main_header
-      span Beta              
+      span Beta      
+      div.darkmode_button
+        input#toggle(type="checkbox")
+        label(for="toggle")
+          i.fas.fa-sun
+          i.fas.fa-moon.inactive     
     div.main_body
       div.title_container
         h2 온라인 금칙어 게임

@@ -8,7 +8,8 @@ div#main_container {
 }
 
 header.main_header {
-  text-align: start;
+  display: flex;
+  justify-content: space-between;
 }
 
 header.main_header > span {
@@ -16,8 +17,24 @@ header.main_header > span {
   font-size: 0.9rem;
 }
 
-header.main_header > p > span {
-  margin-left: 0.2rem;
+header.main_header > div.darkmode_button > input {
+  display: none;
+}
+
+header.main_header > div.darkmode_button > label {
+  cursor: pointer;
+}
+
+header.main_header > div.darkmode_button > label > i.fa-sun {
+  color: var(--tertiary-bg-color);
+}
+
+header.main_header > div.darkmode_button > label > i.fa-moon {
+  color: var(--primary-bg-color);
+}
+
+header.main_header > div.darkmode_button > label > i.inactive {
+  display: none;
 }
 
 div.main_body {
