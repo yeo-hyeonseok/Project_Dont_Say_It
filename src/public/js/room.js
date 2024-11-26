@@ -140,7 +140,7 @@ function setSocketListeners() {
 
   socket.on("user_lost", (forbiddenWord) => {
     isMatched = false;
-    socket.emit("user_lost");
+    socket.emit("game_over");
 
     setTimeout(() => showWinLossModal("🥲 패배", forbiddenWord), 1500);
   });
@@ -151,14 +151,14 @@ function setSocketListeners() {
 
   socket.on("user_won", (forbiddenWord) => {
     isMatched = false;
-    socket.emit("user_won");
+    socket.emit("game_over");
 
     setTimeout(() => showWinLossModal("🥳 승리", forbiddenWord), 1500);
   });
 
   socket.on("time_over", () => {
     isMatched = false;
-    socket.emit("time_over");
+    socket.emit("game_over");
 
     showResultModal(
       "😅 무승부",
@@ -168,7 +168,7 @@ function setSocketListeners() {
 
   socket.on("opponent_left", () => {
     isMatched = false;
-    socket.emit("opponent_left");
+    socket.emit("game_over");
 
     setTimeout(
       () => showResultModal("😗 승리", "상대방이 퇴장했습니다."),

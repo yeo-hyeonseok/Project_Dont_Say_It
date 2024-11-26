@@ -123,34 +123,11 @@ function setWebSocket(server: http.Server) {
       }
     });
 
-    socket.on("user_lost", () => {
-      socket.leave(roomName);
-
-      clearInterval(timeInterval);
-      time = 180;
-      roomName = "";
-    });
-
     socket.on("user_won_process", () => {
       socket.emit("user_won", forbiddenWord);
     });
 
-    socket.on("user_won", () => {
-      socket.leave(roomName);
-
-      clearInterval(timeInterval);
-      time = 180;
-      roomName = "";
-    });
-
-    socket.on("time_over", () => {
-      socket.leave(roomName);
-
-      time = 180;
-      roomName = "";
-    });
-
-    socket.on("opponent_left", () => {
+    socket.on("game_over", () => {
       socket.leave(roomName);
 
       clearInterval(timeInterval);
