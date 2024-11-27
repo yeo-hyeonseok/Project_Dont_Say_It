@@ -23,14 +23,7 @@ header.main_header > div.darkmode_button > input {
 
 header.main_header > div.darkmode_button > label {
   cursor: pointer;
-}
-
-header.main_header > div.darkmode_button > label > i.fa-sun {
-  color: var(--tertiary-bg-color);
-}
-
-header.main_header > div.darkmode_button > label > i.fa-moon {
-  color: var(--primary-bg-color);
+  color: var(--primary-text-color);
 }
 
 header.main_header > div.darkmode_button > label > i.inactive {

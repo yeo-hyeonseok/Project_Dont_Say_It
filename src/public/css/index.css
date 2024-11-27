@@ -1,10 +1,10 @@
 :root {
   --primary-color: #ffa600;
-  --primary-bg-color: #fff;
+  --primary-bg-color: #fcfcfc;
   --secondary-bg-color: #d2d2d270;
   --tertiary-bg-color: #2b2b2bdf;
   --primary-text-color: #2b2b2b;
-  --secondary-text-color: #fff;
+  --secondary-text-color: #fcfcfc;
   --tertiary-text-color: #d2d2d243;
   --layout-color: #e2e1e0;
   --border-color: #d2d2d2;
@@ -16,7 +16,15 @@
 [data-theme="dark"] {
   --primary-color: #ffa600;
   --primary-bg-color: #2b2b2b;
+  --secondary-bg-color: #1f1f1f;
+  --tertiary-bg-color: #2b2b2b;
+  --primary-text-color: #efefef;
+  --secondary-text-color: #2b2b2b;
+  --tertiary-text-color: #7c7c7c;
   --layout-color: #121212;
+  --border-color: #3d3d3d;
+  --info-color: #9e9e9e;
+  --accent-color: #fd5252;
 }
 
 * {
@@ -67,6 +75,11 @@ p#toast_msg {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+[data-theme="dark"] p#toast_msg {
+  border: 1px solid var(--border-color);
+  color: var(--primary-text-color);
 }
 
 p#toast_msg.active {

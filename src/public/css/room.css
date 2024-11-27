@@ -44,7 +44,6 @@ header.room_header > span.timer {
   position: absolute;
   top: 50%;
   right: 1rem;
-  font-weight: 500;
   transform: translateY(-50%);
 }
 
@@ -157,6 +156,10 @@ form.message_form > span.scrolldown_button {
   cursor: pointer;
 }
 
+[data-theme="dark"] form.message_form > span.scrolldown_button {
+  border: 2px solid var(--border-color);
+}
+
 form.message_form > span.scrolldown_button.active {
   opacity: 1;
   visibility: visible;
@@ -195,10 +198,12 @@ form.message_form > div.input_container {
 form.message_form > div.input_container > input {
   padding: 1rem 3.1rem 1rem 1rem;
   border: none;
+  color: var(--primary-text-color);
   font-size: 16px;
   flex: 1 1 0%;
   border-radius: 25px;
   background-color: var(--secondary-bg-color);
+  caret-color: var(--primary-text-color);
 }
 
 form.message_form > div.input_container > button {
@@ -224,6 +229,11 @@ dialog {
   border: none;
   transform: translate(-50%, -50%);
   border-radius: 1rem;
+  background-color: var(--primary-bg-color);
+}
+
+[data-theme="dark"] dialog {
+  border: 1px solid var(--border-color);
 }
 
 dialog:focus {
@@ -261,12 +271,22 @@ dialog > div.modal_container > div.button_container > button:focus {
 }
 
 dialog.exit_modal > div.modal_container > p {
+  color: var(--primary-text-color);
   margin-bottom: 0.5rem;
 }
 
+dialog.result_modal > div.modal_container > h2 {
+  color: var(--primary-text-color);
+}
+
 dialog.result_modal > div.modal_container > p {
+  color: var(--primary-text-color);
   font-size: 0.9rem;
   text-align: center;
+}
+
+dialog.winLoss_modal > div.modal_container > h2 {
+  color: var(--primary-text-color);
 }
 
 dialog.winLoss_modal > div.modal_container > div.desc_container {
@@ -274,6 +294,7 @@ dialog.winLoss_modal > div.modal_container > div.desc_container {
 }
 
 dialog.winLoss_modal > div.modal_container > div.desc_container > span {
+  color: var(--primary-text-color);
   font-size: 0.9rem;
 }
 
