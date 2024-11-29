@@ -52,6 +52,7 @@ function initRoomInfo() {
 /* ---------- socket ---------- */
 let socket;
 let isMatched = false;
+let timeoutIds = [];
 
 function setSocketListeners() {
   if (!socket) return;
@@ -78,31 +79,52 @@ function setSocketListeners() {
     loadingMsg.style.display = "none";
     isMatched = true;
 
-    sendNotice(`[${roomName}] 상대방이 입장했습니다.`);
+    timeoutIds.forEach((item) => clearTimeout(item));
+    timeoutIds = [];
 
-    socket.emit("send_forbiddenWord");
+    timeoutIds.push(
+      setTimeout(() => {
+        if (!isMatched) return;
 
-    setTimeout(() => {
-      if (!isMatched) return;
+        sendNotice(`[${roomName}] 상대방이 입장했습니다.`);
+      }, 0)
+    );
 
-      sendNotice(
-        "⚠️ 상대방에게 불쾌감을 줄 수 있는 비속어나 욕설은 삼가주세요."
-      );
-    }, 1500);
+    timeoutIds.push(
+      setTimeout(() => {
+        if (!isMatched) return;
 
-    setTimeout(() => {
-      if (!isMatched) return;
+        sendNotice(
+          "⚠️ 상대방에게 불쾌감을 줄 수 있는 비속어나 욕설은 삼가주세요."
+        );
+      }, 1500)
+    );
 
-      sendNotice(`대화 주제: ${topic}`);
-    }, 4500);
+    timeoutIds.push(
+      setTimeout(() => {
+        if (!isMatched) return;
 
-    setTimeout(() => {
-      if (!isMatched) return;
+        socket.emit("send_forbiddenWord");
+      }, 3000)
+    );
 
-      sendNotice("상대방과 대화를 시작해보세요.");
+    timeoutIds.push(
+      setTimeout(() => {
+        if (!isMatched) return;
 
-      socket.emit("start_timer");
-    }, 6000);
+        sendNotice(`대화 주제: ${topic}`);
+      }, 4500)
+    );
+
+    timeoutIds.push(
+      setTimeout(() => {
+        if (!isMatched) return;
+
+        sendNotice("상대방과 대화를 시작해보세요.");
+
+        socket.emit("start_timer");
+      }, 6000)
+    );
   });
 
   socket.on("send_notice", (socketId, notice) => {
@@ -113,11 +135,7 @@ function setSocketListeners() {
   });
 
   socket.on("send_forbiddenWord", (forbiddenWord) => {
-    setTimeout(() => {
-      if (!isMatched) return;
-
-      sendForbiddenWord(forbiddenWord);
-    }, 3000);
+    sendForbiddenWord(forbiddenWord);
   });
 
   socket.on("adjust_time", (time) => {
