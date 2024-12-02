@@ -13,7 +13,7 @@ header.room_header {
   height: 3rem;
   padding: 0.2rem 1rem;
   align-items: center;
-  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 4px 4px -2px var(--secondary-bg-color);
   user-select: none;
 }
 
@@ -154,6 +154,15 @@ form.message_form > div.message_preview {
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+form.message_form > div.message_preview.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 form.message_form > div.message_preview > label {

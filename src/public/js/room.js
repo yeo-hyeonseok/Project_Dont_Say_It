@@ -145,8 +145,16 @@ function setSocketListeners() {
   });
 
   socket.on("send_message", (msg) => {
-    sendOtherMessage(msg);
-    chatScrollToBottom();
+    if (
+      chatList.scrollTop + chatList.clientHeight >=
+      chatList.scrollHeight - 20
+    ) {
+      sendOtherMessage(msg);
+      chatScrollToBottom();
+    } else {
+      sendOtherMessage(msg);
+      showMessagePreview();
+    }
   });
 
   socket.on("send_forbiddenMessage", (socketId, msg, forbiddenWord) => {
@@ -231,13 +239,17 @@ const chatList = document.querySelector("div.chat_list");
 const scrolldownButton = document.querySelector("span.scrolldown_button");
 
 chatList.addEventListener("scroll", () => {
+  const messagePreview = document.querySelector("div.message_preview");
+
   if (
     chatList.scrollTop + chatList.clientHeight >=
     chatList.scrollHeight - 20
   ) {
     scrolldownButton.classList.remove("active");
+    messagePreview.classList.remove("active");
   } else {
-    scrolldownButton.classList.add("active");
+    if (!messagePreview.classList.contains("active"))
+      scrolldownButton.classList.add("active");
   }
 });
 
@@ -372,6 +384,14 @@ function chatScrollToBottom() {
   const scrollHeight = chatList.scrollHeight;
 
   chatList.scrollTo(0, scrollHeight);
+}
+
+function showMessagePreview() {
+  const messagePreview = document.querySelector("div.message_preview");
+  const scrolldownButton = document.querySelector("span.scrolldown_button");
+
+  messagePreview.classList.add("active");
+  scrolldownButton.classList.remove("active");
 }
 
 /* ---------- 시간 변경 버튼 ---------- */
