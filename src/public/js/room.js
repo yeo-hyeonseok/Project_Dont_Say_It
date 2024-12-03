@@ -203,8 +203,10 @@ function setSocketListeners() {
   });
 
   socket.on("disconnect", () => {
-    isMatched = false;
+    const modals = document.querySelectorAll("dialog");
 
+    isMatched = false;
+    modals.forEach((modal) => modal.close());
     showResultModal("😮 연결 끊김", "상대방과의 연결이 끊어졌습니다.");
   });
 }
