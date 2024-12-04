@@ -153,7 +153,7 @@ function setSocketListeners() {
       chatScrollToBottom();
     } else {
       sendOtherMessage(msg);
-      showMessagePreview();
+      showMessagePreview(msg);
     }
   });
 
@@ -238,6 +238,7 @@ exitButton.addEventListener("click", () => {
 
 /* ---------- 채팅창 ---------- */
 const chatList = document.querySelector("div.chat_list");
+const messagePreview = document.querySelector("div.message_preview");
 const scrolldownButton = document.querySelector("span.scrolldown_button");
 
 chatList.addEventListener("scroll", () => {
@@ -253,6 +254,13 @@ chatList.addEventListener("scroll", () => {
     if (!messagePreview.classList.contains("active"))
       scrolldownButton.classList.add("active");
   }
+});
+
+messagePreview.addEventListener("click", () => {
+  chatList.scrollTo({
+    top: chatList.scrollHeight,
+    behavior: "smooth",
+  });
 });
 
 scrolldownButton.addEventListener("click", () => {
@@ -388,10 +396,12 @@ function chatScrollToBottom() {
   chatList.scrollTo(0, scrollHeight);
 }
 
-function showMessagePreview() {
+function showMessagePreview(msg) {
   const messagePreview = document.querySelector("div.message_preview");
+  const message = messagePreview.querySelector("p");
   const scrolldownButton = document.querySelector("span.scrolldown_button");
 
+  message.textContent = msg;
   messagePreview.classList.add("active");
   scrolldownButton.classList.remove("active");
 }
