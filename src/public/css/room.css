@@ -44,6 +44,7 @@ header.room_header > span.timer {
   position: absolute;
   top: 50%;
   right: 1rem;
+  font-weight: 500;
   transform: translateY(-50%);
 }
 
@@ -200,6 +201,25 @@ form.message_form > span.scrolldown_button {
 form.message_form > span.scrolldown_button.active {
   opacity: 1;
   visibility: visible;
+}
+
+form.message_form > span.guess_button {
+  display: flex;
+  position: absolute;
+  top: -4rem;
+  width: 3rem;
+  height: 3rem;
+  color: var(--primary-text-color);
+  font-size: 1.2rem;
+  background-color: var(--primary-bg-color);
+  cursor: pointer;
+  border-radius: 1.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+[data-theme="dark"] form.message_form > span.guess_button {
+  border: 1.5px solid var(--border-color);
 }
 
 form.message_form > div.time_control {
