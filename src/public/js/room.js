@@ -242,17 +242,23 @@ const messagePreview = document.querySelector("div.message_preview");
 const scrolldownButton = document.querySelector("span.scrolldown_button");
 
 chatList.addEventListener("scroll", () => {
+  const guessButton = document.querySelector("span.guess_button");
   const messagePreview = document.querySelector("div.message_preview");
 
   if (
     chatList.scrollTop + chatList.clientHeight >=
     chatList.scrollHeight - 20
   ) {
+    // 채팅창 스크롤 최하단에 있을 때
     scrolldownButton.classList.remove("active");
     messagePreview.classList.remove("active");
+    guessButton.classList.add("active");
   } else {
-    if (!messagePreview.classList.contains("active"))
+    // 채팅창 스크롤 위에 있을 때
+    if (!messagePreview.classList.contains("active")) {
       scrolldownButton.classList.add("active");
+      guessButton.classList.remove("active");
+    }
   }
 });
 

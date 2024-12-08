@@ -49,7 +49,7 @@ header.room_header > span.timer {
 }
 
 div.chat_list {
-  padding: 0 1.5rem 1rem 1.5rem;
+  padding: 0 1.5rem 3.8rem 1.5rem;
   flex: 1 1 0%;
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE and Edge */
@@ -66,7 +66,7 @@ p.loading_msg {
   font-weight: 400;
   font-size: 0.9rem;
   text-align: center;
-  margin-top: 0.8rem;
+  margin-top: 0.9rem;
 }
 
 div.chat_list > p.notice > span {
@@ -81,7 +81,7 @@ div.my_msg > p {
 }
 
 div.chat_list > div.other_msg {
-  margin-top: 0.8rem;
+  margin-top: 0.9rem;
 }
 
 div.chat_list > div.other_msg > span {
@@ -92,7 +92,7 @@ div.chat_list > div.other_msg > span {
 
 div.chat_list > div.other_msg > p {
   background-color: var(--secondary-bg-color);
-  margin-top: 0.5rem;
+  margin-top: 0.3rem;
   max-width: 15rem;
   word-break: break-all;
 }
@@ -103,7 +103,7 @@ div.chat_list > div.other_msg > p > span {
 
 div.chat_list > div.my_msg {
   text-align: end;
-  margin-top: 0.8rem;
+  margin-top: 0.9rem;
 }
 
 div.chat_list > div.my_msg > p {
@@ -206,20 +206,28 @@ form.message_form > span.scrolldown_button.active {
 form.message_form > span.guess_button {
   display: flex;
   position: absolute;
-  top: -4rem;
-  width: 3rem;
-  height: 3rem;
-  color: var(--primary-text-color);
+  top: -3.2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--primary-color);
   font-size: 1.2rem;
   background-color: var(--primary-bg-color);
   cursor: pointer;
-  border-radius: 1.5rem;
+  border-radius: 1.25rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   justify-content: center;
   align-items: center;
 }
 
 [data-theme="dark"] form.message_form > span.guess_button {
   border: 1.5px solid var(--border-color);
+}
+
+form.message_form > span.guess_button.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 form.message_form > div.time_control {
