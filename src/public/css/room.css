@@ -313,7 +313,7 @@ dialog > div.modal_container {
   gap: 0.6rem;
 }
 
-dialog > div.modal_container > div.button_container {
+dialog > div.modal_container div.button_container {
   display: flex;
   width: 100%;
   gap: 1rem;
@@ -321,7 +321,7 @@ dialog > div.modal_container > div.button_container {
   margin-top: 0.4rem;
 }
 
-dialog > div.modal_container > div.button_container > button {
+dialog > div.modal_container div.button_container > button {
   width: 100%;
   padding: 0.5rem;
   border: none;
@@ -331,7 +331,7 @@ dialog > div.modal_container > div.button_container > button {
   border-radius: 0.5rem;
 }
 
-dialog > div.modal_container > div.button_container > button:focus {
+dialog > div.modal_container div.button_container > button:focus {
   outline: none;
 }
 
@@ -365,8 +365,35 @@ dialog.winLoss_modal > div.modal_container > div.desc_container > span {
 
 dialog.winLoss_modal > div.modal_container > div.desc_container > p {
   color: var(--accent-color);
+}
+
+dialog.guess_modal > div.modal_container > h2 {
+  color: var(--primary-text-color);
+}
+
+dialog.guess_modal > div.modal_container > form.guess_form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+dialog.guess_modal > div.modal_container > form.guess_form > input {
+  padding: 0.8rem;
+  border: none;
+  color: var(--primary-text-color);
+  flex: 1 1 0%;
+  border-radius: 0.8rem;
+  background-color: var(--secondary-bg-color);
+  caret-color: var(--primary-text-color);
+}
+
+dialog.guess_modal > div.modal_container > form.guess_form > p {
+  color: var(--primary-text-color);
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 0.8rem;
+  text-align: end;
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 
 dialog.exit_modal
@@ -379,6 +406,11 @@ dialog.result_modal
   > button.modal_exitBtn,
 dialog.winLoss_modal
   > div.modal_container
+  > div.button_container
+  > button.modal_exitBtn,
+dialog.guess_modal
+  > div.modal_container
+  > form.guess_form
   > div.button_container
   > button.modal_exitBtn {
   border: 1px solid var(--border-color);
@@ -397,7 +429,12 @@ dialog.result_modal
 dialog.winLoss_modal
   > div.modal_container
   > div.button_container
-  > button.modal_matchBtn {
+  > button.modal_matchBtn,
+dialog.guess_modal
+  > div.modal_container
+  > form.guess_form
+  > div.button_container
+  > button.modal_submitBtn {
   color: var(--secondary-text-color);
   background-color: var(--primary-color);
 }
