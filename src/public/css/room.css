@@ -375,12 +375,14 @@ dialog.guess_modal > div.modal_container > form.guess_form {
   display: flex;
   width: 100%;
   flex-direction: column;
+  margin-top: 0.2rem;
 }
 
 dialog.guess_modal > div.modal_container > form.guess_form > input {
   padding: 0.8rem;
   border: none;
   color: var(--primary-text-color);
+  font-size: 1rem;
   flex: 1 1 0%;
   border-radius: 0.8rem;
   background-color: var(--secondary-bg-color);

@@ -240,6 +240,7 @@ exitButton.addEventListener("click", () => {
 const chatList = document.querySelector("div.chat_list");
 const messagePreview = document.querySelector("div.message_preview");
 const scrolldownButton = document.querySelector("span.scrolldown_button");
+const guessButton = document.querySelector("span.guess_button");
 
 chatList.addEventListener("scroll", () => {
   const guessButton = document.querySelector("span.guess_button");
@@ -275,6 +276,8 @@ scrolldownButton.addEventListener("click", () => {
     behavior: "smooth",
   });
 });
+
+guessButton.addEventListener("click", () => showGuessModal());
 
 function notifyDuplicate() {
   const loadingMsg = document.querySelector("p.loading_msg");
@@ -545,6 +548,24 @@ function showWinLossModal(title, forbiddenWord) {
   );
 
   winLossModal.showModal();
+}
+
+function showGuessModal() {
+  const guessModal = document.querySelector("dialog.guess_modal");
+  const exitButton = guessModal.querySelector("button.modal_exitBtn");
+  const submitButton = guessModal.querySelector("button.modal_submitBtn");
+
+  guessModal.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") event.preventDefault();
+  });
+
+  guessModal.addEventListener("cancel", (e) => e.preventDefault());
+
+  exitButton.addEventListener("click", () => guessModal.close());
+
+  submitButton.addEventListener("click", () => {});
+
+  guessModal.showModal();
 }
 
 /* ---------- api 요청 ---------- */
