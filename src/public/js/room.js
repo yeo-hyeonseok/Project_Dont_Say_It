@@ -164,6 +164,10 @@ function setSocketListeners() {
     chatScrollToBottom();
   });
 
+  socket.on("user_lost_process", () => {
+    socket.emit("user_lost_process");
+  });
+
   socket.on("user_lost", (forbiddenWord) => {
     isMatched = false;
     socket.emit("game_over");
@@ -277,7 +281,9 @@ scrolldownButton.addEventListener("click", () => {
   });
 });
 
-guessButton.addEventListener("click", () => showGuessModal());
+guessButton.addEventListener("click", () => {
+  if (isMatched) showGuessModal();
+});
 
 function notifyDuplicate() {
   const loadingMsg = document.querySelector("p.loading_msg");
@@ -552,8 +558,8 @@ function showWinLossModal(title, forbiddenWord) {
 
 function showGuessModal() {
   const guessModal = document.querySelector("dialog.guess_modal");
+  const guessForm = guessModal.querySelector("form.guess_form");
   const exitButton = guessModal.querySelector("button.modal_exitBtn");
-  const submitButton = guessModal.querySelector("button.modal_submitBtn");
 
   guessModal.addEventListener("keydown", (event) => {
     if (event.key === "Escape") event.preventDefault();
@@ -563,7 +569,20 @@ function showGuessModal() {
 
   exitButton.addEventListener("click", () => guessModal.close());
 
-  submitButton.addEventListener("click", () => {});
+  guessForm.addEventListener(
+    "submit",
+    (e) => {
+      e.preventDefault();
+
+      const input = guessForm.querySelector("input");
+
+      socket.emit("guess_word", input.value);
+
+      input.value = "";
+      guessModal.close();
+    },
+    { once: true }
+  );
 
   guessModal.showModal();
 }
