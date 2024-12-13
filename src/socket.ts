@@ -123,11 +123,13 @@ function setWebSocket(server: http.Server) {
       }
     });
 
-    socket.on("guess_word", (word: string) => {
+    socket.on("guess_word", (word: string, done: () => void) => {
       if (word === forbiddenWord) {
         socket.emit("user_won_process");
         socket.to(roomName).emit("user_lost_process");
       }
+
+      done();
     });
 
     socket.on("user_lost_process", () => {

@@ -37,10 +37,14 @@ function initRoomInfo() {
   chatList.append(p);
 
   // 변경 기회 초기화
-  const remainChances = document.querySelector("span.remain_chances");
+  const remainTimeChances = document.querySelector("span.time_chances");
+  const remainGuessChances = document.querySelector("span.guess_chances");
 
-  chanceCount = 3;
-  remainChances.textContent = chanceCount;
+  timeChances = 3;
+  remainTimeChances.textContent = timeChances;
+
+  guessChances = 3;
+  remainGuessChances.textContent = guessChances;
 
   // 입력창 초기화
   const messageForm = document.querySelector("form.message_form");
@@ -282,7 +286,11 @@ scrolldownButton.addEventListener("click", () => {
 });
 
 guessButton.addEventListener("click", () => {
-  if (isMatched) showGuessModal();
+  if (isMatched) {
+    guessChances > 0
+      ? showGuessModal()
+      : printToastMsg("모든 기회를 사용하셨습니다.");
+  }
 });
 
 function notifyDuplicate() {
@@ -425,7 +433,7 @@ function showMessagePreview(msg) {
 const extendButton = document.querySelector("span.extend_button");
 const shortenButton = document.querySelector("span.shorten_button");
 
-let chanceCount = 3;
+let timeChances = 3;
 
 extendButton.addEventListener("click", () => {
   if (isMatched) adjustTime(20);
@@ -436,12 +444,12 @@ shortenButton.addEventListener("click", () => {
 });
 
 function adjustTime(amount) {
-  if (chanceCount > 0) {
+  if (timeChances > 0) {
     socket.emit("adjust_time", amount, () => {
-      const remainChances = document.querySelector("span.remain_chances");
+      const remainTimeChances = document.querySelector("span.time_chances");
 
-      chanceCount--;
-      remainChances.textContent = chanceCount;
+      timeChances--;
+      remainTimeChances.textContent = timeChances;
     });
   } else {
     printToastMsg("더 이상 시간 변경이 불가능합니다.");
@@ -556,10 +564,15 @@ function showWinLossModal(title, forbiddenWord) {
   winLossModal.showModal();
 }
 
+let guessChances = 3;
+
 function showGuessModal() {
   const guessModal = document.querySelector("dialog.guess_modal");
   const guessForm = guessModal.querySelector("form.guess_form");
+  const remainGuessChances = guessModal.querySelector("span.guess_chances");
   const exitButton = guessModal.querySelector("button.modal_exitBtn");
+
+  remainGuessChances.textContent = guessChances;
 
   guessModal.addEventListener("keydown", (event) => {
     if (event.key === "Escape") event.preventDefault();
@@ -576,10 +589,13 @@ function showGuessModal() {
 
       const input = guessForm.querySelector("input");
 
-      socket.emit("guess_word", input.value);
+      socket.emit("guess_word", input.value, () => {
+        guessChances--;
+        remainGuessChances.textContent = guessChances;
+        input.value = "";
 
-      input.value = "";
-      guessModal.close();
+        guessModal.close();
+      });
     },
     { once: true }
   );
