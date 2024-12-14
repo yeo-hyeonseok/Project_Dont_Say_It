@@ -125,8 +125,14 @@ function setWebSocket(server: http.Server) {
 
     socket.on("guess_word", (word: string, done: () => void) => {
       if (word === forbiddenWord) {
+        socket.emit("send_notice", socket.id, "금칙어를 맞췄습니다!");
         socket.emit("user_won_process");
+        socket
+          .to(roomName)
+          .emit("send_notice", socket.id, "금칙어를 맞췄습니다!");
         socket.to(roomName).emit("user_lost_process");
+      } else {
+        socket.emit("send_notice", socket.id, "금칙어를 맞추지 못했습니다.");
       }
 
       done();
