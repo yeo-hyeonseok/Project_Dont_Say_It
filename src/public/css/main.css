@@ -13,8 +13,7 @@ header.main_header {
 }
 
 header.main_header > span {
-  font-weight: 500;
-  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 header.main_header > div.darkmode_button > input {

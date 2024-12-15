@@ -3,7 +3,8 @@ extends layout.pug
 block content
   div#main_container
     header.main_header
-      span Beta      
+      span.main_tip
+        i.far.fa-circle-question
       div.darkmode_button
         input#toggle(type="checkbox")
         label(for="toggle")
@@ -17,4 +18,5 @@ block content
       a(href="/room").box-shadow 시작하기
     footer.main_footer
       p @2024 wilddev_seok 
+      span beta
   script(src="/js/main.js")  
