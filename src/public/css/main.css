@@ -10,9 +10,11 @@ div#main_container {
 header.main_header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 header.main_header > span {
+  font-size: 1.2rem;
   cursor: pointer;
 }
 
@@ -21,8 +23,8 @@ header.main_header > div.darkmode_button > input {
 }
 
 header.main_header > div.darkmode_button > label {
-  cursor: pointer;
   color: var(--primary-text-color);
+  cursor: pointer;
 }
 
 header.main_header > div.darkmode_button > label > i.inactive {
@@ -77,4 +79,48 @@ footer.main_footer {
   font-weight: 500;
   font-size: 0.8rem;
   text-align: center;
+}
+
+dialog.tip_modal {
+  width: 34rem;
+  height: 75%;
+  background-color: var(--primary-bg-color);
+  visibility: visible;
+}
+
+@media screen and (max-width: 767px) {
+  dialog.tip_modal {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+dialog.tip_modal > div.modal_container {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+dialog.tip_modal > div.modal_container > h2 {
+  color: var(--primary-text-color);
+}
+
+dialog.tip_modal > div.modal_container > button {
+  width: 10rem;
+  padding: 0.8rem 0;
+  border: none;
+  color: var(--secondary-text-color);
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  background-color: var(--primary-color);
+  border-radius: 1rem;
+  transition: filter 0.1s ease;
+  cursor: pointer;
+  outline: none;
+}
+
+dialog.tip_modal > div.modal_container > button:hover {
+  filter: brightness(1.05);
 }

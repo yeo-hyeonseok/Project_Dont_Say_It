@@ -32,3 +32,30 @@ function toggleThemeIcon() {
 
   icons.forEach((item) => item.classList.toggle("inactive"));
 }
+
+/* 게임 방법 모달창 */
+const tipButton = document.querySelector("span.main_tip");
+
+tipButton.addEventListener("click", () => showTipModal());
+
+function showTipModal() {
+  const tipModal = document.querySelector("dialog.tip_modal");
+  const exitButton = tipModal.querySelector("button.modal_exitBtn");
+
+  tipModal.addEventListener("click", function (e) {
+    const rect = tipModal.getBoundingClientRect();
+
+    if (
+      e.clientX < rect.left ||
+      e.clientX > rect.right ||
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom
+    ) {
+      tipModal.close();
+    }
+  });
+
+  exitButton.addEventListener("click", () => tipModal.close());
+
+  tipModal.showModal();
+}
