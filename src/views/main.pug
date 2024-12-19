@@ -3,21 +3,20 @@ extends layout.pug
 block content
   div#main_container
     header.main_header
-      span.main_tip
-        i.far.fa-circle-question
       div.darkmode_button
         input#toggle(type="checkbox")
         label(for="toggle")
           i.fas.fa-sun
-          i.fas.fa-moon.inactive     
+          i.fas.fa-moon.inactive 
+      span.main_tip 게임 방법          
     div.main_body
       div.title_container
         h2 온라인 금칙어 게임
-        h1 Don't Say It!
-      img(src="images/shushing_emoji.png", alt="🤫")
+        h1 DON'T SAY IT!
+      img(src="images/main.png", alt="🤫")
       a(href="/room").box-shadow 시작하기
     footer.main_footer
-      p @2024 wilddev_seok 
-      span beta
+      p &copy; 2024 Don't Say It! by wilddev_seok
+      p All Rights Reserved
   include partials/tipModal
   script(src="/js/main.js")  

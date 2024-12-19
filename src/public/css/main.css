@@ -1,6 +1,6 @@
 div#main_container {
   display: flex;
-  padding: 1rem;
+  padding: 0.8rem 1.5rem;
   flex: 1 1 0%;
   flex-direction: column;
   justify-content: space-between;
@@ -11,11 +11,6 @@ header.main_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-header.main_header > span {
-  font-size: 1.2rem;
-  cursor: pointer;
 }
 
 header.main_header > div.darkmode_button > input {
@@ -31,34 +26,38 @@ header.main_header > div.darkmode_button > label > i.inactive {
   display: none;
 }
 
+header.main_header > span {
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
 div.main_body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2.5rem;
-  margin-top: 1rem;
+  gap: 3.5rem;
 }
 
 div.main_body > div.title_container {
-  text-align: center;
+  width: 100%;
+  text-align: start;
 }
 
 div.main_body > div.title_container > h2 {
   color: var(--primary-color);
-  font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 div.main_body > div.title_container > h1 {
-  font-size: 2.4rem;
+  font-size: 2.6rem;
 }
 
 div.main_body > img {
-  width: 30%;
+  width: 85%;
 }
 
 div.main_body > a {
-  width: 85%;
+  width: 100%;
   padding: 0.9rem 0;
   color: var(--secondary-text-color);
   font-weight: 600;
@@ -66,8 +65,7 @@ div.main_body > a {
   text-decoration: none;
   text-align: center;
   background-color: var(--primary-color);
-  border-radius: 2.5rem;
-  margin-top: 4rem;
+  border-radius: 1rem;
   transition: filter 0.1s ease;
 }
 
@@ -76,9 +74,11 @@ div.main_body > a:hover {
 }
 
 footer.main_footer {
+  display: flex;
   font-weight: 500;
-  font-size: 0.8rem;
-  text-align: center;
+  font-size: 0.7rem;
+  flex-direction: column;
+  align-items: start;
 }
 
 dialog.tip_modal {
