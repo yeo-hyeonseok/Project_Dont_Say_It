@@ -231,19 +231,11 @@ form.message_form > span.guess_button.active {
 }
 
 form.message_form > div.time_control {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   user-select: none;
+  text-align: end;
 }
 
-form.message_form > div.time_control > p {
-  font-weight: 500;
-  font-size: 0.8rem;
-  margin-left: 0.5rem;
-}
-
-form.message_form > div.time_control > div > span {
+form.message_form > div.time_control > span {
   padding: 0.3rem 0.5rem;
   color: var(--info-color);
   font-size: 0.8rem;

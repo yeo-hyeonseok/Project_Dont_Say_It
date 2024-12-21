@@ -37,11 +37,9 @@ function initRoomInfo() {
   chatList.append(p);
 
   // 변경 기회 초기화
-  const remainTimeChances = document.querySelector("span.time_chances");
   const remainGuessChances = document.querySelector("span.guess_chances");
 
   timeChances = 3;
-  remainTimeChances.textContent = timeChances;
 
   guessChances = 3;
   remainGuessChances.textContent = guessChances;
@@ -445,12 +443,7 @@ shortenButton.addEventListener("click", () => {
 
 function adjustTime(amount) {
   if (timeChances > 0) {
-    socket.emit("adjust_time", amount, () => {
-      const remainTimeChances = document.querySelector("span.time_chances");
-
-      timeChances--;
-      remainTimeChances.textContent = timeChances;
-    });
+    socket.emit("adjust_time", amount, timeChances - 1, () => timeChances--);
   } else {
     printToastMsg("더 이상 시간 변경이 불가능합니다.");
   }

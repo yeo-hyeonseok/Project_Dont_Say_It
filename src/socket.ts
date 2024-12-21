@@ -84,21 +84,34 @@ function setWebSocket(server: http.Server) {
       }, 1000);
     });
 
-    socket.on("adjust_time", (amount: number, done: () => void) => {
-      if (time === 180) return;
+    socket.on(
+      "adjust_time",
+      (amount: number, timeChances: number, done: () => void) => {
+        if (time === 180) return;
 
-      if (amount > 0 ? time <= 160 : time >= 20) {
-        time += amount;
+        if (amount > 0 ? time <= 160 : time >= 20) {
+          time += amount;
 
-        io.to(roomName).emit("adjust_time", time);
-        io.to(roomName).emit(
-          "send_notice",
-          socket.id,
-          amount > 0 ? "시간을 연장했습니다." : "시간을 단축했습니다."
-        );
-        done();
+          io.to(roomName).emit("adjust_time", time);
+          socket
+            .to(roomName)
+            .emit(
+              "send_notice",
+              socket.id,
+              amount > 0 ? "시간을 연장했습니다." : "시간을 단축했습니다."
+            );
+          socket.emit(
+            "send_notice",
+            socket.id,
+            amount > 0
+              ? `시간을 연장했습니다. (남은 기회: ${timeChances})`
+              : `시간을 단축했습니다. (남은 기회: ${timeChances})`
+          );
+
+          done();
+        }
       }
-    });
+    );
 
     socket.on("sync_time", (currentTime) => {
       time = currentTime;
