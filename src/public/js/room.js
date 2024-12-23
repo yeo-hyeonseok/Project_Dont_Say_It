@@ -565,6 +565,20 @@ function showGuessModal() {
   const remainGuessChances = guessModal.querySelector("span.guess_chances");
   const exitButton = guessModal.querySelector("button.modal_exitBtn");
 
+  const guessWord = (e) => {
+    e.preventDefault();
+
+    const input = guessForm.querySelector("input");
+
+    socket.emit("guess_word", input.value, () => {
+      guessChances--;
+      remainGuessChances.textContent = guessChances;
+      input.value = "";
+
+      guessModal.close();
+    });
+  };
+
   remainGuessChances.textContent = guessChances;
 
   guessModal.addEventListener("keydown", (event) => {
@@ -573,25 +587,12 @@ function showGuessModal() {
 
   guessModal.addEventListener("cancel", (e) => e.preventDefault());
 
-  exitButton.addEventListener("click", () => guessModal.close());
+  exitButton.addEventListener("click", () => {
+    guessForm.removeEventListener("submit", guessWord);
+    guessModal.close();
+  });
 
-  guessForm.addEventListener(
-    "submit",
-    (e) => {
-      e.preventDefault();
-
-      const input = guessForm.querySelector("input");
-
-      socket.emit("guess_word", input.value, () => {
-        guessChances--;
-        remainGuessChances.textContent = guessChances;
-        input.value = "";
-
-        guessModal.close();
-      });
-    },
-    { once: true }
-  );
+  guessForm.addEventListener("submit", guessWord, { once: true });
 
   guessModal.showModal();
 }
