@@ -37,12 +37,8 @@ function initRoomInfo() {
   chatList.append(p);
 
   // 변경 기회 초기화
-  const remainGuessChances = document.querySelector("span.guess_chances");
-
   timeChances = 3;
-
   guessChances = 3;
-  remainGuessChances.textContent = guessChances;
 
   // 입력창 초기화
   const messageForm = document.querySelector("form.message_form");
@@ -562,7 +558,6 @@ let guessChances = 3;
 function showGuessModal() {
   const guessModal = document.querySelector("dialog.guess_modal");
   const guessForm = guessModal.querySelector("form.guess_form");
-  const remainGuessChances = guessModal.querySelector("span.guess_chances");
   const exitButton = guessModal.querySelector("button.modal_exitBtn");
 
   const guessWord = (e) => {
@@ -570,16 +565,13 @@ function showGuessModal() {
 
     const input = guessForm.querySelector("input");
 
-    socket.emit("guess_word", input.value, () => {
+    socket.emit("guess_word", input.value, guessChances - 1, () => {
       guessChances--;
-      remainGuessChances.textContent = guessChances;
       input.value = "";
 
       guessModal.close();
     });
   };
-
-  remainGuessChances.textContent = guessChances;
 
   guessModal.addEventListener("keydown", (event) => {
     if (event.key === "Escape") event.preventDefault();

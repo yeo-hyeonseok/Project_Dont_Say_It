@@ -354,6 +354,7 @@ dialog.guess_modal > div.modal_container > form.guess_form {
   width: 100%;
   flex-direction: column;
   margin-top: 0.2rem;
+  gap: 0.8rem;
 }
 
 dialog.guess_modal > div.modal_container > form.guess_form > input {
