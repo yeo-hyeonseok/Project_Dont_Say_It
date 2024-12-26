@@ -1,9 +1,9 @@
 /* ---------- common ---------- */
-function exitRoom() {
-  deleteSocketId()
-    .then((result) => console.log(result.message))
-    .catch((error) => console.error(error));
+window.addEventListener("beforeunload", () => {
+  minusTabCount();
+});
 
+function exitRoom() {
   location.replace("/");
 }
 
@@ -52,6 +52,9 @@ let socket;
 let isMatched = false;
 let timeoutIds = [];
 
+// >>>> 시작 지점 <<<<
+connectSocket();
+
 function setSocketListeners() {
   if (!socket) return;
 
@@ -61,10 +64,6 @@ function setSocketListeners() {
     const socketId = socket.id;
 
     console.log("[connect] 연결된 소켓:", socketId);
-
-    saveSocketId(socketId)
-      .then((result) => console.log(result.message))
-      .catch((error) => console.error(error));
   });
 
   socket.on("time_change", (time) => {
@@ -214,22 +213,15 @@ function setSocketListeners() {
 }
 
 function connectSocket() {
-  checkSocketId()
-    .then((result) => {
-      console.log(result.message);
+  plusTabCount();
 
-      if (result.isExist) {
-        notifyDuplicate();
-      } else {
-        socket = io();
-        setSocketListeners();
-      }
-    })
-    .catch((error) => console.error(error));
+  if (getIsDuplicated()) {
+    notifyDuplicate();
+  } else {
+    socket = io();
+    setSocketListeners();
+  }
 }
-
-// >>>> 시작 지점 <<<<
-connectSocket();
 
 /* ---------- 헤더 ---------- */
 const exitButton = document.querySelector("span.exit_button");
@@ -291,9 +283,9 @@ function notifyDuplicate() {
   const loadingMsg = document.querySelector("p.loading_msg");
   const br = document.createElement("br");
 
-  loadingMsg.textContent = "접속 중 문제가 발생했습니다.";
+  loadingMsg.textContent = "이미 참여 중인 게임이 있습니다.";
   loadingMsg.append(br);
-  loadingMsg.append(document.createTextNode("나가기 버튼을 클릭해주세요."));
+  loadingMsg.append(document.createTextNode("뒤로 가기 버튼을 클릭해주세요."));
 }
 
 function sendNotice(msg) {
@@ -589,43 +581,28 @@ function showGuessModal() {
   guessModal.showModal();
 }
 
-/* ---------- api 요청 ---------- */
-async function deleteSocketId() {
-  try {
-    const response = await fetch("/room/delete_socketId", {
-      method: "POST",
-    });
+/* ---------- 중복 접속 ---------- */
+// 탭 카운트를 증가
+function plusTabCount() {
+  const tabCount = Number(localStorage.getItem("tabCount") || 0);
 
-    return response.json();
-  } catch (error) {
-    console.log(error);
+  localStorage.setItem("tabCount", tabCount + 1);
+}
+
+// 탭 카운트를 감소
+function minusTabCount() {
+  const tabCount = Number(localStorage.getItem("tabCount") || 0);
+
+  if (tabCount > 1) {
+    localStorage.setItem("tabCount", tabCount - 1);
+  } else {
+    localStorage.removeItem("tabCount");
   }
 }
 
-async function saveSocketId(socketId) {
-  try {
-    const response = await fetch("/room/save_socketId", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ socketId }),
-    });
+// 중복 여부 체크
+function getIsDuplicated() {
+  const tabCount = Number(localStorage.getItem("tabCount") || 0);
 
-    return response.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function checkSocketId() {
-  try {
-    const response = await fetch("/room/check_socketId", {
-      method: "GET",
-    });
-
-    return response.json();
-  } catch (error) {
-    console.log(error);
-  }
+  return tabCount > 1;
 }
