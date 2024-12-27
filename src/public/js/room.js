@@ -1,7 +1,5 @@
-/* ---------- common ---------- */
-window.addEventListener("beforeunload", () => {
-  minusTabCount();
-});
+/* 공통 */
+window.addEventListener("beforeunload", () => minusTabCount());
 
 function exitRoom() {
   location.replace("/");
@@ -36,7 +34,7 @@ function initRoomInfo() {
   p.classList.add("loading_msg");
   chatList.append(p);
 
-  // 변경 기회 초기화
+  // 시간 변경 & 금칙어 맞추기 기회 초기화
   timeChances = 3;
   guessChances = 3;
 
@@ -47,12 +45,12 @@ function initRoomInfo() {
   input.value = "";
 }
 
-/* ---------- socket ---------- */
+/* 소켓 */
 let socket;
 let isMatched = false;
 let timeoutIds = [];
 
-// >>>> 시작 지점 <<<<
+// >> 시작 지점 <<
 connectSocket();
 
 function setSocketListeners() {
@@ -66,9 +64,7 @@ function setSocketListeners() {
     console.log("[connect] 연결된 소켓:", socketId);
   });
 
-  socket.on("time_change", (time) => {
-    setFormattedTimer(time);
-  });
+  socket.on("time_change", (time) => setFormattedTimer(time));
 
   socket.on("send_welcome", (roomName, topic) => {
     const loadingMsg = document.querySelector("p.loading_msg");
@@ -131,9 +127,9 @@ function setSocketListeners() {
     chatScrollToBottom();
   });
 
-  socket.on("send_forbiddenWord", (forbiddenWord) => {
-    sendForbiddenWord(forbiddenWord);
-  });
+  socket.on("send_forbiddenWord", (forbiddenWord) =>
+    sendForbiddenWord(forbiddenWord)
+  );
 
   socket.on("adjust_time", (time) => {
     setFormattedTimer(time);
@@ -161,9 +157,7 @@ function setSocketListeners() {
     chatScrollToBottom();
   });
 
-  socket.on("user_lost_process", () => {
-    socket.emit("user_lost_process");
-  });
+  socket.on("user_lost_process", () => socket.emit("user_lost_process"));
 
   socket.on("user_lost", (forbiddenWord) => {
     isMatched = false;
@@ -172,9 +166,7 @@ function setSocketListeners() {
     setTimeout(() => showWinLossModal("🥲 패배", forbiddenWord), 1500);
   });
 
-  socket.on("user_won_process", () => {
-    socket.emit("user_won_process");
-  });
+  socket.on("user_won_process", () => socket.emit("user_won_process"));
 
   socket.on("user_won", (forbiddenWord) => {
     isMatched = false;
@@ -223,14 +215,14 @@ function connectSocket() {
   }
 }
 
-/* ---------- 헤더 ---------- */
+/* 헤더 */
 const exitButton = document.querySelector("span.exit_button");
 
-exitButton.addEventListener("click", () => {
-  isMatched ? showExitModal() : exitRoom();
-});
+exitButton.addEventListener("click", () =>
+  isMatched ? showExitModal() : exitRoom()
+);
 
-/* ---------- 채팅창 ---------- */
+/* 채팅 창 */
 const chatList = document.querySelector("div.chat_list");
 const messagePreview = document.querySelector("div.message_preview");
 const scrolldownButton = document.querySelector("span.scrolldown_button");
@@ -257,19 +249,19 @@ chatList.addEventListener("scroll", () => {
   }
 });
 
-messagePreview.addEventListener("click", () => {
+messagePreview.addEventListener("click", () =>
   chatList.scrollTo({
     top: chatList.scrollHeight,
     behavior: "smooth",
-  });
-});
+  })
+);
 
-scrolldownButton.addEventListener("click", () => {
+scrolldownButton.addEventListener("click", () =>
   chatList.scrollTo({
     top: chatList.scrollHeight,
     behavior: "smooth",
-  });
-});
+  })
+);
 
 guessButton.addEventListener("click", () => {
   if (isMatched) {
@@ -415,7 +407,7 @@ function showMessagePreview(msg) {
   scrolldownButton.classList.remove("active");
 }
 
-/* ---------- 시간 변경 버튼 ---------- */
+/* 시간 변경 버튼 */
 const extendButton = document.querySelector("span.extend_button");
 const shortenButton = document.querySelector("span.shorten_button");
 
@@ -437,7 +429,7 @@ function adjustTime(amount) {
   }
 }
 
-/* ---------- 메시지 입력창 ---------- */
+/* 메시지 입력 창 */
 const messageForm = document.querySelector("form.message_form");
 
 messageForm.addEventListener("submit", (e) => {
@@ -455,7 +447,7 @@ messageForm.addEventListener("submit", (e) => {
   }
 });
 
-/* ---------- 모달창 ---------- */
+/* 퇴장 모달 창 */
 function showExitModal() {
   const exitModal = document.querySelector("dialog.exit_modal");
   const modalCloseButton = exitModal.querySelector("button.modal_closeBtn");
@@ -481,6 +473,7 @@ function showExitModal() {
   exitModal.showModal();
 }
 
+/* 결과 모달 창 */
 function showResultModal(title, desc) {
   const resultModal = document.querySelector("dialog.result_modal");
   const h2 = resultModal.querySelector("h2");
@@ -513,6 +506,7 @@ function showResultModal(title, desc) {
   resultModal.showModal();
 }
 
+/* 승리 패배 모달 창 */
 function showWinLossModal(title, forbiddenWord) {
   const winLossModal = document.querySelector("dialog.winLoss_modal");
   const h2 = winLossModal.querySelector("h2");
@@ -545,6 +539,7 @@ function showWinLossModal(title, forbiddenWord) {
   winLossModal.showModal();
 }
 
+/* 금칙어 맞추기 모달 창 */
 let guessChances = 3;
 
 function showGuessModal() {
@@ -581,15 +576,13 @@ function showGuessModal() {
   guessModal.showModal();
 }
 
-/* ---------- 중복 접속 ---------- */
-// 탭 카운트를 증가
+/* 중복 접속 */
 function plusTabCount() {
   const tabCount = Number(localStorage.getItem("tabCount") || 0);
 
   localStorage.setItem("tabCount", tabCount + 1);
 }
 
-// 탭 카운트를 감소
 function minusTabCount() {
   const tabCount = Number(localStorage.getItem("tabCount") || 0);
 
@@ -600,7 +593,6 @@ function minusTabCount() {
   }
 }
 
-// 중복 여부 체크
 function getIsDuplicated() {
   const tabCount = Number(localStorage.getItem("tabCount") || 0);
 

@@ -7,6 +7,7 @@ div#room_container {
   overflow: hidden;
 }
 
+/* 헤더 */
 header.room_header {
   display: flex;
   position: relative;
@@ -48,6 +49,7 @@ header.room_header > span.timer {
   transform: translateY(-50%);
 }
 
+/* 채팅 창 */
 div.chat_list {
   padding: 0 1.5rem 1.5rem 1.5rem;
   flex: 1 1 0%;
@@ -132,6 +134,7 @@ div.chat_list > div.my_msg > p > span {
   }
 }
 
+/* 메시지 입력 창 */
 form.message_form {
   display: flex;
   position: relative;
@@ -268,6 +271,7 @@ form.message_form > div.input_container > button {
   border-radius: 50%;
 }
 
+/* 모달 창 */
 dialog {
   top: 50%;
   left: 50%;
