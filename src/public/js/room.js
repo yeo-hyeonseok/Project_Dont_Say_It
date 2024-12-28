@@ -1,9 +1,7 @@
-/* ---------- common ---------- */
-function exitRoom() {
-  deleteSocketId()
-    .then((result) => console.log(result.message))
-    .catch((error) => console.error(error));
+/* 공통 */
+window.addEventListener("beforeunload", () => minusTabCount());
 
+function exitRoom() {
   location.replace("/");
 }
 
@@ -36,15 +34,9 @@ function initRoomInfo() {
   p.classList.add("loading_msg");
   chatList.append(p);
 
-  // 변경 기회 초기화
-  const remainTimeChances = document.querySelector("span.time_chances");
-  const remainGuessChances = document.querySelector("span.guess_chances");
-
+  // 시간 변경 & 금칙어 맞추기 기회 초기화
   timeChances = 3;
-  remainTimeChances.textContent = timeChances;
-
   guessChances = 3;
-  remainGuessChances.textContent = guessChances;
 
   // 입력창 초기화
   const messageForm = document.querySelector("form.message_form");
@@ -53,10 +45,13 @@ function initRoomInfo() {
   input.value = "";
 }
 
-/* ---------- socket ---------- */
+/* 소켓 */
 let socket;
 let isMatched = false;
 let timeoutIds = [];
+
+// >> 시작 지점 <<
+connectSocket();
 
 function setSocketListeners() {
   if (!socket) return;
@@ -67,15 +62,9 @@ function setSocketListeners() {
     const socketId = socket.id;
 
     console.log("[connect] 연결된 소켓:", socketId);
-
-    saveSocketId(socketId)
-      .then((result) => console.log(result.message))
-      .catch((error) => console.error(error));
   });
 
-  socket.on("time_change", (time) => {
-    setFormattedTimer(time);
-  });
+  socket.on("time_change", (time) => setFormattedTimer(time));
 
   socket.on("send_welcome", (roomName, topic) => {
     const loadingMsg = document.querySelector("p.loading_msg");
@@ -138,9 +127,9 @@ function setSocketListeners() {
     chatScrollToBottom();
   });
 
-  socket.on("send_forbiddenWord", (forbiddenWord) => {
-    sendForbiddenWord(forbiddenWord);
-  });
+  socket.on("send_forbiddenWord", (forbiddenWord) =>
+    sendForbiddenWord(forbiddenWord)
+  );
 
   socket.on("adjust_time", (time) => {
     setFormattedTimer(time);
@@ -168,9 +157,7 @@ function setSocketListeners() {
     chatScrollToBottom();
   });
 
-  socket.on("user_lost_process", () => {
-    socket.emit("user_lost_process");
-  });
+  socket.on("user_lost_process", () => socket.emit("user_lost_process"));
 
   socket.on("user_lost", (forbiddenWord) => {
     isMatched = false;
@@ -179,9 +166,7 @@ function setSocketListeners() {
     setTimeout(() => showWinLossModal("🥲 패배", forbiddenWord), 1500);
   });
 
-  socket.on("user_won_process", () => {
-    socket.emit("user_won_process");
-  });
+  socket.on("user_won_process", () => socket.emit("user_won_process"));
 
   socket.on("user_won", (forbiddenWord) => {
     isMatched = false;
@@ -220,31 +205,24 @@ function setSocketListeners() {
 }
 
 function connectSocket() {
-  checkSocketId()
-    .then((result) => {
-      console.log(result.message);
+  plusTabCount();
 
-      if (result.isExist) {
-        notifyDuplicate();
-      } else {
-        socket = io();
-        setSocketListeners();
-      }
-    })
-    .catch((error) => console.error(error));
+  if (getIsDuplicated()) {
+    notifyDuplicate();
+  } else {
+    socket = io();
+    setSocketListeners();
+  }
 }
 
-// >>>> 시작 지점 <<<<
-connectSocket();
-
-/* ---------- 헤더 ---------- */
+/* 헤더 */
 const exitButton = document.querySelector("span.exit_button");
 
-exitButton.addEventListener("click", () => {
-  isMatched ? showExitModal() : exitRoom();
-});
+exitButton.addEventListener("click", () =>
+  isMatched ? showExitModal() : exitRoom()
+);
 
-/* ---------- 채팅창 ---------- */
+/* 채팅 창 */
 const chatList = document.querySelector("div.chat_list");
 const messagePreview = document.querySelector("div.message_preview");
 const scrolldownButton = document.querySelector("span.scrolldown_button");
@@ -271,19 +249,19 @@ chatList.addEventListener("scroll", () => {
   }
 });
 
-messagePreview.addEventListener("click", () => {
+messagePreview.addEventListener("click", () =>
   chatList.scrollTo({
     top: chatList.scrollHeight,
     behavior: "smooth",
-  });
-});
+  })
+);
 
-scrolldownButton.addEventListener("click", () => {
+scrolldownButton.addEventListener("click", () =>
   chatList.scrollTo({
     top: chatList.scrollHeight,
     behavior: "smooth",
-  });
-});
+  })
+);
 
 guessButton.addEventListener("click", () => {
   if (isMatched) {
@@ -297,9 +275,9 @@ function notifyDuplicate() {
   const loadingMsg = document.querySelector("p.loading_msg");
   const br = document.createElement("br");
 
-  loadingMsg.textContent = "접속 중 문제가 발생했습니다.";
+  loadingMsg.textContent = "이미 참여 중인 게임이 있습니다.";
   loadingMsg.append(br);
-  loadingMsg.append(document.createTextNode("나가기 버튼을 클릭해주세요."));
+  loadingMsg.append(document.createTextNode("뒤로 가기 버튼을 클릭해주세요."));
 }
 
 function sendNotice(msg) {
@@ -429,7 +407,7 @@ function showMessagePreview(msg) {
   scrolldownButton.classList.remove("active");
 }
 
-/* ---------- 시간 변경 버튼 ---------- */
+/* 시간 변경 버튼 */
 const extendButton = document.querySelector("span.extend_button");
 const shortenButton = document.querySelector("span.shorten_button");
 
@@ -445,18 +423,13 @@ shortenButton.addEventListener("click", () => {
 
 function adjustTime(amount) {
   if (timeChances > 0) {
-    socket.emit("adjust_time", amount, () => {
-      const remainTimeChances = document.querySelector("span.time_chances");
-
-      timeChances--;
-      remainTimeChances.textContent = timeChances;
-    });
+    socket.emit("adjust_time", amount, timeChances - 1, () => timeChances--);
   } else {
     printToastMsg("더 이상 시간 변경이 불가능합니다.");
   }
 }
 
-/* ---------- 메시지 입력창 ---------- */
+/* 메시지 입력 창 */
 const messageForm = document.querySelector("form.message_form");
 
 messageForm.addEventListener("submit", (e) => {
@@ -474,7 +447,7 @@ messageForm.addEventListener("submit", (e) => {
   }
 });
 
-/* ---------- 모달창 ---------- */
+/* 퇴장 모달 창 */
 function showExitModal() {
   const exitModal = document.querySelector("dialog.exit_modal");
   const modalCloseButton = exitModal.querySelector("button.modal_closeBtn");
@@ -500,6 +473,7 @@ function showExitModal() {
   exitModal.showModal();
 }
 
+/* 결과 모달 창 */
 function showResultModal(title, desc) {
   const resultModal = document.querySelector("dialog.result_modal");
   const h2 = resultModal.querySelector("h2");
@@ -532,6 +506,7 @@ function showResultModal(title, desc) {
   resultModal.showModal();
 }
 
+/* 승리 패배 모달 창 */
 function showWinLossModal(title, forbiddenWord) {
   const winLossModal = document.querySelector("dialog.winLoss_modal");
   const h2 = winLossModal.querySelector("h2");
@@ -564,15 +539,26 @@ function showWinLossModal(title, forbiddenWord) {
   winLossModal.showModal();
 }
 
+/* 금칙어 맞추기 모달 창 */
 let guessChances = 3;
 
 function showGuessModal() {
   const guessModal = document.querySelector("dialog.guess_modal");
   const guessForm = guessModal.querySelector("form.guess_form");
-  const remainGuessChances = guessModal.querySelector("span.guess_chances");
   const exitButton = guessModal.querySelector("button.modal_exitBtn");
 
-  remainGuessChances.textContent = guessChances;
+  const guessWord = (e) => {
+    e.preventDefault();
+
+    const input = guessForm.querySelector("input");
+
+    socket.emit("guess_word", input.value, guessChances - 1, () => {
+      guessChances--;
+      input.value = "";
+
+      guessModal.close();
+    });
+  };
 
   guessModal.addEventListener("keydown", (event) => {
     if (event.key === "Escape") event.preventDefault();
@@ -580,66 +566,35 @@ function showGuessModal() {
 
   guessModal.addEventListener("cancel", (e) => e.preventDefault());
 
-  exitButton.addEventListener("click", () => guessModal.close());
+  exitButton.addEventListener("click", () => {
+    guessForm.removeEventListener("submit", guessWord);
+    guessModal.close();
+  });
 
-  guessForm.addEventListener(
-    "submit",
-    (e) => {
-      e.preventDefault();
-
-      const input = guessForm.querySelector("input");
-
-      socket.emit("guess_word", input.value, () => {
-        guessChances--;
-        remainGuessChances.textContent = guessChances;
-        input.value = "";
-
-        guessModal.close();
-      });
-    },
-    { once: true }
-  );
+  guessForm.addEventListener("submit", guessWord, { once: true });
 
   guessModal.showModal();
 }
 
-/* ---------- api 요청 ---------- */
-async function deleteSocketId() {
-  try {
-    const response = await fetch("/room/delete_socketId", {
-      method: "POST",
-    });
+/* 중복 접속 */
+function plusTabCount() {
+  const tabCount = Number(localStorage.getItem("tabCount") || 0);
 
-    return response.json();
-  } catch (error) {
-    console.log(error);
+  localStorage.setItem("tabCount", tabCount + 1);
+}
+
+function minusTabCount() {
+  const tabCount = Number(localStorage.getItem("tabCount") || 0);
+
+  if (tabCount > 1) {
+    localStorage.setItem("tabCount", tabCount - 1);
+  } else {
+    localStorage.removeItem("tabCount");
   }
 }
 
-async function saveSocketId(socketId) {
-  try {
-    const response = await fetch("/room/save_socketId", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ socketId }),
-    });
+function getIsDuplicated() {
+  const tabCount = Number(localStorage.getItem("tabCount") || 0);
 
-    return response.json();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-async function checkSocketId() {
-  try {
-    const response = await fetch("/room/check_socketId", {
-      method: "GET",
-    });
-
-    return response.json();
-  } catch (error) {
-    console.log(error);
-  }
+  return tabCount > 1;
 }

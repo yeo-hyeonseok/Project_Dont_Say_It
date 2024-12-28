@@ -1,4 +1,4 @@
-/* 다크 모드 */
+/* 다크 모드 설정 */
 const darkModeToggle = document.querySelector("input#toggle");
 
 if (localStorage.getItem("theme") === "dark") {

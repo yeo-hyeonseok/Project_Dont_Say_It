@@ -84,21 +84,34 @@ function setWebSocket(server: http.Server) {
       }, 1000);
     });
 
-    socket.on("adjust_time", (amount: number, done: () => void) => {
-      if (time === 180) return;
+    socket.on(
+      "adjust_time",
+      (amount: number, timeChances: number, done: () => void) => {
+        if (time === 180) return;
 
-      if (amount > 0 ? time <= 160 : time >= 20) {
-        time += amount;
+        if (amount > 0 ? time <= 160 : time >= 20) {
+          time += amount;
 
-        io.to(roomName).emit("adjust_time", time);
-        io.to(roomName).emit(
-          "send_notice",
-          socket.id,
-          amount > 0 ? "시간을 연장했습니다." : "시간을 단축했습니다."
-        );
-        done();
+          io.to(roomName).emit("adjust_time", time);
+          socket
+            .to(roomName)
+            .emit(
+              "send_notice",
+              socket.id,
+              amount > 0 ? "시간을 연장했습니다." : "시간을 단축했습니다."
+            );
+          socket.emit(
+            "send_notice",
+            socket.id,
+            amount > 0
+              ? `시간을 연장했습니다. (남은 기회: ${timeChances})`
+              : `시간을 단축했습니다. (남은 기회: ${timeChances})`
+          );
+
+          done();
+        }
       }
-    });
+    );
 
     socket.on("sync_time", (currentTime) => {
       time = currentTime;
@@ -123,20 +136,27 @@ function setWebSocket(server: http.Server) {
       }
     });
 
-    socket.on("guess_word", (word: string, done: () => void) => {
-      if (word === forbiddenWord) {
-        socket.emit("send_notice", socket.id, "금칙어를 맞췄습니다!");
-        socket.emit("user_won_process");
-        socket
-          .to(roomName)
-          .emit("send_notice", socket.id, "금칙어를 맞췄습니다!");
-        socket.to(roomName).emit("user_lost_process");
-      } else {
-        socket.emit("send_notice", socket.id, "금칙어를 맞추지 못했습니다.");
-      }
+    socket.on(
+      "guess_word",
+      (word: string, guessChances: number, done: () => void) => {
+        if (word === forbiddenWord) {
+          socket.emit("send_notice", socket.id, "금칙어를 맞췄습니다!");
+          socket.emit("user_won_process");
+          socket
+            .to(roomName)
+            .emit("send_notice", socket.id, "금칙어를 맞췄습니다!");
+          socket.to(roomName).emit("user_lost_process");
+        } else {
+          socket.emit(
+            "send_notice",
+            socket.id,
+            `금칙어를 맞추지 못했습니다. (남은 기회: ${guessChances})`
+          );
+        }
 
-      done();
-    });
+        done();
+      }
+    );
 
     socket.on("user_lost_process", () => {
       socket.emit("user_lost", forbiddenWord);

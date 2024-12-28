@@ -4,7 +4,7 @@ block content
     div#room_container
         header.room_header 
             span.exit_button 
-                i.fa-solid.fa-chevron-left
+                i.fa-solid.fa-arrow-left
             div.word_container 
                 p 상대방의 금칙어
                 span.forbidden_word
@@ -14,17 +14,15 @@ block content
         form.message_form     
             div.message_preview
                 label 상대
-                p 
+                p
                 span
                     i.fa-solid.fa-angle-down   
             span.scrolldown_button.box-shadow
-                i.fa-solid.fa-arrow-down   
-            span.guess_button.box-shadow.active
-                i.fa-solid.fa-pen-to-square
-            div.time_control
-                p 변경 기회: 
-                    span.time_chances 3  
-                div 
+                i.fa-solid.fa-arrow-down               
+            div.control_container
+                span.guess_button
+                    i.fa-solid.fa-pen-to-square  금칙어 맞추기
+                div.time_controls
                     span.extend_button 
                         i.fa-solid.fa-plus  시간 연장
                     span.shorten_button 

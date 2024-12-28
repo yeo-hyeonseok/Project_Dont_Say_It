@@ -27,10 +27,15 @@ app.use(
       useDefaults: false,
       directives: {
         ...otherDefaultDirectives,
+        "script-src": [
+          "'self'",
+          "'sha256-5+YTmTcBwCYdJ8Jetbr6kyjGp0Ry/H7ptpoun6CrSwQ='",
+        ],
       },
     },
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
