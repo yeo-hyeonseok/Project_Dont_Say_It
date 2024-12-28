@@ -58,15 +58,9 @@ function setSocketListeners() {
 
   socket.emit("enter_room");
 
-  socket.on("connect", () => {
-    const socketId = socket.id;
-
-    console.log("[connect] 연결된 소켓:", socketId);
-  });
-
   socket.on("time_change", (time) => setFormattedTimer(time));
 
-  socket.on("send_welcome", (roomName, topic) => {
+  socket.on("send_welcome", (topic) => {
     const loadingMsg = document.querySelector("p.loading_msg");
 
     loadingMsg.style.display = "none";
@@ -79,7 +73,7 @@ function setSocketListeners() {
       setTimeout(() => {
         if (!isMatched) return;
 
-        sendNotice(`[${roomName}] 상대방이 입장했습니다.`);
+        sendNotice(`상대방이 입장했습니다.`);
       }, 0)
     );
 
