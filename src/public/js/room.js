@@ -57,7 +57,7 @@ function setSocketListeners() {
   if (!socket) return;
 
   socket.emit("enter_room");
-
+  
   socket.on("time_change", (time) => setFormattedTimer(time));
 
   socket.on("send_welcome", (topic) => {
