@@ -51,7 +51,7 @@ function setWebSocket(server: http.Server) {
         roomName = filtered[getRandomIndex(filtered.length)][0];
 
         socket.join(roomName);
-        io.to(roomName).emit("send_welcome", roomName, getRandomTopic());
+        io.to(roomName).emit("send_welcome", getRandomTopic());
       } else {
         // 빈 방 없으면 방 생성
         roomName = shortid.generate();
