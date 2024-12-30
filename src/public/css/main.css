@@ -120,7 +120,30 @@ dialog.tip_modal > div.modal_container > div.desc_container {
   flex: 1 1 0%;
   flex-direction: column;
   gap: 1rem;
-  overflow: scroll;
+  overflow-y: scroll;
+}
+
+dialog.tip_modal > div.modal_container > div.desc_container::-webkit-scrollbar {
+  width: 4px;
+}
+
+dialog.tip_modal
+  > div.modal_container
+  > div.desc_container::-webkit-scrollbar-thumb {
+  background-color: var(--info-color);
+  border-radius: 10px;
+}
+
+dialog.tip_modal
+  > div.modal_container
+  > div.desc_container.show_scrollbar::-webkit-scrollbar-thumb {
+  background: var(--info-color);
+}
+
+dialog.tip_modal
+  > div.modal_container
+  > div.desc_container::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 dialog.tip_modal > div.modal_container > div.desc_container > div {
