@@ -1,15 +1,34 @@
 /* 다크 모드 설정 */
 const darkModeToggle = document.querySelector("input#toggle");
 
-if (localStorage.getItem("theme") === "dark") {
-  darkModeToggle.checked = true;
-  toggleThemeIcon();
+darkModeToggle.addEventListener("change", () => {
+  applyDarkMode(darkModeToggle.checked);
+  toggleThemeIcon(darkModeToggle.checked);
+});
+
+initializeTheme();
+
+function initializeTheme() {
+  const userTheme = localStorage.getItem("theme");
+  const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+
+  const themeToApply = userTheme || systemTheme;
+
+  if (themeToApply === "dark") {
+    darkModeToggle.checked = true;
+    applyDarkMode(true);
+  } else {
+    darkModeToggle.checked = false;
+    applyDarkMode(false);
+  }
+
+  toggleThemeIcon(darkModeToggle.checked);
 }
 
-darkModeToggle.addEventListener("change", () => {
-  toggleThemeIcon();
-
-  if (darkModeToggle.checked) {
+function applyDarkMode(isDark) {
+  if (isDark) {
     document.documentElement.setAttribute("data-theme", "dark");
     document
       .querySelector('meta[name="theme-color"]')
@@ -24,13 +43,19 @@ darkModeToggle.addEventListener("change", () => {
 
     localStorage.setItem("theme", "light");
   }
-});
+}
 
-function toggleThemeIcon() {
+function toggleThemeIcon(isDark) {
   const darkModeButton = document.querySelector("div.darkmode_button");
   const icons = darkModeButton.querySelectorAll("i");
 
-  icons.forEach((item) => item.classList.toggle("inactive"));
+  if (isDark) {
+    icons[0].classList.add("inactive");
+    icons[1].classList.remove("inactive");
+  } else {
+    icons[0].classList.remove("inactive");
+    icons[1].classList.add("inactive");
+  }
 }
 
 /* 게임 방법 모달창 */
