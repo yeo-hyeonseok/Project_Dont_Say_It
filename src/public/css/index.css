@@ -49,7 +49,6 @@ main#layout {
   flex: 1 1 0%;
   flex-direction: column;
   transition: background-color 0.5s ease;
-  min-height: 42rem;
 }
 
 input:focus {

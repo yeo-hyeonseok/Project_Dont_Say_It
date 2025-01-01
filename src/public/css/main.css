@@ -5,6 +5,14 @@ div#main_container {
   flex-direction: column;
   justify-content: space-between;
   user-select: none;
+  overflow-y: scroll;
+  gap: 2rem;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+div#main_container::-webkit-scrollbar {
+  display: none;
 }
 
 /* 헤더 */
