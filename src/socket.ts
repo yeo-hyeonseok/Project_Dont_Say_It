@@ -37,7 +37,7 @@ function setWebSocket(server: http.Server) {
     console.log("소켓 연결됨:", socket.id);
 
     let roomName: string;
-    let time = 180;
+    let time = 300;
     let timeInterval: NodeJS.Timeout | undefined;
     let forbiddenWord: string;
 
@@ -67,7 +67,7 @@ function setWebSocket(server: http.Server) {
     });
 
     socket.on("init_timer", () => {
-      time = 180;
+      time = 300;
     });
 
     socket.on("start_timer", () => {
@@ -87,9 +87,9 @@ function setWebSocket(server: http.Server) {
     socket.on(
       "adjust_time",
       (amount: number, timeChances: number, done: () => void) => {
-        if (time === 180) return;
+        if (time === 300) return;
 
-        if (amount > 0 ? time <= 160 : time >= 20) {
+        if (amount > 0 ? time <= 270 : time >= 30) {
           time += amount;
 
           io.to(roomName).emit("adjust_time", time);
@@ -118,7 +118,7 @@ function setWebSocket(server: http.Server) {
     });
 
     socket.on("send_message", (msg: string, done: () => void) => {
-      if (time === 180) return;
+      if (time === 300) return;
 
       if (msg.includes(forbiddenWord)) {
         io.to(roomName).emit(
@@ -170,7 +170,7 @@ function setWebSocket(server: http.Server) {
       socket.leave(roomName);
 
       clearInterval(timeInterval);
-      time = 180;
+      time = 300;
       roomName = "";
     });
 
