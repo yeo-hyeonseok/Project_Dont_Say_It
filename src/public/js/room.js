@@ -21,7 +21,7 @@ function initRoomInfo() {
   wordContainer.style.visibility = "hidden";
 
   // 타이머 초기화
-  setFormattedTimer(180);
+  setFormattedTimer(300);
 
   socket.emit("init_timer");
 
@@ -57,7 +57,7 @@ function setSocketListeners() {
   if (!socket) return;
 
   socket.emit("enter_room");
-  
+
   socket.on("time_change", (time) => setFormattedTimer(time));
 
   socket.on("send_welcome", (topic) => {
@@ -408,11 +408,11 @@ const shortenButton = document.querySelector("span.shorten_button");
 let timeChances = 3;
 
 extendButton.addEventListener("click", () => {
-  if (isMatched) adjustTime(20);
+  if (isMatched) adjustTime(30);
 });
 
 shortenButton.addEventListener("click", () => {
-  if (isMatched) adjustTime(-20);
+  if (isMatched) adjustTime(-30);
 });
 
 function adjustTime(amount) {
