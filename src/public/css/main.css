@@ -66,22 +66,30 @@ div.main_body > img {
   width: 85%;
 }
 
-div.main_body > button.google_login {
+div.main_body > button.social_login {
   display: flex;
   width: 100%;
   padding: 0.8rem;
   border: none;
-  border: 1px solid #d6d6d6;
-  color: #0000008a;
-  background-color: #fff;
   align-items: center;
   justify-content: space-between;
   outline: none;
-  border-radius: 0.8rem;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
-div.main_body > button.google_login > p {
+div.main_body > button.google_login {
+  border: 1px solid #d6d6d6;
+  color: #0000008a;
+  background-color: #fff;
+}
+
+div.main_body > button.naver_login {
+  color: #fff;
+  background-color: #03c75a;
+}
+
+div.main_body > button.social_login > p {
   font-size: 1rem;
   flex: 1;
 }
