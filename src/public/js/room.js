@@ -6,19 +6,19 @@ function exitRoom() {
 }
 
 function setFormattedTimer(time) {
-  const timer = document.querySelector("span.timer");
+  const $timer = document.querySelector("span.timer");
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
 
-  timer.textContent = `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
+  $timer.textContent = `${minutes}:${seconds > 9 ? seconds : `0${seconds}`}`;
 }
 
 function initRoomInfo() {
   // 상대방 금칙어 숨기기
-  const wordContainer = document.querySelector("div.word_container");
+  const $wordContainer = document.querySelector("div.word_container");
 
-  wordContainer.style.visibility = "hidden";
+  $wordContainer.style.visibility = "hidden";
 
   // 타이머 초기화
   setFormattedTimer(300);
@@ -26,23 +26,23 @@ function initRoomInfo() {
   socket.emit("init_timer");
 
   // 채팅 기록 삭제 후, 로딩 메시지 띄우기
-  const chatList = document.querySelector("div.chat_list");
-  const p = document.createElement("p");
+  const $chatList = document.querySelector("div.chat_list");
+  const $p = document.createElement("p");
 
-  chatList.innerHTML = "";
-  p.textContent = "상대방을 기다리는 중입니다...";
-  p.classList.add("loading_msg");
-  chatList.append(p);
+  $chatList.innerHTML = "";
+  $p.textContent = "상대방을 기다리는 중입니다...";
+  $p.classList.add("loading_msg");
+  $chatList.append($p);
 
   // 시간 변경 & 금칙어 맞추기 기회 초기화
   timeChances = 3;
   guessChances = 3;
 
   // 입력창 초기화
-  const messageForm = document.querySelector("form.message_form");
-  const input = messageForm.querySelector("input");
+  const $messageForm = document.querySelector("form.message_form");
+  const $input = $messageForm.querySelector("input");
 
-  input.value = "";
+  $input.value = "";
 }
 
 /* 소켓 */
@@ -57,13 +57,13 @@ function setSocketListeners() {
   if (!socket) return;
 
   socket.emit("enter_room");
-  
+
   socket.on("time_change", (time) => setFormattedTimer(time));
 
   socket.on("send_welcome", (topic) => {
-    const loadingMsg = document.querySelector("p.loading_msg");
+    const $loadingMsg = document.querySelector("p.loading_msg");
 
-    loadingMsg.style.display = "none";
+    $loadingMsg.style.display = "none";
     isMatched = true;
 
     timeoutIds.forEach((item) => clearTimeout(item));
@@ -133,8 +133,8 @@ function setSocketListeners() {
 
   socket.on("send_message", (msg) => {
     if (
-      chatList.scrollTop + chatList.clientHeight >=
-      chatList.scrollHeight - 20
+      $chatList.scrollTop + $chatList.clientHeight >=
+      $chatList.scrollHeight - 20
     ) {
       sendOtherMessage(msg);
       chatScrollToBottom();
@@ -190,10 +190,10 @@ function setSocketListeners() {
   });
 
   socket.on("disconnect", () => {
-    const modals = document.querySelectorAll("dialog");
+    const $modals = document.querySelectorAll("dialog");
 
     isMatched = false;
-    modals.forEach((modal) => modal.close());
+    $modals.forEach((modal) => modal.close());
     showResultModal("😮 연결 끊김", "상대방과의 연결이 끊어졌습니다.");
   });
 }
@@ -210,54 +210,54 @@ function connectSocket() {
 }
 
 /* 헤더 */
-const exitButton = document.querySelector("span.exit_button");
+const $exitButton = document.querySelector("span.exit_button");
 
-exitButton.addEventListener("click", () =>
+$exitButton.addEventListener("click", () =>
   isMatched ? showExitModal() : exitRoom()
 );
 
 /* 채팅 창 */
-const chatList = document.querySelector("div.chat_list");
-const messagePreview = document.querySelector("div.message_preview");
-const scrolldownButton = document.querySelector("span.scrolldown_button");
-const guessButton = document.querySelector("span.guess_button");
+const $chatList = document.querySelector("div.chat_list");
+const $messagePreview = document.querySelector("div.message_preview");
+const $scrolldownButton = document.querySelector("span.scrolldown_button");
+const $guessButton = document.querySelector("span.guess_button");
 
-chatList.addEventListener("scroll", () => {
-  const guessButton = document.querySelector("span.guess_button");
-  const messagePreview = document.querySelector("div.message_preview");
+$chatList.addEventListener("scroll", () => {
+  const $guessButton = document.querySelector("span.guess_button");
+  const $messagePreview = document.querySelector("div.message_preview");
 
   if (
-    chatList.scrollTop + chatList.clientHeight >=
-    chatList.scrollHeight - 20
+    $chatList.scrollTop + $chatList.clientHeight >=
+    $chatList.scrollHeight - 20
   ) {
     // 채팅창 스크롤 최하단에 있을 때
-    scrolldownButton.classList.remove("active");
-    messagePreview.classList.remove("active");
-    guessButton.classList.add("active");
+    $scrolldownButton.classList.remove("active");
+    $messagePreview.classList.remove("active");
+    $guessButton.classList.add("active");
   } else {
     // 채팅창 스크롤 위에 있을 때
-    if (!messagePreview.classList.contains("active")) {
-      scrolldownButton.classList.add("active");
-      guessButton.classList.remove("active");
+    if (!$messagePreview.classList.contains("active")) {
+      $scrolldownButton.classList.add("active");
+      $guessButton.classList.remove("active");
     }
   }
 });
 
-messagePreview.addEventListener("click", () =>
-  chatList.scrollTo({
-    top: chatList.scrollHeight,
+$messagePreview.addEventListener("click", () =>
+  $chatList.scrollTo({
+    top: $chatList.scrollHeight,
     behavior: "smooth",
   })
 );
 
-scrolldownButton.addEventListener("click", () =>
-  chatList.scrollTo({
-    top: chatList.scrollHeight,
+$scrolldownButton.addEventListener("click", () =>
+  $chatList.scrollTo({
+    top: $chatList.scrollHeight,
     behavior: "smooth",
   })
 );
 
-guessButton.addEventListener("click", () => {
+$guessButton.addEventListener("click", () => {
   if (isMatched) {
     guessChances > 0
       ? showGuessModal()
@@ -266,152 +266,152 @@ guessButton.addEventListener("click", () => {
 });
 
 function notifyDuplicate() {
-  const loadingMsg = document.querySelector("p.loading_msg");
-  const br = document.createElement("br");
+  const $loadingMsg = document.querySelector("p.loading_msg");
+  const $br = document.createElement("br");
 
-  loadingMsg.textContent = "이미 참여 중인 게임이 있습니다.";
-  loadingMsg.append(br);
-  loadingMsg.append(document.createTextNode("뒤로 가기 버튼을 클릭해주세요."));
+  $loadingMsg.textContent = "이미 참여 중인 게임이 있습니다.";
+  $loadingMsg.append($br);
+  $loadingMsg.append(document.createTextNode("뒤로 가기 버튼을 클릭해주세요."));
 }
 
 function sendNotice(msg) {
-  const chatList = document.querySelector("div.chat_list");
-  const notice = document.createElement("p");
+  const $chatList = document.querySelector("div.chat_list");
+  const $notice = document.createElement("p");
 
-  notice.classList.add("notice");
-  notice.textContent = msg;
+  $notice.classList.add("notice");
+  $notice.textContent = msg;
 
-  chatList.append(notice);
+  $chatList.append($notice);
 }
 
 function sendForbiddenWord(word) {
-  const wordContainer = document.querySelector("div.word_container");
-  const forbiddenWord = document.querySelector("span.forbidden_word");
-  const chatList = document.querySelector("div.chat_list");
-  const notice = document.createElement("p");
-  const span = document.createElement("span");
+  const $wordContainer = document.querySelector("div.word_container");
+  const $forbiddenWord = document.querySelector("span.forbidden_word");
+  const $chatList = document.querySelector("div.chat_list");
+  const $notice = document.createElement("p");
+  const $span = document.createElement("span");
 
-  notice.classList.add("notice");
-  notice.textContent = "상대방의 금칙어는 ";
-  span.textContent = word;
-  notice.append(span);
-  notice.append(document.createTextNode("입니다."));
-  forbiddenWord.textContent = word;
-  wordContainer.style.visibility = "visible";
+  $notice.classList.add("notice");
+  $notice.textContent = "상대방의 금칙어는 ";
+  $span.textContent = word;
+  $notice.append($span);
+  $notice.append(document.createTextNode("입니다."));
+  $forbiddenWord.textContent = word;
+  $wordContainer.style.visibility = "visible";
 
-  chatList.append(notice);
+  $chatList.append($notice);
 }
 
 function sendOtherMessage(msg) {
-  const chatList = document.querySelector("div.chat_list");
-  const message = document.createElement("div");
-  const span = document.createElement("span");
-  const p = document.createElement("p");
+  const $chatList = document.querySelector("div.chat_list");
+  const $message = document.createElement("div");
+  const $span = document.createElement("span");
+  const $p = document.createElement("p");
 
-  message.classList.add("other_msg");
-  span.textContent = "상대";
-  p.textContent = msg;
+  $message.classList.add("other_msg");
+  $span.textContent = "상대";
+  $p.textContent = msg;
 
-  message.append(span);
-  message.append(p);
-  chatList.append(message);
+  $message.append($span);
+  $message.append($p);
+  $chatList.append($message);
 }
 
 function sendForbiddenMessage(msg, forbiddenWord) {
-  const chatList = document.querySelector("div.chat_list");
-  const message = document.createElement("div");
-  const label = document.createElement("span");
-  const p = document.createElement("p");
-  const accent = document.createElement("span");
+  const $chatList = document.querySelector("div.chat_list");
+  const $message = document.createElement("div");
+  const $label = document.createElement("span");
+  const $p = document.createElement("p");
+  const $accent = document.createElement("span");
 
   const forbiddenIndex = msg.indexOf(forbiddenWord);
 
   if (forbiddenIndex === -1) {
-    p.textContent = msg;
+    $p.textContent = msg;
   } else {
     const beforeForbidden = msg.slice(0, forbiddenIndex);
     const afterForbidden = msg.slice(forbiddenIndex + forbiddenWord.length);
 
-    p.textContent = beforeForbidden;
-    accent.textContent = forbiddenWord;
-    p.append(accent);
-    p.append(document.createTextNode(afterForbidden));
+    $p.textContent = beforeForbidden;
+    $accent.textContent = forbiddenWord;
+    $p.append($accent);
+    $p.append(document.createTextNode(afterForbidden));
   }
 
-  message.classList.add("other_msg");
-  label.textContent = "상대";
+  $message.classList.add("other_msg");
+  $label.textContent = "상대";
 
-  message.append(label);
-  message.append(p);
-  chatList.append(message);
+  $message.append($label);
+  $message.append($p);
+  $chatList.append($message);
 }
 
 function sendMyMessage(msg) {
-  const chatList = document.querySelector("div.chat_list");
-  const message = document.createElement("div");
-  const p = document.createElement("p");
+  const $chatList = document.querySelector("div.chat_list");
+  const $message = document.createElement("div");
+  const $p = document.createElement("p");
 
-  message.classList.add("my_msg");
-  p.textContent = msg;
+  $message.classList.add("my_msg");
+  $p.textContent = msg;
 
-  message.append(p);
-  chatList.append(message);
+  $message.append($p);
+  $chatList.append($message);
 }
 
 function sendMyForbiddenMessage(msg, forbiddenWord) {
-  const chatList = document.querySelector("div.chat_list");
-  const message = document.createElement("div");
-  const p = document.createElement("p");
-  const accent = document.createElement("span");
+  const $chatList = document.querySelector("div.chat_list");
+  const $message = document.createElement("div");
+  const $p = document.createElement("p");
+  const $accent = document.createElement("span");
 
   const forbiddenIndex = msg.indexOf(forbiddenWord);
 
   if (forbiddenIndex === -1) {
-    p.textContent = msg;
+    $p.textContent = msg;
   } else {
     const beforeForbidden = msg.slice(0, forbiddenIndex);
     const afterForbidden = msg.slice(forbiddenIndex + forbiddenWord.length);
 
-    p.textContent = beforeForbidden;
-    accent.textContent = forbiddenWord;
-    p.append(accent);
-    p.append(document.createTextNode(afterForbidden));
+    $p.textContent = beforeForbidden;
+    $accent.textContent = forbiddenWord;
+    $p.append($accent);
+    $p.append(document.createTextNode(afterForbidden));
   }
 
-  message.classList.add("my_msg");
+  $message.classList.add("my_msg");
 
-  message.append(p);
-  chatList.append(message);
+  $message.append($p);
+  $chatList.append($message);
 }
 
 function chatScrollToBottom() {
-  const chatList = document.querySelector("div.chat_list");
-  const scrollHeight = chatList.scrollHeight;
+  const $chatList = document.querySelector("div.chat_list");
+  const scrollHeight = $chatList.scrollHeight;
 
-  chatList.scrollTo(0, scrollHeight);
+  $chatList.scrollTo(0, scrollHeight);
 }
 
 function showMessagePreview(msg) {
-  const messagePreview = document.querySelector("div.message_preview");
-  const message = messagePreview.querySelector("p");
-  const scrolldownButton = document.querySelector("span.scrolldown_button");
+  const $messagePreview = document.querySelector("div.message_preview");
+  const $message = $messagePreview.querySelector("p");
+  const $scrolldownButton = document.querySelector("span.scrolldown_button");
 
-  message.textContent = msg;
-  messagePreview.classList.add("active");
-  scrolldownButton.classList.remove("active");
+  $message.textContent = msg;
+  $messagePreview.classList.add("active");
+  $scrolldownButton.classList.remove("active");
 }
 
 /* 시간 변경 버튼 */
-const extendButton = document.querySelector("span.extend_button");
-const shortenButton = document.querySelector("span.shorten_button");
+const $extendButton = document.querySelector("span.extend_button");
+const $shortenButton = document.querySelector("span.shorten_button");
 
 let timeChances = 3;
 
-extendButton.addEventListener("click", () => {
+$extendButton.addEventListener("click", () => {
   if (isMatched) adjustTime(30);
 });
 
-shortenButton.addEventListener("click", () => {
+$shortenButton.addEventListener("click", () => {
   if (isMatched) adjustTime(-30);
 });
 
@@ -424,18 +424,18 @@ function adjustTime(amount) {
 }
 
 /* 메시지 입력 창 */
-const messageForm = document.querySelector("form.message_form");
+const $messageForm = document.querySelector("form.message_form");
 
-messageForm.addEventListener("submit", (e) => {
+$messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const input = messageForm.querySelector("input");
+  const $input = $messageForm.querySelector("input");
 
-  if (isMatched && input.value.trim() !== "") {
-    socket.emit("send_message", input.value, () => {
-      sendMyMessage(input.value);
-      input.value = "";
-      input.focus();
+  if (isMatched && $input.value.trim() !== "") {
+    socket.emit("send_message", $input.value, () => {
+      sendMyMessage($input.value);
+      $input.value = "";
+      $input.focus();
       chatScrollToBottom();
     });
   }
@@ -443,12 +443,12 @@ messageForm.addEventListener("submit", (e) => {
 
 /* 퇴장 모달 창 */
 function showExitModal() {
-  const exitModal = document.querySelector("dialog.exit_modal");
-  const modalCloseButton = exitModal.querySelector("button.modal_closeBtn");
-  const modalExitButton = exitModal.querySelector("button.modal_exitBtn");
+  const $exitModal = document.querySelector("dialog.exit_modal");
+  const $modalCloseButton = $exitModal.querySelector("button.modal_closeBtn");
+  const $modalExitButton = $exitModal.querySelector("button.modal_exitBtn");
 
-  exitModal.addEventListener("click", function (e) {
-    const rect = exitModal.getBoundingClientRect();
+  $exitModal.addEventListener("click", function (e) {
+    const rect = $exitModal.getBoundingClientRect();
 
     if (
       e.clientX < rect.left ||
@@ -456,118 +456,118 @@ function showExitModal() {
       e.clientY < rect.top ||
       e.clientY > rect.bottom
     ) {
-      exitModal.close();
+      $exitModal.close();
     }
   });
 
-  modalCloseButton.addEventListener("click", () => exitModal.close());
+  $modalCloseButton.addEventListener("click", () => $exitModal.close());
 
-  modalExitButton.addEventListener("click", () => exitRoom());
+  $modalExitButton.addEventListener("click", () => exitRoom());
 
-  exitModal.showModal();
+  $exitModal.showModal();
 }
 
 /* 결과 모달 창 */
 function showResultModal(title, desc) {
-  const resultModal = document.querySelector("dialog.result_modal");
-  const h2 = resultModal.querySelector("h2");
-  const p = resultModal.querySelector("p");
-  const exitButton = resultModal.querySelector("button.modal_exitBtn");
-  const matchButton = resultModal.querySelector("button.modal_matchBtn");
+  const $resultModal = document.querySelector("dialog.result_modal");
+  const $h2 = $resultModal.querySelector("h2");
+  const $p = $resultModal.querySelector("p");
+  const $exitButton = $resultModal.querySelector("button.modal_exitBtn");
+  const $matchButton = $resultModal.querySelector("button.modal_matchBtn");
 
-  h2.textContent = title;
-  p.textContent = desc;
+  $h2.textContent = title;
+  $p.textContent = desc;
 
-  resultModal.addEventListener("keydown", (event) => {
+  $resultModal.addEventListener("keydown", (event) => {
     if (event.key === "Escape") event.preventDefault();
   });
 
-  resultModal.addEventListener("cancel", (e) => e.preventDefault());
+  $resultModal.addEventListener("cancel", (e) => e.preventDefault());
 
-  exitButton.addEventListener("click", () => exitRoom());
+  $exitButton.addEventListener("click", () => exitRoom());
 
-  matchButton.addEventListener(
+  $matchButton.addEventListener(
     "click",
     () => {
       initRoomInfo();
-      resultModal.close();
+      $resultModal.close();
 
       socket.emit("enter_room");
     },
     { once: true }
   );
 
-  resultModal.showModal();
+  $resultModal.showModal();
 }
 
 /* 승리 패배 모달 창 */
 function showWinLossModal(title, forbiddenWord) {
-  const winLossModal = document.querySelector("dialog.winLoss_modal");
-  const h2 = winLossModal.querySelector("h2");
-  const p = winLossModal.querySelector("p");
-  const exitButton = winLossModal.querySelector("button.modal_exitBtn");
-  const matchButton = winLossModal.querySelector("button.modal_matchBtn");
+  const $winLossModal = document.querySelector("dialog.winLoss_modal");
+  const $h2 = $winLossModal.querySelector("h2");
+  const $p = $winLossModal.querySelector("p");
+  const $exitButton = $winLossModal.querySelector("button.modal_exitBtn");
+  const $matchButton = $winLossModal.querySelector("button.modal_matchBtn");
 
-  h2.textContent = title;
-  p.textContent = forbiddenWord;
+  $h2.textContent = title;
+  $p.textContent = forbiddenWord;
 
-  winLossModal.addEventListener("keydown", (event) => {
+  $winLossModal.addEventListener("keydown", (event) => {
     if (event.key === "Escape") event.preventDefault();
   });
 
-  winLossModal.addEventListener("cancel", (e) => e.preventDefault());
+  $winLossModal.addEventListener("cancel", (e) => e.preventDefault());
 
-  exitButton.addEventListener("click", () => exitRoom());
+  $exitButton.addEventListener("click", () => exitRoom());
 
-  matchButton.addEventListener(
+  $matchButton.addEventListener(
     "click",
     () => {
       initRoomInfo();
-      winLossModal.close();
+      $winLossModal.close();
 
       socket.emit("enter_room");
     },
     { once: true }
   );
 
-  winLossModal.showModal();
+  $winLossModal.showModal();
 }
 
 /* 금칙어 맞추기 모달 창 */
 let guessChances = 3;
 
 function showGuessModal() {
-  const guessModal = document.querySelector("dialog.guess_modal");
-  const guessForm = guessModal.querySelector("form.guess_form");
-  const exitButton = guessModal.querySelector("button.modal_exitBtn");
+  const $guessModal = document.querySelector("dialog.guess_modal");
+  const $guessForm = $guessModal.querySelector("form.guess_form");
+  const $exitButton = $guessModal.querySelector("button.modal_exitBtn");
 
   const guessWord = (e) => {
     e.preventDefault();
 
-    const input = guessForm.querySelector("input");
+    const $input = $guessForm.querySelector("input");
 
-    socket.emit("guess_word", input.value, guessChances - 1, () => {
+    socket.emit("guess_word", $input.value, guessChances - 1, () => {
       guessChances--;
-      input.value = "";
+      $input.value = "";
 
-      guessModal.close();
+      $guessModal.close();
     });
   };
 
-  guessModal.addEventListener("keydown", (event) => {
+  $guessModal.addEventListener("keydown", (event) => {
     if (event.key === "Escape") event.preventDefault();
   });
 
-  guessModal.addEventListener("cancel", (e) => e.preventDefault());
+  $guessModal.addEventListener("cancel", (e) => e.preventDefault());
 
-  exitButton.addEventListener("click", () => {
-    guessForm.removeEventListener("submit", guessWord);
-    guessModal.close();
+  $exitButton.addEventListener("click", () => {
+    $guessForm.removeEventListener("submit", guessWord);
+    $guessModal.close();
   });
 
-  guessForm.addEventListener("submit", guessWord, { once: true });
+  $guessForm.addEventListener("submit", guessWord, { once: true });
 
-  guessModal.showModal();
+  $guessModal.showModal();
 }
 
 /* 중복 접속 */
