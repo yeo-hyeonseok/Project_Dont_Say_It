@@ -104,7 +104,7 @@ div.main_body > a {
   text-align: center;
   background-color: var(--primary-color);
   border-radius: 1rem;
-  transition: filter 0.1s ease;
+  transition: filter 0.3s ease;
 }
 
 div.main_body > a:hover {

@@ -54,12 +54,40 @@ div.chat_list {
   padding: 0 1.5rem 1.5rem 1.5rem;
   flex: 1 1 0%;
   overflow-y: scroll;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 div.chat_list::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera*/
+  display: none;
+}
+
+div.chat_list > div.matchButton_container {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+div.chat_list > div.matchButton_container > p.match_desc {
+  color: var(--info-color);
+  font-size: 0.9rem;
+}
+
+div.chat_list > div.matchButton_container > button.match_button {
+  padding: 0.5rem 1rem;
+  border: none;
+  color: var(--secondary-text-color);
+  background-color: var(--primary-color);
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+div.chat_list > div.matchButton_container > button.match_button:hover {
+  filter: brightness(1.05);
 }
 
 div.chat_list > p.notice,
