@@ -80,6 +80,7 @@ div.chat_list > div.matchButton_container > button.match_button {
   padding: 0.5rem 1rem;
   border: none;
   color: var(--secondary-text-color);
+  font-weight: 500;
   background-color: var(--primary-color);
   border-radius: 0.3rem;
   cursor: pointer;
@@ -96,6 +97,7 @@ p.loading_msg {
   font-weight: 400;
   font-size: 0.9rem;
   text-align: center;
+  white-space: pre-line;
   margin-top: 0.8rem;
 }
 
