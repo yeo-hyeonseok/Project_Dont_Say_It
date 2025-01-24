@@ -58,7 +58,6 @@ function setSocketListeners() {
     const $loadingMsg = document.querySelector("p.loading_msg");
 
     $loadingMsg.style.display = "none";
-
     isMatched = true;
 
     timeoutIds.forEach((item) => clearTimeout(item));
