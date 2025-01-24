@@ -27,12 +27,9 @@ function initRoomInfo() {
 
   // 채팅 기록 삭제 후, 로딩 메시지 띄우기
   const $chatList = document.querySelector("div.chat_list");
-  const $p = document.createElement("p");
 
   $chatList.innerHTML = "";
-  $p.textContent = "상대방을 기다리는 중입니다...";
-  $p.classList.add("loading_msg");
-  $chatList.append($p);
+  addLoadingMessage("상대방을 기다리는 중입니다...");
 
   // 시간 변경 & 금칙어 맞추기 기회 초기화
   timeChances = 3;
@@ -49,9 +46,6 @@ function initRoomInfo() {
 let socket;
 let isMatched = false;
 let timeoutIds = [];
-
-// >> 시작 지점 <<
-connectSocket();
 
 function setSocketListeners() {
   if (!socket) return;
@@ -199,14 +193,17 @@ function setSocketListeners() {
 }
 
 function connectSocket() {
-  plusTabCount();
+  socket = io();
+  setSocketListeners();
+
+  /*plusTabCount();
 
   if (getIsDuplicated()) {
     notifyDuplicate();
   } else {
     socket = io();
     setSocketListeners();
-  }
+  }*/
 }
 
 /* 헤더 */
@@ -215,6 +212,20 @@ const $exitButton = document.querySelector("span.exit_button");
 $exitButton.addEventListener("click", () =>
   isMatched ? showExitModal() : exitRoom()
 );
+
+/* 매칭 시작 버튼 */
+const $matchButton = document.querySelector("button.match_button");
+
+$matchButton.addEventListener("click", () => {
+  const $matchButtonContainer = document.querySelector(
+    "div.matchButton_container"
+  );
+
+  $matchButtonContainer.style.display = "none";
+
+  addLoadingMessage("상대방을 기다리는 중입니다...");
+  connectSocket();
+});
 
 /* 채팅 창 */
 const $chatList = document.querySelector("div.chat_list");
@@ -272,6 +283,15 @@ function notifyDuplicate() {
   $loadingMsg.textContent = "이미 참여 중인 게임이 있습니다.";
   $loadingMsg.append($br);
   $loadingMsg.append(document.createTextNode("뒤로 가기 버튼을 클릭해주세요."));
+}
+
+function addLoadingMessage(msg) {
+  const $chatList = document.querySelector("div.chat_list");
+  const $p = document.createElement("p");
+
+  $p.textContent = msg;
+  $p.classList.add("loading_msg");
+  $chatList.append($p);
 }
 
 function sendNotice(msg) {
