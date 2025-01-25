@@ -210,7 +210,7 @@ $matchButton.addEventListener("click", () => {
   );
 
   $matchButtonContainer.style.display = "none";
-
+  
   if (getIsDuplicated()) {
     addLoadingMessage(
       "이미 참여 중인 게임이 있습니다.\n뒤로 가기 버튼을 클릭해주세요."
@@ -271,6 +271,15 @@ $guessButton.addEventListener("click", () => {
       : printToastMsg("모든 기회를 사용하셨습니다.");
   }
 });
+
+function addLoadingMessage(msg) {
+  const $chatList = document.querySelector("div.chat_list");
+  const $p = document.createElement("p");
+
+  $p.textContent = msg;
+  $p.classList.add("loading_msg");
+  $chatList.append($p);
+}
 
 function addLoadingMessage(msg) {
   const $chatList = document.querySelector("div.chat_list");
