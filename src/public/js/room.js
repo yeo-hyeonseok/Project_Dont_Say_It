@@ -1,6 +1,8 @@
 /* 공통 */
 window.addEventListener("beforeunload", () => minusTabCount());
 
+plusTabCount();
+
 function exitRoom() {
   location.replace("/");
 }
@@ -192,20 +194,6 @@ function setSocketListeners() {
   });
 }
 
-function connectSocket() {
-  socket = io();
-  setSocketListeners();
-
-  /*plusTabCount();
-
-  if (getIsDuplicated()) {
-    notifyDuplicate();
-  } else {
-    socket = io();
-    setSocketListeners();
-  }*/
-}
-
 /* 헤더 */
 const $exitButton = document.querySelector("span.exit_button");
 
@@ -223,8 +211,16 @@ $matchButton.addEventListener("click", () => {
 
   $matchButtonContainer.style.display = "none";
 
-  addLoadingMessage("상대방을 기다리는 중입니다...");
-  connectSocket();
+  if (getIsDuplicated()) {
+    addLoadingMessage(
+      "이미 참여 중인 게임이 있습니다.\n뒤로 가기 버튼을 클릭해주세요."
+    );
+  } else {
+    addLoadingMessage("상대방을 기다리는 중입니다...");
+
+    socket = io();
+    setSocketListeners();
+  }
 });
 
 /* 채팅 창 */
@@ -275,15 +271,6 @@ $guessButton.addEventListener("click", () => {
       : printToastMsg("모든 기회를 사용하셨습니다.");
   }
 });
-
-function notifyDuplicate() {
-  const $loadingMsg = document.querySelector("p.loading_msg");
-  const $br = document.createElement("br");
-
-  $loadingMsg.textContent = "이미 참여 중인 게임이 있습니다.";
-  $loadingMsg.append($br);
-  $loadingMsg.append(document.createTextNode("뒤로 가기 버튼을 클릭해주세요."));
-}
 
 function addLoadingMessage(msg) {
   const $chatList = document.querySelector("div.chat_list");
@@ -493,7 +480,7 @@ function showResultModal(title, desc) {
   const $h2 = $resultModal.querySelector("h2");
   const $p = $resultModal.querySelector("p");
   const $exitButton = $resultModal.querySelector("button.modal_exitBtn");
-  const $matchButton = $resultModal.querySelector("button.modal_matchBtn");
+  const $nextmMatchButton = $resultModal.querySelector("button.modal_matchBtn");
 
   $h2.textContent = title;
   $p.textContent = desc;
@@ -506,7 +493,7 @@ function showResultModal(title, desc) {
 
   $exitButton.addEventListener("click", () => exitRoom());
 
-  $matchButton.addEventListener(
+  $nextmMatchButton.addEventListener(
     "click",
     () => {
       initRoomInfo();
@@ -526,7 +513,7 @@ function showWinLossModal(title, forbiddenWord) {
   const $h2 = $winLossModal.querySelector("h2");
   const $p = $winLossModal.querySelector("p");
   const $exitButton = $winLossModal.querySelector("button.modal_exitBtn");
-  const $matchButton = $winLossModal.querySelector("button.modal_matchBtn");
+  const $nextMatchButton = $winLossModal.querySelector("button.modal_matchBtn");
 
   $h2.textContent = title;
   $p.textContent = forbiddenWord;
@@ -539,7 +526,7 @@ function showWinLossModal(title, forbiddenWord) {
 
   $exitButton.addEventListener("click", () => exitRoom());
 
-  $matchButton.addEventListener(
+  $nextMatchButton.addEventListener(
     "click",
     () => {
       initRoomInfo();
