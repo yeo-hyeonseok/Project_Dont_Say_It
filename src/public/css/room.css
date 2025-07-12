@@ -11,8 +11,7 @@ div#room_container {
 header.room_header {
   display: flex;
   position: relative;
-  height: 3rem;
-  padding: 0.2rem 1rem;
+  padding: 1rem;
   align-items: center;
   box-shadow: 0 4px 4px -2px var(--secondary-bg-color);
   user-select: none;
@@ -21,9 +20,15 @@ header.room_header {
 header.room_header > span.exit_button {
   position: absolute;
   top: 50%;
-  font-size: 1.2rem;
   cursor: pointer;
   transform: translateY(-50%);
+  display: flex;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  align-items: center;
+}
+header.room_header > span.exit_button > i {
+  font-size: 1.2rem;
 }
 
 header.room_header > div {
@@ -72,8 +77,8 @@ div.chat_list > div.matchButton_container {
 }
 
 div.chat_list > div.matchButton_container > p.match_desc {
-  color: var(--info-color);
   font-size: 0.9rem;
+  color: var(--info-color);
 }
 
 div.chat_list > div.matchButton_container > button.match_button {
@@ -81,8 +86,9 @@ div.chat_list > div.matchButton_container > button.match_button {
   border: none;
   color: var(--secondary-text-color);
   font-weight: 500;
+  font-size: 0.9rem;
   background-color: var(--primary-color);
-  border-radius: 0.3rem;
+  border-radius: 0.5rem;
   cursor: pointer;
   transition: filter 0.3s ease;
 }
@@ -248,7 +254,7 @@ form.message_form > div.control_container > span.guess_button {
   color: var(--info-color);
   font-size: 0.8rem;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 0.5rem;
   background-color: var(--secondary-bg-color);
 }
 
@@ -257,7 +263,7 @@ form.message_form > div.control_container > div.time_controls > span {
   color: var(--info-color);
   font-size: 0.8rem;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 0.5rem;
   background-color: var(--secondary-bg-color);
 }
 
