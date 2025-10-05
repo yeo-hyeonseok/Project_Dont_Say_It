@@ -10,8 +10,9 @@ div#room_container {
 /* 헤더 */
 header.room_header {
   display: flex;
+  height: 54px;
   position: relative;
-  padding: 1rem;
+  padding: 0rem 1rem;
   align-items: center;
   box-shadow: 0 4px 4px -2px var(--secondary-bg-color);
   user-select: none;
@@ -114,8 +115,8 @@ div.chat_list > p.notice > span {
 div.chat_list > div.other_msg > p,
 div.my_msg > p {
   display: inline-block;
-  padding: 0.7rem 1rem;
-  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
 }
 
 div.chat_list > div.other_msg {

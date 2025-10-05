@@ -42,6 +42,12 @@ body {
   transition: background-color 0.5s ease;
 }
 
+@media screen and (max-width: 767px) {
+  body {
+    background-color: var(--primary-bg-color);
+  }
+}
+
 main#layout {
   display: flex;
   max-width: 32rem;
