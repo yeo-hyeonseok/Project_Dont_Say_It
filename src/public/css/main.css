@@ -64,7 +64,7 @@ div.main_body > div.title_container > h1 {
 }
 
 div.main_body > img {
-  width: 95%;
+  width: 90%;
 }
 
 div.main_body > button.social_login {
@@ -104,7 +104,7 @@ div.main_body > a {
   text-decoration: none;
   text-align: center;
   background-color: var(--primary-color);
-  border-radius: 12px;
+  border-radius: 0.5rem;
   transition: filter 0.3s ease;
   margin-top: 1.5rem;
 }

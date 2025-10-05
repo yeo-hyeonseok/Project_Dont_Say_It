@@ -1,5 +1,7 @@
 /* 공통 */
-window.addEventListener("beforeunload", () => minusTabCount());
+//window.addEventListener("beforeunload", () => minusTabCount());
+
+//plusTabCount();
 
 plusTabCount();
 
@@ -218,9 +220,21 @@ $matchButton.addEventListener("click", () => {
   } else {
     addLoadingMessage("상대방을 기다리는 중입니다...");
 
+  addLoadingMessage("상대방을 기다리는 중입니다...");
+
+  socket = io();
+  setSocketListeners();
+
+  /*if (getIsDuplicated()) {
+    addLoadingMessage(
+      "이미 참여 중인 게임이 있습니다.\n뒤로 가기 버튼을 클릭해주세요."
+    );
+  } else {
+    addLoadingMessage("상대방을 기다리는 중입니다...");
+
     socket = io();
     setSocketListeners();
-  }
+  }*/
 });
 
 /* 채팅 창 */
@@ -587,7 +601,7 @@ function showGuessModal() {
 }
 
 /* 중복 접속 */
-function plusTabCount() {
+/*function plusTabCount() {
   const tabCount = Number(localStorage.getItem("tabCount") || 0);
 
   localStorage.setItem("tabCount", tabCount + 1);
@@ -607,4 +621,4 @@ function getIsDuplicated() {
   const tabCount = Number(localStorage.getItem("tabCount") || 0);
 
   return tabCount > 1;
-}
+}*/
