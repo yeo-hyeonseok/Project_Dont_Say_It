@@ -3,6 +3,8 @@
 
 //plusTabCount();
 
+plusTabCount();
+
 function exitRoom() {
   location.replace("/");
 }
@@ -210,6 +212,13 @@ $matchButton.addEventListener("click", () => {
   );
 
   $matchButtonContainer.style.display = "none";
+  
+  if (getIsDuplicated()) {
+    addLoadingMessage(
+      "이미 참여 중인 게임이 있습니다.\n뒤로 가기 버튼을 클릭해주세요."
+    );
+  } else {
+    addLoadingMessage("상대방을 기다리는 중입니다...");
 
   addLoadingMessage("상대방을 기다리는 중입니다...");
 
