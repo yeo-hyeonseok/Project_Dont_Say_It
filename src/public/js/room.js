@@ -3,8 +3,6 @@
 
 //plusTabCount();
 
-plusTabCount();
-
 function exitRoom() {
   location.replace("/");
 }
